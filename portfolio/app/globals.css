@@ -504,7 +504,13 @@ html.light ::-webkit-scrollbar-thumb:hover,
   background: #94a3b8;
 }
 
-/* Background conversions */
+/* Base section backgrounds */
+html.light section,
+.light-theme section {
+  background-color: transparent !important;
+}
+
+/* Background conversions for cards and containers */
 html.light .bg-black,
 html.light .bg-\[\#000000\],
 html.light .bg-\[\#050505\],
@@ -514,33 +520,22 @@ html.light .bg-\[\#050505\],
   background-color: #f8fafc !important;
 }
 
-html.light .bg-zinc-950,
-html.light .bg-zinc-950\/60,
-html.light .bg-zinc-950\/70,
-html.light .bg-zinc-950\/80,
-html.light .bg-zinc-950\/90,
-html.light .bg-zinc-950\/95,
-.light-theme .bg-zinc-950,
-.light-theme .bg-zinc-950\/60,
-.light-theme .bg-zinc-950\/70,
-.light-theme .bg-zinc-950\/80,
-.light-theme .bg-zinc-950\/90,
-.light-theme .bg-zinc-950\/95 {
+/* All zinc-950 cards (Cards, panels, timeline items, etc.) */
+html.light [class*="bg-zinc-950"],
+.light-theme [class*="bg-zinc-950"] {
   background-color: #ffffff !important;
+  background-image: none !important;
   box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04) !important;
+  border-color: #e2e8f0 !important;
 }
 
-html.light .bg-zinc-900,
-html.light .bg-zinc-900\/60,
-html.light .bg-zinc-900\/80,
-html.light .bg-zinc-900\/90,
-html.light .bg-zinc-900\/95,
-.light-theme .bg-zinc-900,
-.light-theme .bg-zinc-900\/60,
-.light-theme .bg-zinc-900\/80,
-.light-theme .bg-zinc-900\/90,
-.light-theme .bg-zinc-900\/95 {
+/* All secondary badges, pills, and small elements */
+html.light [class*="bg-zinc-900"],
+.light-theme [class*="bg-zinc-900"] {
   background-color: #f1f5f9 !important;
+  background-image: none !important;
+  color: #1e293b !important;
+  border-color: #cbd5e1 !important;
 }
 
 html.light .bg-white\/\[0\.025\],
@@ -549,6 +544,15 @@ html.light .bg-white\/10,
 .light-theme .bg-white\/\[0\.025\],
 .light-theme .bg-white\/5,
 .light-theme .bg-white\/10 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Hover adjustments */
+html.light [class*="hover:bg-zinc-900"]:hover,
+.light-theme [class*="hover:bg-zinc-900"]:hover,
+html.light [class*="hover:bg-zinc-800"]:hover,
+.light-theme [class*="hover:bg-zinc-800"]:hover {
   background-color: #f8fafc !important;
 }
 
@@ -588,6 +592,21 @@ html.light .text-zinc-600,
   color: #64748b !important;
 }
 
+/* High contrast accent typography in Light Mode */
+html.light [class*="text-cyan-300"],
+.light-theme [class*="text-cyan-300"],
+html.light [class*="text-cyan-400"],
+.light-theme [class*="text-cyan-400"] {
+  color: #0284c7 !important;
+}
+
+html.light [class*="text-amber-300"],
+.light-theme [class*="text-amber-300"],
+html.light [class*="text-amber-400"],
+.light-theme [class*="text-amber-400"] {
+  color: #b45309 !important;
+}
+
 /* Hover text adjustments */
 html.light .hover\:text-white:hover,
 .light-theme .hover\:text-white:hover {
@@ -609,18 +628,14 @@ html.light .bg-gradient-to-r *,
 }
 
 /* Border color conversions */
-html.light .border-zinc-900,
-html.light .border-zinc-850,
-html.light .border-zinc-800,
-html.light .border-zinc-700,
-html.light .border-zinc-800\/80,
-html.light .border-zinc-800\/90,
-.light-theme .border-zinc-900,
-.light-theme .border-zinc-850,
-.light-theme .border-zinc-800,
-.light-theme .border-zinc-700,
-.light-theme .border-zinc-800\/80,
-.light-theme .border-zinc-800\/90 {
+html.light [class*="border-zinc-850"],
+html.light [class*="border-zinc-800"],
+html.light [class*="border-zinc-900"],
+html.light [class*="border-zinc-700"],
+.light-theme [class*="border-zinc-850"],
+.light-theme [class*="border-zinc-800"],
+.light-theme [class*="border-zinc-900"],
+.light-theme [class*="border-zinc-700"] {
   border-color: #e2e8f0 !important;
 }
 
@@ -705,14 +720,6 @@ html.light .bg-gradient-to-t.from-black,
 html.light .bg-gradient-to-b.from-black,
 .light-theme .bg-gradient-to-b.from-black {
   background-image: linear-gradient(to bottom, #f8fafc, transparent) !important;
-}
-
-/* Tag Pills in Light Mode */
-html.light .bg-zinc-900.text-zinc-300,
-.light-theme .bg-zinc-900.text-zinc-300 {
-  background-color: #f1f5f9 !important;
-  color: #1e293b !important;
-  border-color: #cbd5e1 !important;
 }
 
 /* Status Badges */
