@@ -116,80 +116,84 @@ body {
 
 /* ============================================================================
    HERO ORBITAL LIGHTING HALO SYSTEM (Pure 100% Linear Continuous GPU Orbit)
-   Zero stops, zero pauses, zero CPU repaint — silky smooth 120 FPS!
+   Zero stops, zero pauses, zero deformation — perfect round circular orbits!
    ============================================================================ */
 
-/* Responsive Orbit Radii via CSS variables */
+/* Responsive Orbit Radii via CSS variables (Framing Ar-jay on Desktop & Mobile without hitting text) */
 :root {
-  --orbit-cyan-r: 108px;
-  --orbit-coral-r: 86px;
-  --orbit-dot-r: 124px;
+  --orbit-cyan-r: 88px;
+  --orbit-coral-r: 70px;
+  --orbit-dot-r: 102px;
 }
 @media (min-width: 640px) {
   :root {
-    --orbit-cyan-r: 155px;
-    --orbit-coral-r: 122px;
-    --orbit-dot-r: 178px;
+    --orbit-cyan-r: 110px;
+    --orbit-coral-r: 88px;
+    --orbit-dot-r: 128px;
   }
 }
 @media (min-width: 768px) {
   :root {
-    --orbit-cyan-r: 175px;
-    --orbit-coral-r: 138px;
-    --orbit-dot-r: 200px;
+    --orbit-cyan-r: 145px;
+    --orbit-coral-r: 118px;
+    --orbit-dot-r: 168px;
   }
 }
 @media (min-width: 1024px) {
   :root {
-    --orbit-cyan-r: 215px;
-    --orbit-coral-r: 168px;
-    --orbit-dot-r: 245px;
+    --orbit-cyan-r: 165px;
+    --orbit-coral-r: 132px;
+    --orbit-dot-r: 185px;
+  }
+}
+@media (min-width: 1280px) {
+  :root {
+    --orbit-cyan-r: 205px;
+    --orbit-coral-r: 165px;
+    --orbit-dot-r: 235px;
   }
 }
 
-/* 100% Pure Linear Continuous Spins (Zero stops, zero deceleration, continuous velocity) */
-@keyframes spinContinuousClockwise {
+/* 100% Pure Linear Continuous Circular Orbits — Zero Distortion, Exact Circles! */
+@keyframes orbitSpinCyan {
   from {
-    transform: rotate(0deg);
+    transform: rotate(0deg) translateX(var(--orbit-cyan-r)) rotate(0deg);
   }
   to {
-    transform: rotate(360deg);
+    transform: rotate(360deg) translateX(var(--orbit-cyan-r)) rotate(-360deg);
   }
 }
 
-@keyframes spinContinuousCounterClockwise {
+@keyframes orbitSpinCoral {
   from {
-    transform: rotate(0deg);
+    transform: rotate(180deg) translateX(var(--orbit-coral-r)) rotate(-180deg);
   }
   to {
-    transform: rotate(-360deg);
+    transform: rotate(540deg) translateX(var(--orbit-coral-r)) rotate(-540deg);
   }
 }
 
-.anim-orbit-spin-cyan {
-  animation: spinContinuousClockwise 13s linear infinite;
-  will-change: transform;
+@keyframes orbitSpinDot {
+  from {
+    transform: rotate(90deg) translateX(var(--orbit-dot-r)) rotate(-90deg);
+  }
+  to {
+    transform: rotate(450deg) translateX(var(--orbit-dot-r)) rotate(-450deg);
+  }
 }
-.anim-orbit-counter-cyan {
-  animation: spinContinuousCounterClockwise 13s linear infinite;
+
+.anim-orbit-cyan {
+  animation: orbitSpinCyan 12s linear infinite;
   will-change: transform;
 }
 
-.anim-orbit-spin-coral {
-  animation: spinContinuousClockwise 9.5s linear infinite;
-  will-change: transform;
-}
-.anim-orbit-counter-coral {
-  animation: spinContinuousCounterClockwise 9.5s linear infinite;
+.anim-orbit-coral {
+  animation: orbitSpinCoral 8.5s linear infinite;
   will-change: transform;
 }
 
-.anim-orbit-spin-dot {
-  animation: spinContinuousClockwise 6.8s linear infinite;
-  will-change: transform;
-}
-.anim-orbit-counter-dot {
-  animation: spinContinuousCounterClockwise 6.8s linear infinite;
+.anim-orbit-dot {
+  animation: orbitSpinDot 6s linear infinite;
   will-change: transform;
 }
 
