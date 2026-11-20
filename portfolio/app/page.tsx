@@ -100,7 +100,7 @@ export default function PortfolioPage() {
       description:
         'Official student-level course completion credential covering foundational cybersecurity principles, threat detection, online defense strategies, vulnerability mitigation, and organizational network safety.',
       skills: ['Cybersecurity', 'Threat Analysis', 'Network Defense', 'Incident Mitigation'],
-      image: '/certificates/cisco_cybersecurity.jpg',
+      image: '/certificates/cisco_cybersecurity.jpg?v=2',
     },
     {
       id: 'cert-2',
@@ -113,7 +113,7 @@ export default function PortfolioPage() {
       description:
         'Official 16-hour credential awarded by the DICT ICT Academy covering international cybersecurity governance, risk management frameworks, and enterprise IT defense conducted in Tacloban City.',
       skills: ['Cybersecurity Governance', 'IT Management', 'Security Standards', 'Risk Management'],
-      image: '/certificates/dict_cybersecurity.jpg',
+      image: '/certificates/dict_cybersecurity.jpg?v=2',
     },
     {
       id: 'cert-3',
@@ -127,7 +127,7 @@ export default function PortfolioPage() {
       description:
         'Comprehensive completion credential for mastering AI-driven development workflows, prompt engineering, AI coding assistants, and modern software paradigms taught by Mar Wie Ang.',
       skills: ['AI-Driven Development', 'Prompt Engineering', 'Full Stack AI', 'Modern Workflows'],
-      image: '/certificates/aidev_fundamentals.jpg',
+      image: '/certificates/aidev_fundamentals.jpg?v=2',
     },
     {
       id: 'cert-4',
@@ -140,7 +140,7 @@ export default function PortfolioPage() {
       description:
         'Official Certificate of Attendance for participating in the career seminar Marketing ME Live at Bestlink College of the Philippines, Quezon City, presented by Managing Director Kim Chua.',
       skills: ['Personal Branding', 'Professional Communication', 'Career Positioning', 'Client Relations'],
-      image: '/certificates/bcp_marketing_me.jpg',
+      image: '/certificates/bcp_marketing_me.jpg?v=2',
     },
     {
       id: 'cert-5',
@@ -153,7 +153,7 @@ export default function PortfolioPage() {
       description:
         'Official Curriculum Vitae detailing BS Information Technology academic background at BCP, corporate customer service experience at Concentrix & Teleperformance, freelance development & design, and client-delivered platforms.',
       skills: ['BSIT Candidate', 'Full Stack Development', 'UI/UX Design', 'Customer Support', 'Photo/Video Editing'],
-      image: '/certificates/arjay_cv_preview.jpg',
+      image: '/certificates/arjay_cv_preview.jpg?v=2',
     },
   ];
 
@@ -597,6 +597,7 @@ export default function PortfolioPage() {
                       src={cert.image}
                       alt={cert.title}
                       fill
+                      unoptimized
                       className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-mono font-bold text-[#FF5A5F] border border-zinc-800">
@@ -963,6 +964,7 @@ export default function PortfolioPage() {
                           src={selectedCertificate.image}
                           alt={selectedCertificate.title}
                           fill
+                          unoptimized
                           className="object-contain p-2"
                         />
                         <button
