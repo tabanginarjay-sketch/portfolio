@@ -72,68 +72,55 @@ export default function SmokeAtmosphere() {
     const ribbons: SmokeRibbon[] = [
       {
         imgIndex: 0,
-        x: width * 0.1,
-        y: height * 0.42,
-        vx: 0.35, // slow, graceful left-to-right drift
-        width: 1150,
-        height: 640,
-        alpha: 0.32,
-        waveSpeed: 0.008,
-        waveAmp: 30,
+        x: width * 0.12,
+        y: height * 0.45,
+        vx: 0.25,
+        width: 1050,
+        height: 600,
+        alpha: 0.18,
+        waveSpeed: 0.007,
+        waveAmp: 25,
         phase: 0,
-        mouseSens: 0.03,
+        mouseSens: 0.02,
       },
       {
         imgIndex: 1,
-        x: width * 0.85,
-        y: height * 0.35,
-        vx: -0.28, // counter-drift right-to-left
-        width: 1250,
-        height: 680,
-        alpha: 0.28,
-        waveSpeed: 0.007,
-        waveAmp: 35,
+        x: width * 0.88,
+        y: height * 0.38,
+        vx: -0.22,
+        width: 1100,
+        height: 620,
+        alpha: 0.16,
+        waveSpeed: 0.006,
+        waveAmp: 30,
         phase: Math.PI * 0.7,
-        mouseSens: -0.04,
+        mouseSens: -0.025,
       },
       {
         imgIndex: 0,
-        x: width * 0.45,
-        y: height * 0.58,
-        vx: 0.22,
-        width: 1350,
-        height: 720,
-        alpha: 0.25,
-        waveSpeed: 0.006,
-        waveAmp: 25,
-        phase: Math.PI * 1.3,
-        mouseSens: 0.025,
-      },
-      {
-        imgIndex: 1,
-        x: width * 0.25,
-        y: height * 0.22,
-        vx: -0.42,
+        x: width * 0.2,
+        y: height * 0.65,
+        vx: 0.18,
         width: 950,
         height: 520,
-        alpha: 0.22,
-        waveSpeed: 0.011,
-        waveAmp: 40,
-        phase: Math.PI * 0.4,
-        mouseSens: -0.05,
+        alpha: 0.14,
+        waveSpeed: 0.005,
+        waveAmp: 20,
+        phase: Math.PI * 1.3,
+        mouseSens: 0.015,
       },
       {
-        imgIndex: 0,
-        x: width * 0.7,
-        y: height * 0.65,
-        vx: 0.3,
-        width: 1050,
-        height: 580,
-        alpha: 0.24,
-        waveSpeed: 0.009,
-        waveAmp: 32,
-        phase: Math.PI * 1.8,
-        mouseSens: 0.035,
+        imgIndex: 1,
+        x: width * 0.82,
+        y: height * 0.7,
+        vx: -0.2,
+        width: 980,
+        height: 540,
+        alpha: 0.15,
+        waveSpeed: 0.008,
+        waveAmp: 22,
+        phase: Math.PI * 0.4,
+        mouseSens: -0.02,
       },
     ];
 
@@ -194,6 +181,31 @@ export default function SmokeAtmosphere() {
         ctx.drawImage(img, -r.width / 2, -r.height / 2, r.width, r.height);
         ctx.restore();
       }
+
+      // Smoothly carve out the center column where Ar-jay's portrait stands
+      // so smoke NEVER crosses his face, collar, or suit!
+      const clearX = width * 0.5;
+      const clearY = height * 0.46;
+      const clearRadiusX = Math.min(width * 0.24, 280);
+      const clearRadiusY = Math.min(height * 0.48, 380);
+
+      ctx.globalCompositeOperation = 'destination-out';
+      const clearGrad = ctx.createRadialGradient(
+        clearX,
+        clearY,
+        clearRadiusX * 0.25,
+        clearX,
+        clearY,
+        clearRadiusX
+      );
+      clearGrad.addColorStop(0, 'rgba(0, 0, 0, 1.0)');
+      clearGrad.addColorStop(0.65, 'rgba(0, 0, 0, 0.85)');
+      clearGrad.addColorStop(1, 'rgba(0, 0, 0, 0.0)');
+
+      ctx.fillStyle = clearGrad;
+      ctx.beginPath();
+      ctx.ellipse(clearX, clearY, clearRadiusX, clearRadiusY, 0, 0, Math.PI * 2);
+      ctx.fill();
 
       ctx.globalCompositeOperation = 'source-over';
       animationFrameId = requestAnimationFrame(render);

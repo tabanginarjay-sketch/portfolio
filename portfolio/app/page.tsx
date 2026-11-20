@@ -333,14 +333,14 @@ export default function PortfolioPage() {
 
           {/* ----------------- CENTER COLUMN: PORTRAIT IMAGE ----------------- */}
           <div className="lg:col-span-4 flex items-center justify-center order-1 lg:order-2 relative">
-            <div className="relative w-72 sm:w-84 md:w-96 lg:w-[420px] aspect-[3/4] max-h-[580px] [mask-image:linear-gradient(to_bottom,black_60%,transparent_98%)] [-webkit-mask-image:linear-gradient(to_bottom,black_60%,transparent_98%)]">
+            <div className="relative w-72 sm:w-84 md:w-96 lg:w-[440px] aspect-[3/4] max-h-[620px]">
               <Image
-                src="/images/arjay-portrait-transparent.png?v=4"
+                src="/images/arjay-cinematic-portrait.png?v=chiaroscuro_v5"
                 alt="Ar-jay Tabangin - Developer & UI/UX Designer"
                 fill
                 priority
                 unoptimized
-                className="object-contain object-top drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)] filter brightness-[1.02] contrast-[1.02]"
+                className="object-contain object-top"
               />
             </div>
           </div>
