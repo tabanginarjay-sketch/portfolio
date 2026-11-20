@@ -148,23 +148,23 @@ export default function PortfolioPage() {
         {/* Brand Logo & Email Link */}
         <div className="flex items-center gap-6 sm:gap-10">
           <a href="#" className="group flex items-center gap-1.5 text-xl sm:text-2xl font-bold tracking-tight text-white">
-            <span>Jherald</span>
+            <span>Ar-jay</span>
             {/* Playful accent dot/graphic matching reference */}
             <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F] group-hover:scale-150 transition-transform" />
           </a>
 
           <a
-            href="mailto:jheraldramos@gmail.com"
+            href="mailto:tabanginarjay@gmail.com"
             className="hidden sm:inline-block text-xs sm:text-sm text-zinc-400 hover:text-white transition-colors"
           >
-            jheraldramos@gmail.com
+            tabanginarjay@gmail.com
           </a>
         </div>
 
         {/* Right Menu Hamburger Button */}
         <div className="flex items-center gap-4">
           <a
-            href="mailto:jheraldramos@gmail.com"
+            href="mailto:tabanginarjay@gmail.com"
             className="sm:hidden text-xs text-zinc-400 hover:text-white"
           >
             Email
@@ -243,7 +243,7 @@ export default function PortfolioPage() {
             <div className="space-y-1">
               <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1]">
                 Hi, <br />
-                I&apos;m <span className="text-[#FF5A5F]">Jherald</span>
+                I&apos;m <span className="text-[#FF5A5F]">Ar-jay</span>
               </h1>
               <p className="text-zinc-300 text-lg sm:text-xl font-medium tracking-wide pt-2">
                 User Interface Designer
@@ -310,7 +310,7 @@ export default function PortfolioPage() {
                 <span className="w-4 h-4 rounded-full bg-[#EA4C89] flex items-center justify-center text-[10px] text-white">
                   🏀
                 </span>
-                <span>www.dribbble.com/jherald</span>
+                <span>www.dribbble.com/arjay</span>
               </a>
             </div>
           </div>
@@ -694,11 +694,11 @@ export default function PortfolioPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
           <div className="space-y-1">
             <div className="flex items-center justify-center sm:justify-start gap-2 text-lg font-bold text-white">
-              <span>Jherald Ramos</span>
+              <span>Ar-jay Tabangin</span>
               <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F]" />
             </div>
             <p className="text-xs text-zinc-500">
-              © 2026 Jherald Ramos • Full Stack Developer & UI/UX Designer. All rights reserved.
+              © 2026 Ar-jay Tabangin • Full Stack Developer & UI/UX Designer. All rights reserved.
             </p>
           </div>
 
@@ -787,11 +787,11 @@ export default function PortfolioPage() {
 
               <div className="pt-2 flex items-center justify-between gap-3">
                 <a
-                  href="mailto:jheraldramos@gmail.com"
+                  href="mailto:tabanginarjay@gmail.com"
                   className="text-xs text-zinc-400 hover:text-white flex items-center gap-1.5"
                 >
                   <Mail className="w-3.5 h-3.5 text-[#FF5A5F]" />
-                  <span>jheraldramos@gmail.com</span>
+                  <span>tabanginarjay@gmail.com</span>
                 </a>
 
                 <button
