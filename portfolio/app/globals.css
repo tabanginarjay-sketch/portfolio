@@ -193,37 +193,53 @@ body {
   will-change: transform;
 }
 
-/* 100% Pure GPU Opacity & Scale Breathing for Studio Lighting (Zero CPU repaint!) */
-@keyframes studioAuraCyan {
+/* Playful Floating Bobbing Animations when in Display Margin Mode */
+@keyframes playfulBob1 {
   0%, 100% {
-    opacity: 0.35;
-    transform: scale(0.96);
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate3d(6px, -12px, 0) rotate(8deg);
+  }
+  66% {
+    transform: translate3d(-5px, 8px, 0) rotate(-6deg);
+  }
+}
+
+@keyframes playfulBob2 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate3d(-8px, 10px, 0) rotate(-10deg);
+  }
+  66% {
+    transform: translate3d(7px, -8px, 0) rotate(7deg);
+  }
+}
+
+@keyframes playfulBob3 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    opacity: 0.85;
-    transform: scale(1.06);
+    transform: translate3d(5px, -10px, 0) scale(1.15);
   }
 }
 
-@keyframes studioAuraCoral {
-  0%, 100% {
-    opacity: 0.85;
-    transform: scale(1.05);
-  }
-  50% {
-    opacity: 0.35;
-    transform: scale(0.95);
-  }
+.anim-playful-bob-1 {
+  animation: playfulBob1 6s ease-in-out infinite;
+  will-change: transform;
 }
 
-.anim-aura-cyan {
-  animation: studioAuraCyan 6.8s ease-in-out infinite;
-  will-change: transform, opacity;
+.anim-playful-bob-2 {
+  animation: playfulBob2 5s ease-in-out infinite;
+  will-change: transform;
 }
 
-.anim-aura-coral {
-  animation: studioAuraCoral 9.5s ease-in-out infinite;
-  will-change: transform, opacity;
+.anim-playful-bob-3 {
+  animation: playfulBob3 4s ease-in-out infinite;
+  will-change: transform;
 }
 
 /* Modal Smooth Transitions */
