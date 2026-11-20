@@ -59,8 +59,6 @@ export default function PortfolioPage() {
   const [canScrollCertNext, setCanScrollCertNext] = useState(true);
   const [isCertShielded, setIsCertShielded] = useState(false);
   const [certShieldReason, setCertShieldReason] = useState<'capture' | 'blur' | null>(null);
-  const [revealedCardCertId, setRevealedCardCertId] = useState<string | null>(null);
-  const [isModalCertRevealed, setIsModalCertRevealed] = useState(false);
   const [hoveredCert, setHoveredCert] = useState<{
     cert: any;
     side: 'left' | 'right';
@@ -319,34 +317,24 @@ export default function PortfolioPage() {
     setActiveCertIndex(closestIdx);
   }, [certificates.length]);
 
-  const lockAllCertReveals = useCallback(() => {
-    setRevealedCardCertId(null);
-    setIsModalCertRevealed(false);
+  const openCertCopyRequest = useCallback((certTitle: string) => {
+    setSelectedCertificate(null);
+    setContactStatus('idle');
+    setContactError('');
+    setContactMessage(
+      `Hi Ar-jay, I would like to request an official verified copy of your certificate: "${certTitle}".`
+    );
+    setIsChatModalOpen(true);
   }, []);
-
-  const openCertCopyRequest = useCallback(
-    (certTitle: string) => {
-      lockAllCertReveals();
-      setSelectedCertificate(null);
-      setContactStatus('idle');
-      setContactError('');
-      setContactMessage(
-        `Hi Ar-jay, I would like to request an official verified copy of your certificate: "${certTitle}".`
-      );
-      setIsChatModalOpen(true);
-    },
-    [lockAllCertReveals]
-  );
 
   const handleCertScroll = useCallback(() => {
     setHoveredCert(null);
-    lockAllCertReveals();
     if (certScrollRafRef.current !== null) return;
     certScrollRafRef.current = window.requestAnimationFrame(() => {
       certScrollRafRef.current = null;
       syncCertSliderState();
     });
-  }, [syncCertSliderState, lockAllCertReveals]);
+  }, [syncCertSliderState]);
 
   const clearCertHover = useCallback(() => {
     if (certHoverTimerRef.current !== null) {
@@ -412,21 +400,13 @@ export default function PortfolioPage() {
     return () => observer.disconnect();
   }, []);
 
-  // Anti-Screenshot & Hold-to-Reveal Privacy Shield (0ms instant blackout on release, multi-touch, hotkey, or blur)
+  // Anti-Screenshot & Screen-Capture Blackout Shield (certificates stay visible normally, black out immediately on capture triggers)
   useEffect(() => {
     const isProtectingCerts = () =>
-      Boolean(
-        selectedCertificate ||
-          hoveredCert ||
-          revealedCardCertId ||
-          isModalCertRevealed ||
-          isCertInViewRef.current
-      );
+      Boolean(selectedCertificate || hoveredCert || isCertInViewRef.current);
 
     const triggerCaptureShield = (durationMs = 2800) => {
       setHoveredCert(null);
-      setRevealedCardCertId(null);
-      setIsModalCertRevealed(false);
       setCertShieldReason('capture');
       setIsCertShielded(true);
       if (certShieldTimerRef.current !== null) {
@@ -444,23 +424,14 @@ export default function PortfolioPage() {
 
       const key = e.key?.toLowerCase() || '';
       const isPrintScreen = e.key === 'PrintScreen' || e.code === 'PrintScreen';
-      const isMacScreenshot = e.metaKey && e.shiftKey && ['3', '4', '5', '6'].includes(e.key);
+      const isMetaShiftCombo = e.metaKey && e.shiftKey; // Early trigger for Win+Shift+S & Cmd+Shift+3/4/5
       const isWinSnipping = (e.metaKey || e.ctrlKey) && e.shiftKey && key === 's';
       const isPrintOrSave = (e.ctrlKey || e.metaKey) && (key === 'p' || key === 's' || key === 'u');
       const isDevTools =
         e.key === 'F12' ||
         ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].includes(key));
-      const isModifierWhileRevealed =
-        Boolean(revealedCardCertId || isModalCertRevealed) &&
-        (e.key === 'Meta' || e.key === 'Control' || e.key === 'Alt' || e.key === 'Escape');
 
-      // Instantly lock & unmount certificate image the millisecond Win/Cmd/Ctrl is pressed while holding!
-      if (isModifierWhileRevealed) {
-        setRevealedCardCertId(null);
-        setIsModalCertRevealed(false);
-      }
-
-      if (isPrintScreen || isMacScreenshot || isWinSnipping || isPrintOrSave || isDevTools) {
+      if (isPrintScreen || isMetaShiftCombo || isWinSnipping || isPrintOrSave || isDevTools) {
         e.preventDefault();
         e.stopPropagation();
         triggerCaptureShield();
@@ -470,26 +441,17 @@ export default function PortfolioPage() {
       }
     };
 
-    // Instant lock if user lifts finger/mouse anywhere or triggers multi-touch gesture (e.g. 3-finger phone screenshot!)
-    const handleGlobalRelease = () => {
-      if (revealedCardCertId || isModalCertRevealed) {
-        setRevealedCardCertId(null);
-        setIsModalCertRevealed(false);
-      }
-    };
-
+    // Instant blackout if 3-finger screenshot gesture is detected on Android/iOS
     const handleMultiTouchGuard = (e: TouchEvent) => {
-      if (e.touches.length > 1 && isProtectingCerts()) {
-        triggerCaptureShield(2200);
+      if (e.touches.length >= 3 && isProtectingCerts()) {
+        triggerCaptureShield(2400);
       }
     };
 
-    // Obscure certificate visuals immediately when window loses focus (e.g. Snipping Tool / OS overlay)
+    // Instant blackout when window loses focus (e.g. Snipping Tool / OS screen recorder picker / app switcher)
     const handleWindowBlur = () => {
       if (!isProtectingCerts()) return;
       setHoveredCert(null);
-      setRevealedCardCertId(null);
-      setIsModalCertRevealed(false);
       setCertShieldReason('blur');
       setIsCertShielded(true);
     };
@@ -505,8 +467,6 @@ export default function PortfolioPage() {
     const handleVisibilityChange = () => {
       if (document.hidden && isProtectingCerts()) {
         setHoveredCert(null);
-        setRevealedCardCertId(null);
-        setIsModalCertRevealed(false);
         setCertShieldReason('blur');
         setIsCertShielded(true);
       } else if (!document.hidden) {
@@ -517,10 +477,6 @@ export default function PortfolioPage() {
 
     window.addEventListener('keydown', handleKeyCapture, true);
     window.addEventListener('keyup', handleKeyCapture, true);
-    window.addEventListener('pointerup', handleGlobalRelease, { passive: true });
-    window.addEventListener('pointercancel', handleGlobalRelease, { passive: true });
-    window.addEventListener('touchend', handleGlobalRelease, { passive: true });
-    window.addEventListener('touchcancel', handleGlobalRelease, { passive: true });
     window.addEventListener('touchstart', handleMultiTouchGuard, { passive: true });
     window.addEventListener('blur', handleWindowBlur);
     window.addEventListener('focus', handleWindowFocus);
@@ -529,10 +485,6 @@ export default function PortfolioPage() {
     return () => {
       window.removeEventListener('keydown', handleKeyCapture, true);
       window.removeEventListener('keyup', handleKeyCapture, true);
-      window.removeEventListener('pointerup', handleGlobalRelease);
-      window.removeEventListener('pointercancel', handleGlobalRelease);
-      window.removeEventListener('touchend', handleGlobalRelease);
-      window.removeEventListener('touchcancel', handleGlobalRelease);
       window.removeEventListener('touchstart', handleMultiTouchGuard);
       window.removeEventListener('blur', handleWindowBlur);
       window.removeEventListener('focus', handleWindowFocus);
@@ -541,7 +493,7 @@ export default function PortfolioPage() {
         window.clearTimeout(certShieldTimerRef.current);
       }
     };
-  }, [selectedCertificate, hoveredCert, revealedCardCertId, isModalCertRevealed]);
+  }, [selectedCertificate, hoveredCert]);
 
   // Smooth zero-lag scroll-reveal observer across all sections & cards
   useEffect(() => {
@@ -1403,11 +1355,11 @@ export default function PortfolioPage() {
             style={{ '--reveal-delay': '120ms' } as React.CSSProperties}
             className="cert-no-print relative space-y-5"
           >
-            {/* Anti-Screenshot / Capture Blackout Privacy Shield Overlay */}
+            {/* Anti-Screenshot / Capture Pure-Black Privacy Shield Overlay */}
             {isCertShielded && (
               <div
                 role="alert"
-                className="absolute inset-0 z-30 rounded-3xl bg-black/95 border border-[#FF5A5F]/40 flex flex-col items-center justify-center p-6 text-center space-y-3"
+                className="absolute inset-0 z-30 rounded-3xl bg-black border border-[#FF5A5F]/40 flex flex-col items-center justify-center p-6 text-center space-y-3"
               >
                 <div className="w-12 h-12 rounded-2xl bg-rose-500/15 border border-rose-500/35 flex items-center justify-center text-[#FF5A5F]">
                   <Lock className="w-6 h-6" />
@@ -1420,7 +1372,7 @@ export default function PortfolioPage() {
                   </h3>
                   <p className="text-xs text-zinc-400 leading-relaxed">
                     {certShieldReason === 'capture'
-                      ? 'Screen capture, printing, and saving are disabled to protect Ar-jay Tabangin’s official credentials.'
+                      ? 'Screen capture, printing, and saving are restricted to protect Ar-jay Tabangin’s official credentials.'
                       : 'Return focus to this window to continue viewing protected certificates.'}
                   </p>
                 </div>
@@ -1441,140 +1393,89 @@ export default function PortfolioPage() {
               ref={certSliderRef}
               onScroll={handleCertScroll}
               aria-label="Certificates carousel"
-              className={`relative flex items-stretch gap-4 sm:gap-5 lg:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar -mx-4 px-4 scroll-pl-4 sm:-mx-8 sm:px-8 sm:scroll-pl-8 lg:mx-0 lg:px-0 lg:scroll-pl-0 pt-2 pb-3 transition-opacity duration-150 ${
-                isCertShielded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+              className={`relative flex items-stretch gap-4 sm:gap-5 lg:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar -mx-4 px-4 scroll-pl-4 sm:-mx-8 sm:px-8 sm:scroll-pl-8 lg:mx-0 lg:px-0 lg:scroll-pl-0 pt-2 pb-3 ${
+                isCertShielded ? 'opacity-0 invisible pointer-events-none' : 'opacity-100 visible'
               }`}
             >
-              {certificates.map((cert, idx) => {
-                const isCardRevealed = revealedCardCertId === cert.id && !isCertShielded;
-                return (
-                  <div
-                    key={cert.id}
-                    ref={(el) => {
-                      certCardRefs.current[idx] = el;
-                    }}
-                    onMouseEnter={(e) => handleCertHoverStart(cert, e.currentTarget)}
-                    onMouseLeave={() => {
-                      handleCertHoverEnd();
-                      if (revealedCardCertId === cert.id) {
-                        setRevealedCardCertId(null);
-                      }
-                    }}
-                    onClick={() => {
-                      clearCertHover();
-                      lockAllCertReveals();
-                      setSelectedCertificate(cert);
-                    }}
-                    className="group relative snap-start shrink-0 w-[82vw] max-w-[345px] sm:w-[70vw] sm:max-w-[420px] md:w-[calc(54%-0.75rem)] lg:w-[calc(46%-0.75rem)] xl:w-[calc(42%-0.75rem)] 2xl:w-[calc(38%-0.75rem)] p-4 sm:p-5 rounded-3xl bg-zinc-950/80 hover:bg-zinc-900/90 border border-zinc-850 hover:border-[#FF5A5F]/75 hover:-translate-y-1.5 transition-[transform,border-color,background-color,box-shadow] duration-300 ease-out cursor-pointer shadow-lg hover:shadow-[0_20px_50px_-18px_rgba(255,90,95,0.28)] flex flex-col justify-between space-y-4"
-                  >
-                    <div className="space-y-4">
-                      {/* Certificate Privacy-Locked Vault Viewport (Hold-to-Reveal — 0px leaked when locked!) */}
+              {certificates.map((cert, idx) => (
+                <div
+                  key={cert.id}
+                  ref={(el) => {
+                    certCardRefs.current[idx] = el;
+                  }}
+                  onMouseEnter={(e) => handleCertHoverStart(cert, e.currentTarget)}
+                  onMouseLeave={handleCertHoverEnd}
+                  onClick={() => {
+                    clearCertHover();
+                    setSelectedCertificate(cert);
+                  }}
+                  className="group relative snap-start shrink-0 w-[82vw] max-w-[345px] sm:w-[70vw] sm:max-w-[420px] md:w-[calc(54%-0.75rem)] lg:w-[calc(46%-0.75rem)] xl:w-[calc(42%-0.75rem)] 2xl:w-[calc(38%-0.75rem)] p-4 sm:p-5 rounded-3xl bg-zinc-950/80 hover:bg-zinc-900/90 border border-zinc-850 hover:border-[#FF5A5F]/75 hover:-translate-y-1.5 transition-[transform,border-color,background-color,box-shadow] duration-300 ease-out cursor-pointer shadow-lg hover:shadow-[0_20px_50px_-18px_rgba(255,90,95,0.28)] flex flex-col justify-between space-y-4"
+                >
+                  <div className="space-y-4">
+                    {/* Certificate Thumbnail Preview (Watermarked + Capture-Blackout Protected) */}
+                    <div
+                      onContextMenu={(e) => e.preventDefault()}
+                      onDragStart={(e) => e.preventDefault()}
+                      className="cert-protected relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 select-none"
+                    >
+                      {!isCertShielded && (
+                        <Image
+                          src={cert.image}
+                          alt={cert.title}
+                          fill
+                          unoptimized
+                          draggable={false}
+                          className="object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out pointer-events-none"
+                        />
+                      )}
+                      {/* Transparent anti-save / anti-long-press protective veil */}
                       <div
+                        aria-hidden="true"
                         onContextMenu={(e) => e.preventDefault()}
                         onDragStart={(e) => e.preventDefault()}
-                        className="cert-protected relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-black border border-zinc-800/90 select-none"
-                      >
-                        {isCardRevealed ? (
-                          <>
-                            <Image
-                              src={cert.image}
-                              alt={cert.title}
-                              fill
-                              unoptimized
-                              draggable={false}
-                              className="object-contain bg-zinc-950 p-1.5 pointer-events-none"
-                            />
-                            {/* Transparent anti-save / anti-long-press protective veil */}
-                            <div
-                              aria-hidden="true"
-                              onContextMenu={(e) => e.preventDefault()}
-                              onDragStart={(e) => e.preventDefault()}
-                              className="absolute inset-0 z-10 bg-transparent"
-                            />
-                            <div className="absolute bottom-2.5 right-2.5 z-20 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/90 border border-[#FF5A5F]/50 text-[10px] font-mono font-bold text-white pointer-events-none">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F] animate-pulse" />
-                              <span>Release to hide</span>
-                            </div>
-                          </>
-                        ) : (
-                          /* Default Pure Obsidian Data-Privacy Curtain (Black on screenshot!) */
-                          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,90,95,0.11)_0%,rgba(9,9,11,0.98)_58%,#000000_100%)] flex flex-col items-center justify-center p-4 text-center space-y-2.5">
-                            <div className="w-10 h-10 rounded-2xl bg-zinc-950 border border-zinc-800 group-hover:border-[#FF5A5F]/50 flex items-center justify-center text-[#FF5A5F] shadow-[0_0_24px_rgba(255,90,95,0.14)] transition-colors">
-                              <Lock className="w-4 h-4" />
-                            </div>
-                            <div className="space-y-0.5">
-                              <p className="text-[11px] font-bold uppercase tracking-wider text-zinc-200">
-                                Privacy Protected
-                              </p>
-                              <p className="text-[10px] text-zinc-500">
-                                Hidden by default against screenshots
-                              </p>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={(e) => e.stopPropagation()}
-                              onPointerDown={(e) => {
-                                e.stopPropagation();
-                                setHoveredCert(null);
-                                setRevealedCardCertId(cert.id);
-                              }}
-                              onPointerUp={(e) => {
-                                e.stopPropagation();
-                                setRevealedCardCertId(null);
-                              }}
-                              onPointerLeave={() => {
-                                if (revealedCardCertId === cert.id) {
-                                  setRevealedCardCertId(null);
-                                }
-                              }}
-                              onPointerCancel={() => setRevealedCardCertId(null)}
-                              onContextMenu={(e) => e.preventDefault()}
-                              className="cert-protected touch-none select-none inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-zinc-900/95 hover:bg-[#FF5A5F] border border-zinc-700 hover:border-[#FF5A5F] text-[11px] font-bold text-white transition-colors cursor-pointer shadow-md"
-                            >
-                              <Eye className="w-3 h-3" />
-                              <span>Hold to Reveal</span>
-                            </button>
-                          </div>
-                        )}
-
-                        <div className="absolute top-3 left-3 z-20 max-w-[85%] truncate px-2.5 py-1 rounded-full bg-black/90 text-[10px] font-mono font-bold text-[#FF5A5F] border border-zinc-800 pointer-events-none">
-                          {cert.badge}
-                        </div>
+                        className="absolute inset-0 z-10 bg-transparent"
+                      />
+                      <div className="absolute top-3 left-3 z-20 max-w-[85%] truncate px-2.5 py-1 rounded-full bg-black/90 text-[10px] font-mono font-bold text-[#FF5A5F] border border-zinc-800 pointer-events-none">
+                        {cert.badge}
                       </div>
-
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-zinc-900 text-zinc-400 border border-zinc-800 shrink-0">
-                            {cert.date}
-                          </span>
-                          <span className="text-[11px] font-mono text-zinc-500 truncate">
-                            {cert.credentialId}
-                          </span>
-                        </div>
-
-                        <h3 className="font-bold text-white text-base group-hover:text-[#FF5A5F] transition-colors leading-snug">
-                          {cert.title}
-                        </h3>
-                        <p className="text-xs text-zinc-400 font-medium">{cert.issuer}</p>
-
-                        <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
-                          {cert.description}
-                        </p>
+                      <div className="hidden lg:inline-flex items-center gap-1.5 absolute bottom-3 right-3 z-20 px-2.5 py-1 rounded-full bg-black/85 border border-[#FF5A5F]/50 text-[10px] font-semibold text-white opacity-0 translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 transition-[opacity,transform] duration-200 pointer-events-none">
+                        <Eye className="w-3 h-3 text-[#FF5A5F]" />
+                        <span>Live Preview</span>
                       </div>
                     </div>
 
-                    <div className="pt-3 border-t border-zinc-900/80 flex items-center justify-between text-xs">
-                      <span className="text-zinc-500 text-[11px] font-medium inline-flex items-center gap-1.5">
-                        <ShieldCheck className="w-3.5 h-3.5 text-[#FF5A5F]" />
-                        <span>View Only &bull; Protected</span>
-                      </span>
-                      <span className="text-[#FF5A5F] font-bold group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-1">
-                        Open Vault <Eye className="w-3.5 h-3.5" />
-                      </span>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-zinc-900 text-zinc-400 border border-zinc-800 shrink-0">
+                          {cert.date}
+                        </span>
+                        <span className="text-[11px] font-mono text-zinc-500 truncate">
+                          {cert.credentialId}
+                        </span>
+                      </div>
+
+                      <h3 className="font-bold text-white text-base group-hover:text-[#FF5A5F] transition-colors leading-snug">
+                        {cert.title}
+                      </h3>
+                      <p className="text-xs text-zinc-400 font-medium">{cert.issuer}</p>
+
+                      <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
+                        {cert.description}
+                      </p>
                     </div>
                   </div>
-                );
-              })}
+
+                  <div className="pt-3 border-t border-zinc-900/80 flex items-center justify-between text-xs">
+                    <span className="text-zinc-500 text-[11px] font-medium inline-flex items-center gap-1.5">
+                      <ShieldCheck className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                      <span>View Only &bull; Protected</span>
+                    </span>
+                    <span className="text-[#FF5A5F] font-bold group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-1">
+                      Preview <Eye className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* Carousel Pagination Dots & Prev/Next Controls */}
@@ -1629,7 +1530,7 @@ export default function PortfolioPage() {
             className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center"
           >
             <p className="text-xs text-zinc-400">
-              🔒 <strong>Data Privacy Protected:</strong> All 7 credentials are hidden by default to prevent unauthorized screenshots and downloads. <strong>Press &amp; hold</strong> to inspect any certificate (auto-locks instantly upon release), or request an official copy directly from Ar-jay.
+              🔒 <strong>Verified &amp; Protected Credentials:</strong> All 7 credentials above are officially awarded to Ar-jay Tabangin and watermarked for data privacy. Hover over any card on desktop for a quick full preview, swipe or use the arrows to browse, or click any card to inspect details and request an official copy.
             </p>
           </div>
         </div>
@@ -2256,19 +2157,15 @@ export default function PortfolioPage() {
       )}
 
       {/* ========================================================================= */}
-      {/* 8. CERTIFICATE PREVIEW MODAL (HOLD-TO-REVEAL PRIVACY CURTAIN)             */}
+      {/* 8. CERTIFICATE PREVIEW MODAL (CAPTURE-BLACKOUT PROTECTED)                 */}
       {/* ========================================================================= */}
       {selectedCertificate && (() => {
         const isCvPreview = selectedCertificate.id === 'cert-cv';
-        const showModalImage = (isCvPreview || isModalCertRevealed) && !isCertShielded;
         return (
           <div
             onContextMenu={(e) => e.preventDefault()}
             className="cert-protected cert-no-print fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-md animate-in fade-in"
-            onClick={() => {
-              lockAllCertReveals();
-              setSelectedCertificate(null);
-            }}
+            onClick={() => setSelectedCertificate(null)}
           >
             <div
               className="relative w-full max-w-3xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-4 sm:space-y-5 my-auto max-h-[92dvh] flex flex-col"
@@ -2277,27 +2174,9 @@ export default function PortfolioPage() {
               <div
                 onContextMenu={(e) => e.preventDefault()}
                 onDragStart={(e) => e.preventDefault()}
-                onPointerDown={(e) => {
-                  if (isCvPreview) return;
-                  if ((e.target as HTMLElement).closest('button[data-close-modal="true"]')) return;
-                  setIsCertShielded(false);
-                  setCertShieldReason(null);
-                  setIsModalCertRevealed(true);
-                }}
-                onPointerUp={() => {
-                  if (!isCvPreview) setIsModalCertRevealed(false);
-                }}
-                onPointerLeave={() => {
-                  if (!isCvPreview) setIsModalCertRevealed(false);
-                }}
-                onPointerCancel={() => {
-                  if (!isCvPreview) setIsModalCertRevealed(false);
-                }}
-                className={`cert-protected relative aspect-[4/3] sm:aspect-[16/10] max-h-[50dvh] sm:max-h-[56dvh] w-full bg-black flex items-center justify-center p-3 select-none shrink-0 ${
-                  isCvPreview ? '' : 'touch-none cursor-pointer'
-                }`}
+                className="cert-protected relative aspect-[4/3] sm:aspect-[16/10] max-h-[50dvh] sm:max-h-[56dvh] w-full bg-zinc-900/90 flex items-center justify-center p-3 select-none shrink-0"
               >
-                {showModalImage ? (
+                {!isCertShielded ? (
                   <>
                     <Image
                       src={selectedCertificate.image}
@@ -2314,47 +2193,26 @@ export default function PortfolioPage() {
                       onDragStart={(e) => e.preventDefault()}
                       className="absolute inset-0 z-10 bg-transparent"
                     />
-                    {!isCvPreview && (
-                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/90 border border-[#FF5A5F]/50 text-[10px] sm:text-[11px] font-mono font-bold text-white pointer-events-none whitespace-nowrap">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F] animate-pulse" />
-                        <span>Viewing &bull; Release to blackout</span>
-                      </div>
-                    )}
                   </>
                 ) : (
-                  <div className="absolute inset-0 z-20 bg-black flex flex-col items-center justify-center p-6 text-center space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-rose-500/15 border border-rose-500/35 flex items-center justify-center text-[#FF5A5F]">
-                      <Lock className="w-6 h-6" />
+                  <div className="absolute inset-0 z-20 bg-black flex flex-col items-center justify-center p-6 text-center space-y-2.5">
+                    <div className="w-11 h-11 rounded-2xl bg-rose-500/15 border border-rose-500/35 flex items-center justify-center text-[#FF5A5F]">
+                      <Lock className="w-5 h-5" />
                     </div>
-                    <div className="space-y-1 max-w-sm">
-                      <p className="text-sm sm:text-base font-bold text-white">
-                        {isCertShielded
-                          ? certShieldReason === 'capture'
-                            ? 'Screenshot & Capture Restricted'
-                            : 'Protected Preview Paused'
-                          : 'Certificate Hidden for Data Privacy'}
-                      </p>
-                      <p className="text-xs text-zinc-400 leading-relaxed">
-                        {isCertShielded
-                          ? 'Screen capture, multi-touch screenshot, and saving are restricted on Ar-jay’s credentials.'
-                          : 'Press and hold anywhere in this black panel to inspect the watermarked certificate. It blacks out immediately when released.'}
-                      </p>
-                    </div>
-                    <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold shadow-lg shadow-rose-950/40 pointer-events-none">
-                      <Eye className="w-3.5 h-3.5" />
-                      <span>Press &amp; Hold to Reveal</span>
-                    </span>
+                    <p className="text-sm font-bold text-white">
+                      {certShieldReason === 'capture'
+                        ? 'Screenshot & Capture Restricted'
+                        : 'Protected Preview Paused'}
+                    </p>
+                    <p className="text-xs text-zinc-400 max-w-xs">
+                      Screen capture, saving, and printing are restricted on Ar-jay&apos;s verified credentials.
+                    </p>
                   </div>
                 )}
 
                 <button
                   type="button"
-                  data-close-modal="true"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    lockAllCertReveals();
-                    setSelectedCertificate(null);
-                  }}
+                  onClick={() => setSelectedCertificate(null)}
                   aria-label="Close certificate preview"
                   className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full bg-black/80 border border-zinc-800 text-white hover:bg-zinc-900 transition-colors cursor-pointer z-30"
                 >
@@ -2431,17 +2289,14 @@ export default function PortfolioPage() {
                     {!isCvPreview && (
                       <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-zinc-400">
                         <ShieldCheck className="w-3.5 h-3.5 text-[#FF5A5F]" />
-                        <span>Hold-to-Reveal Protected</span>
+                        <span>Capture Protected</span>
                       </span>
                     )}
                   </div>
 
                   <button
                     type="button"
-                    onClick={() => {
-                      lockAllCertReveals();
-                      setSelectedCertificate(null);
-                    }}
+                    onClick={() => setSelectedCertificate(null)}
                     className="px-5 py-2 rounded-xl bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-800 transition-colors cursor-pointer"
                   >
                     Close
@@ -2535,44 +2390,43 @@ export default function PortfolioPage() {
       )}
 
       {/* ========================================================================= */}
-      {/* 10. FLOATING HOVER CERTIFICATE INFO SPOTLIGHT (PRIVACY-SAFE INFO PANEL)   */}
+      {/* 10. FLOATING HOVER CERTIFICATE SPOTLIGHT (DESKTOP QUICK-INSPECT PREVIEW)  */}
       {/* ========================================================================= */}
-      {hoveredCert && !selectedCertificate && !isCertShielded && !revealedCardCertId && (
+      {hoveredCert && !selectedCertificate && !isCertShielded && (
         <div
           key={hoveredCert.cert.id}
           aria-hidden="true"
           style={{ top: `${hoveredCert.top}px` }}
-          className={`cert-spotlight-enter cert-protected cert-no-print hidden lg:block fixed z-40 w-[400px] xl:w-[435px] max-h-[calc(100vh-40px)] pointer-events-none ${
+          className={`cert-spotlight-enter cert-protected cert-no-print hidden lg:block fixed z-40 w-[410px] xl:w-[445px] max-h-[calc(100vh-40px)] pointer-events-none ${
             hoveredCert.side === 'right' ? 'right-6 xl:right-10' : 'left-6 xl:left-10'
           }`}
         >
           <div className="rounded-3xl bg-zinc-950/95 border border-[#FF5A5F]/45 shadow-[0_30px_90px_-15px_rgba(0,0,0,0.95),0_0_40px_-12px_rgba(255,90,95,0.28)] overflow-hidden">
             {/* Top Status Strip */}
-            <div className="px-4 py-2.5 bg-black/85 border-b border-zinc-800/90 flex items-center justify-between gap-3">
+            <div className="px-4 py-2 bg-black/85 border-b border-zinc-800/90 flex items-center justify-between gap-3">
               <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-white">
                 <span className="w-2 h-2 rounded-full bg-[#FF5A5F]" />
-                Credential Details
+                Certificate Quick Preview
               </span>
               <span className="text-[10px] font-mono text-zinc-400 truncate max-w-[200px]">
                 {hoveredCert.cert.credentialId}
               </span>
             </div>
 
-            {/* Privacy-Locked Banner (Zero image pixels leaked on hover!) */}
-            <div className="px-5 py-4 bg-black border-b border-zinc-900 flex items-center gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-[#FF5A5F] shrink-0">
-                <Lock className="w-4 h-4" />
-              </div>
-              <div className="space-y-0.5 text-left">
-                <p className="text-xs font-bold text-white">Certificate Image Privacy-Locked</p>
-                <p className="text-[11px] text-zinc-400 leading-snug">
-                  Press &amp; hold <span className="text-zinc-200 font-semibold">Hold to Reveal</span> on the card or click to open the secure vault.
-                </p>
-              </div>
+            {/* Full Uncropped Watermarked Certificate Image */}
+            <div className="relative aspect-[16/10] w-full bg-zinc-900/95 p-2.5 select-none">
+              <Image
+                src={hoveredCert.cert.image}
+                alt={hoveredCert.cert.title}
+                fill
+                unoptimized
+                draggable={false}
+                className="object-contain p-1.5 pointer-events-none"
+              />
             </div>
 
             {/* Complete Untruncated Certificate Info */}
-            <div className="p-4 space-y-2.5 bg-zinc-950">
+            <div className="p-4 space-y-2.5 border-t border-zinc-900 bg-zinc-950">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-[10px] font-mono font-bold text-[#FF5A5F] px-2.5 py-0.5 rounded-full bg-rose-500/10 border border-rose-500/25">
                   {hoveredCert.cert.badge}
@@ -2607,9 +2461,9 @@ export default function PortfolioPage() {
               <div className="pt-2.5 border-t border-zinc-900 flex items-center justify-between text-[11px] text-zinc-400">
                 <span className="inline-flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#FF5A5F]" />
-                  <span>View Only &bull; No PDF Download</span>
+                  <span>View Only &bull; Protected</span>
                 </span>
-                <span className="text-[#FF5A5F] font-semibold">Click to open vault</span>
+                <span className="text-[#FF5A5F] font-semibold">Click card to inspect</span>
               </div>
             </div>
           </div>
