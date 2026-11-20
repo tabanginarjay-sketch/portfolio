@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import VisitTracker from "../components/VisitTracker";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -39,6 +41,8 @@ export default function RootLayout({
     >
       <body className="min-h-screen bg-[#050505] text-zinc-100 font-sans selection:bg-[#FF5A5F]/30 selection:text-[#FF5A5F] overflow-x-hidden">
         {children}
+        <VisitTracker />
+        <Analytics />
       </body>
     </html>
   );
