@@ -4,81 +4,100 @@ import path from 'path';
 
 async function applyWatermarkToImage(inputPath, outputPath) {
   const img = await loadImage(inputPath);
-  const canvas = createCanvas(img.width, img.height);
-  const ctx = canvas.getContext('2d');
-
-  // 1. Draw base certificate image
-  ctx.drawImage(img, 0, 0);
-
   const W = img.width;
   const H = img.height;
 
-  // Diamond spacing: 4.2 diamonds across width (matching reference image media_1795157168265_011d0cb7.png)
-  const spacing = Math.round(W / 4.2);
-  const fontSize = Math.round(spacing * 0.125); // ~46px on 1600px width
+  const canvas = createCanvas(W, H);
+  const ctx = canvas.getContext('2d');
+
+  // 1. Draw clean unwatermarked certificate
+  ctx.drawImage(img, 0, 0);
+
+  // 2. Build watermark on a separate transparent offscreen layer
+  //    so clearing line intersections NEVER paints white over the certificate text!
+  const wmCanvas = createCanvas(W, H);
+  const wmCtx = wmCanvas.getContext('2d');
+
+  const spacing = Math.round(W / 3.8);
+  const fontSize = Math.round(spacing * 0.105);
   const text = 'Ar-jay';
 
-  // 1. Draw 45-degree diagonal lines (slope = +1, slope = -1)
-  ctx.strokeStyle = 'rgba(150, 155, 165, 0.42)';
-  ctx.lineWidth = Math.max(1.6, Math.round(W / 850));
+  // Draw crisp 45-degree diamond lattice lines
+  wmCtx.strokeStyle = 'rgba(95, 102, 115, 0.72)';
+  wmCtx.lineWidth = Math.max(1.2, W / 1050);
 
-  // Slope +1 lines (from top-left down-right)
   for (let offset = -W - spacing; offset <= H + spacing; offset += spacing) {
-    ctx.beginPath();
-    ctx.moveTo(0, offset);
-    ctx.lineTo(W, W + offset);
-    ctx.stroke();
+    wmCtx.beginPath();
+    wmCtx.moveTo(0, offset);
+    wmCtx.lineTo(W, W + offset);
+    wmCtx.stroke();
   }
 
-  // Slope -1 lines (from bottom-left up-right)
   for (let offset = -spacing; offset <= W + H + spacing; offset += spacing) {
-    ctx.beginPath();
-    ctx.moveTo(0, offset);
-    ctx.lineTo(W, offset - W);
-    ctx.stroke();
+    wmCtx.beginPath();
+    wmCtx.moveTo(0, offset);
+    wmCtx.lineTo(W, offset - W);
+    wmCtx.stroke();
   }
 
-  // 2. Watermark text at every intersection
-  ctx.font = `600 ${fontSize}px sans-serif`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
+  wmCtx.font = `500 ${fontSize}px sans-serif`;
+  wmCtx.textAlign = 'center';
+  wmCtx.textBaseline = 'middle';
 
-  const minK = Math.floor((-W) / spacing) - 1;
+  const metrics = wmCtx.measureText(text);
+  const clearW = metrics.width + fontSize * 0.55;
+  const clearH = fontSize * 1.45;
+
+  const minK = Math.floor(-W / spacing) - 1;
   const maxK = Math.ceil(H / spacing) + 1;
   const minM = -1;
   const maxM = Math.ceil((W + H) / spacing) + 1;
 
+  const nodes = [];
   for (let k = minK; k <= maxK; k++) {
     for (let m = minM; m <= maxM; m++) {
       const x = Math.round(((m - k) * spacing) / 2);
       const y = Math.round(((m + k) * spacing) / 2);
-
       if (x >= -spacing && x <= W + spacing && y >= -spacing && y <= H + spacing) {
-        // Clean white mask directly under the text so line doesn't strike through
-        ctx.lineWidth = Math.max(6, Math.round(W / 180));
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.90)';
-        ctx.strokeText(text, x, y);
-
-        // Watermark text in soft grey matching reference image
-        ctx.fillStyle = 'rgba(115, 120, 130, 0.72)';
-        ctx.fillText(text, x, y);
+        nodes.push({ x, y });
       }
     }
   }
 
+  // Erase line intersections on wmCanvas ONLY (leaves certificate untouched underneath!)
+  wmCtx.globalCompositeOperation = 'destination-out';
+  wmCtx.fillStyle = '#000000';
+  for (const { x, y } of nodes) {
+    wmCtx.fillRect(x - clearW / 2, y - clearH / 2, clearW, clearH);
+  }
+
+  // Draw clean "Ar-jay" watermark labels at every intersection
+  wmCtx.globalCompositeOperation = 'source-over';
+  wmCtx.fillStyle = 'rgba(80, 86, 98, 1.0)';
+  for (const { x, y } of nodes) {
+    wmCtx.fillText(text, x, y);
+  }
+
+  // 3. Composite watermark layer at low, translucent opacity (22% text / ~16% lines)
+  //    Clear anti-theft protection while keeping every detail of the certificate 100% readable
+  ctx.save();
+  ctx.globalAlpha = 0.22;
+  ctx.drawImage(wmCanvas, 0, 0);
+  ctx.restore();
+
   const isPng = outputPath.endsWith('.png');
-  const buf = isPng 
-    ? canvas.toBuffer('image/png') 
+  const buf = isPng
+    ? canvas.toBuffer('image/png')
     : canvas.toBuffer('image/jpeg', { quality: 0.95 });
 
   fs.writeFileSync(outputPath, buf);
-  console.log(`Saved watermarked certificate: ${outputPath}`);
+  console.log(`Saved subtle watermarked certificate: ${outputPath}`);
 }
 
 async function main() {
   const dir = 'public/certificates';
   const backupDir = path.join(dir, 'originals_unwatermarked');
-  
+
   if (!fs.existsSync(backupDir)) {
     fs.mkdirSync(backupDir, { recursive: true });
   }
@@ -87,13 +106,13 @@ async function main() {
     'cisco_cybersecurity.jpg',
     'dict_cybersecurity.jpg',
     'aidev_fundamentals.jpg',
-    'bcp_marketing_me.jpg'
+    'bcp_marketing_me.jpg',
   ];
 
   for (const file of certFiles) {
     const src = path.join(dir, file);
     const backup = path.join(backupDir, file);
-    
+
     if (!fs.existsSync(backup)) {
       fs.copyFileSync(src, backup);
       console.log(`Backed up original: ${backup}`);
@@ -102,7 +121,7 @@ async function main() {
     await applyWatermarkToImage(backup, src);
   }
 
-  console.log('All certificates watermarked successfully with 45-degree diamond lattice!');
+  console.log('All certificates watermarked with subtle translucent 22% opacity!');
 }
 
 main().catch(console.error);

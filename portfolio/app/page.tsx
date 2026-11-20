@@ -101,7 +101,7 @@ export default function PortfolioPage() {
       description:
         'Official student-level course completion credential covering foundational cybersecurity principles, threat detection, online defense strategies, vulnerability mitigation, and organizational network safety.',
       skills: ['Cybersecurity', 'Threat Analysis', 'Network Defense', 'Incident Mitigation'],
-      image: '/certificates/cisco_cybersecurity.jpg?v=watermarked',
+      image: '/certificates/cisco_cybersecurity.jpg?v=wm2',
     },
     {
       id: 'cert-2',
@@ -114,7 +114,7 @@ export default function PortfolioPage() {
       description:
         'Official 16-hour credential awarded by the DICT ICT Academy covering international cybersecurity governance, risk management frameworks, and enterprise IT defense conducted in Tacloban City.',
       skills: ['Cybersecurity Governance', 'IT Management', 'Security Standards', 'Risk Management'],
-      image: '/certificates/dict_cybersecurity.jpg?v=watermarked',
+      image: '/certificates/dict_cybersecurity.jpg?v=wm2',
     },
     {
       id: 'cert-3',
@@ -128,7 +128,7 @@ export default function PortfolioPage() {
       description:
         'Comprehensive completion credential for mastering AI-driven development workflows, prompt engineering, AI coding assistants, and modern software paradigms taught by Mar Wie Ang.',
       skills: ['AI-Driven Development', 'Prompt Engineering', 'Full Stack AI', 'Modern Workflows'],
-      image: '/certificates/aidev_fundamentals.jpg?v=watermarked',
+      image: '/certificates/aidev_fundamentals.jpg?v=wm2',
     },
     {
       id: 'cert-4',
@@ -141,7 +141,7 @@ export default function PortfolioPage() {
       description:
         'Official Certificate of Attendance for participating in the career seminar Marketing ME Live at Bestlink College of the Philippines, Quezon City, presented by Managing Director Kim Chua.',
       skills: ['Personal Branding', 'Professional Communication', 'Career Positioning', 'Client Relations'],
-      image: '/certificates/bcp_marketing_me.jpg?v=watermarked',
+      image: '/certificates/bcp_marketing_me.jpg?v=wm2',
     },
   ];
 
