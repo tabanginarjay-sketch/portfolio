@@ -818,70 +818,111 @@ export default function PortfolioPage() {
         </div>
       </header>
 
-      {/* Slide-out / Mobile Navigation Overlay */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl flex flex-col justify-center items-center p-8 space-y-6 animate-in fade-in duration-200">
-          <button
-            onClick={() => setIsMenuOpen(false)}
-            className="absolute top-8 right-8 p-3 text-zinc-400 hover:text-white"
-          >
-            <X className="w-8 h-8" />
-          </button>
-          <nav className="text-center space-y-6 text-2xl font-bold">
-            <a
-              href="#hero"
+      {/* Slide-out / Mobile Navigation Overlay & Drawer */}
+      <div
+        className={`fixed inset-0 z-50 transition-all duration-300 ease-out ${
+          isMenuOpen
+            ? 'opacity-100 pointer-events-auto visible'
+            : 'opacity-0 pointer-events-none invisible'
+        }`}
+        aria-hidden={!isMenuOpen}
+      >
+        {/* Dark Frosted Glass Backdrop */}
+        <div
+          className="absolute inset-0 bg-black/80 backdrop-blur-xl transition-opacity duration-300"
+          onClick={() => setIsMenuOpen(false)}
+        />
+
+        {/* Sliding Drawer Panel (from right) */}
+        <div
+          className={`absolute top-0 right-0 bottom-0 w-full max-w-[320px] sm:max-w-[360px] bg-zinc-950/95 border-l border-zinc-800/80 shadow-2xl p-6 sm:p-7 flex flex-col justify-between transition-transform duration-300 ease-out transform ${
+            isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          {/* Drawer Header: Monogram + Close Button */}
+          <div className="flex items-center justify-between pb-5 border-b border-zinc-900">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center font-bold text-xs tracking-wider text-white">
+                AJ
+              </div>
+              <div>
+                <span className="text-xs font-bold text-white block">Ar-jay Tabangin</span>
+                <span className="text-[10px] text-zinc-400 font-mono">Portfolio Navigation</span>
+              </div>
+            </div>
+            <button
               onClick={() => setIsMenuOpen(false)}
-              className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
+              className="p-2 rounded-xl bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800 transition-colors cursor-pointer"
+              aria-label="Close navigation"
             >
-              Home
-            </a>
-            <a
-              href="#experience"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
-            >
-              Experience &amp; Education
-            </a>
-            <a
-              href="#certificates"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
-            >
-              Certificates
-            </a>
-            <a
-              href="#projects"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
-            >
-              Featured Websites
-            </a>
-            <a
-              href="#edits"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
-            >
-              Photo Edit Samples
-            </a>
-            <a
-              href="#skills"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
-            >
-              Skills & Tech Stack
-            </a>
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Navigation Links with Staggered Cascading Entrance */}
+          <nav className="flex flex-col space-y-3.5 my-auto py-5">
+            {[
+              { href: '#hero', label: 'Home', num: '01' },
+              { href: '#experience', label: 'Experience & Education', num: '02' },
+              { href: '#certificates', label: 'Certificates', num: '03' },
+              { href: '#projects', label: 'Featured Websites', num: '04' },
+              { href: '#edits', label: 'Photo Edit Samples', num: '05' },
+              { href: '#skills', label: 'Skills & Tech Stack', num: '06' },
+            ].map((item, idx) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
+                style={{
+                  transitionDelay: isMenuOpen ? `${80 + idx * 40}ms` : '0ms',
+                }}
+                className={`group flex items-center justify-between py-2 text-base font-semibold text-zinc-300 hover:text-white transition-all transform ${
+                  isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-6 opacity-0'
+                }`}
+              >
+                <span className="flex items-center gap-3">
+                  <span className="text-[10px] font-mono text-zinc-600 group-hover:text-[#FF5A5F] transition-colors">
+                    {item.num}
+                  </span>
+                  <span>{item.label}</span>
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-zinc-600 group-hover:text-[#FF5A5F] group-hover:translate-x-1 transition-all" />
+              </a>
+            ))}
+
+            {/* Direct Contact Button */}
             <button
               onClick={() => {
                 setIsMenuOpen(false);
                 setIsChatModalOpen(true);
               }}
-              className="px-8 py-3 rounded-full bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-lg font-bold shadow-lg shadow-rose-900/40 hover:scale-105 transition-all"
+              style={{
+                transitionDelay: isMenuOpen ? '340ms' : '0ms',
+              }}
+              className={`w-full mt-3 py-3 rounded-2xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold shadow-lg shadow-rose-900/40 hover:scale-[1.02] active:scale-[0.98] transition-all transform flex items-center justify-center gap-2 cursor-pointer ${
+                isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
+              }`}
             >
-              Let&apos;s Chat 💬
+              <Mail className="w-4 h-4" />
+              <span>Let&apos;s Chat / Direct Consultation</span>
             </button>
           </nav>
+
+          {/* Drawer Footer: Status & Direct Contact */}
+          <div className="pt-5 border-t border-zinc-900 space-y-2.5">
+            <div className="flex items-center gap-2 text-[11px] text-zinc-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Available for Projects</span>
+            </div>
+            <a
+              href="mailto:tabanginarjay@gmail.com"
+              className="text-[11px] text-zinc-400 hover:text-white font-mono block transition-colors"
+            >
+              tabanginarjay@gmail.com
+            </a>
+          </div>
         </div>
-      )}
+      </div>
 
       {/* ========================================================================= */}
       {/* 2. HERO SECTION (Compact Mobile + 3-Col Editorial Tablet / Laptop / PC)   */}
@@ -989,54 +1030,51 @@ export default function PortfolioPage() {
             </div>
           </div>
 
-          {/* ----------------- CENTER / MOBILE-RIGHT COLUMN: PORTRAIT IMAGE ----------------- */}
+          {/* ----------------- CENTER / MOBILE-RIGHT COLUMN: PORTRAIT IMAGE WITH DYNAMIC ORBITAL LIGHTING ----------------- */}
           <div className="col-span-5 md:col-span-4 flex items-end justify-end md:items-center md:justify-center order-2 relative self-end md:self-center">
-            {/* Zero-cost radial studio backlight halo (pure gradients, zero heavy CSS blur filters!) */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -inset-4 lg:-inset-10 flex items-center justify-center"
-            >
-              <div className="w-[175px] h-[220px] sm:w-[250px] sm:h-[310px] md:w-[270px] md:h-[340px] lg:w-[360px] lg:h-[440px] xl:w-[440px] xl:h-[520px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,244,234,0.08)_0%,rgba(255,90,95,0.04)_36%,rgba(34,211,238,0.025)_56%,transparent_72%)] -translate-y-2 md:-translate-y-6 lg:-translate-y-8" />
-            </div>
-
-            {/* True transparent portrait PNG — right-aligned beside Heading on mobile, centered on md+ */}
-            <div
-              style={{ '--delay': '110ms' } as React.CSSProperties}
-              className="hero-anim-portrait relative w-[152px] min-[390px]:w-[168px] sm:w-[230px] md:w-[235px] lg:w-[320px] xl:w-[415px] aspect-[482/744] max-h-[245px] min-[390px]:max-h-[270px] sm:max-h-[360px] md:max-h-[365px] lg:max-h-[505px] xl:max-h-[630px] -mr-2 sm:mr-0 -mb-6 sm:-mb-8 md:my-0 select-none shrink-0"
-            >
-              <Image
-                src="/images/arjay-portrait-hero.png?v=6"
-                alt="Ar-jay Tabangin - Developer & UI/UX Designer"
-                fill
-                priority
-                unoptimized
-                className="object-contain object-top transition-transform duration-700 ease-out hover:scale-[1.02]"
-              />
-            </div>
+            {/* Dynamic Orbital Lighting System wrapping Ar-jay's portrait (Cyan ring, coral ring, and cyan dot orbiting with synced studio aura) */}
+            <GeometricShapes>
+              {/* True transparent portrait PNG — right-aligned beside Heading on mobile, centered on md+ */}
+              <div
+                style={{ '--delay': '110ms' } as React.CSSProperties}
+                className="hero-anim-portrait relative w-[152px] min-[390px]:w-[168px] sm:w-[230px] md:w-[235px] lg:w-[320px] xl:w-[415px] aspect-[482/744] max-h-[245px] min-[390px]:max-h-[270px] sm:max-h-[360px] md:max-h-[365px] lg:max-h-[505px] xl:max-h-[630px] -mr-2 sm:mr-0 -mb-6 sm:-mb-8 md:my-0 select-none shrink-0"
+              >
+                <Image
+                  src="/images/arjay-portrait-hero.png?v=6"
+                  alt="Ar-jay Tabangin - Developer & UI/UX Designer"
+                  fill
+                  priority
+                  unoptimized
+                  className="object-contain object-top transition-transform duration-700 ease-out hover:scale-[1.02]"
+                />
+              </div>
+            </GeometricShapes>
           </div>
 
-          {/* ----------------- RIGHT / MOBILE-BOTTOM COLUMN: EXPERTISE & GEOMETRIC ACCENT ----------------- */}
+          {/* ----------------- RIGHT / MOBILE-BOTTOM COLUMN: EXPERTISE ----------------- */}
           <div className="col-span-12 md:col-span-4 space-y-3 sm:space-y-4 lg:space-y-6 text-left order-3 relative mt-2 pt-4 border-t border-zinc-900/70 md:border-t-0 md:pt-0 md:mt-0">
-            {/* Dynamic floating geometric shapes — tucked cleanly top-right on mobile to save vertical space */}
-            <div className="pointer-events-none md:pointer-events-auto absolute -top-2 right-0 scale-[0.6] origin-top-right opacity-85 md:static md:scale-[0.78] md:origin-left lg:scale-95 xl:scale-100 md:opacity-100">
-              <GeometricShapes />
-            </div>
-
             <div
               style={{ '--delay': '210ms' } as React.CSSProperties}
-              className="hero-anim-right space-y-1.5 sm:space-y-2.5 lg:space-y-3"
+              className="hero-anim-right space-y-2 sm:space-y-2.5 lg:space-y-3"
             >
-              <span className="text-[#FF5A5F] text-[11px] sm:text-xs font-bold uppercase tracking-wider block">
-                Expert on
-              </span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/80 border border-zinc-800 text-[10px] sm:text-xs text-zinc-400 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Open for Opportunities</span>
+              </div>
 
-              <h2 className="text-[15px] sm:text-lg md:text-base lg:text-xl xl:text-2xl font-bold text-white leading-snug pr-20 md:pr-0">
-                Based in Philippines <br className="hidden md:block" />
-                developer and <br className="hidden md:block" />
-                UI/UX designer, <br className="hidden md:block" />
-                certified customer service, <br className="hidden md:block" />
-                Photo/Video editor.
-              </h2>
+              <div>
+                <span className="text-[#FF5A5F] text-[11px] sm:text-xs font-bold uppercase tracking-wider block">
+                  Expert on
+                </span>
+
+                <h2 className="text-[15px] sm:text-lg md:text-base lg:text-xl xl:text-2xl font-bold text-white leading-snug pr-20 md:pr-0">
+                  Based in Philippines <br className="hidden md:block" />
+                  developer and <br className="hidden md:block" />
+                  UI/UX designer, <br className="hidden md:block" />
+                  certified customer service, <br className="hidden md:block" />
+                  Photo/Video editor.
+                </h2>
+              </div>
 
               <p className="text-zinc-400 text-xs sm:text-sm md:text-xs lg:text-sm leading-relaxed max-w-sm pt-0.5 lg:pt-1">
                 Versatile creator building modern web applications, designing user-centered interfaces,
@@ -2012,11 +2050,11 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {isChatModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md modal-backdrop-anim"
           onClick={closeChatModal}
         >
           <div
-            className="relative w-full max-w-lg max-h-[92dvh] overflow-y-auto rounded-3xl bg-zinc-950 border border-zinc-800 p-5 sm:p-8 shadow-2xl space-y-5 sm:space-y-6"
+            className="relative w-full max-w-lg max-h-[92dvh] overflow-y-auto rounded-3xl bg-zinc-950 border border-zinc-800 p-5 sm:p-8 shadow-2xl space-y-5 sm:space-y-6 modal-content-anim before:absolute before:inset-x-0 before:top-0 before:h-[2px] before:bg-gradient-to-r before:from-transparent before:via-[#FF5A5F] before:to-transparent"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4">
@@ -2184,11 +2222,11 @@ export default function PortfolioPage() {
         return (
           <div
             onContextMenu={(e) => e.preventDefault()}
-            className="cert-protected cert-no-print fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-md animate-in fade-in"
+            className="cert-protected cert-no-print fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-md modal-backdrop-anim"
             onClick={() => setSelectedCertificate(null)}
           >
             <div
-              className="relative w-full max-w-3xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-4 sm:space-y-5 my-auto max-h-[92dvh] flex flex-col"
+              className="relative w-full max-w-3xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-4 sm:space-y-5 my-auto max-h-[92dvh] flex flex-col modal-content-anim before:absolute before:inset-x-0 before:top-0 before:h-[2px] before:bg-gradient-to-r before:from-transparent before:via-[#FF5A5F] before:to-transparent"
               onClick={(e) => e.stopPropagation()}
             >
               <div
