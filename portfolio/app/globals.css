@@ -115,225 +115,115 @@ body {
 }
 
 /* ============================================================================
-   HERO ORBITAL LIGHTING HALO SYSTEM (Pure GPU-accelerated elliptical orbits & synced lighting)
+   HERO ORBITAL LIGHTING HALO SYSTEM (Pure 100% Linear Continuous GPU Orbit)
+   Zero stops, zero pauses, zero CPU repaint — silky smooth 120 FPS!
    ============================================================================ */
-/* Desktop Orbits around Ar-jay (Framing halo strictly behind portrait) */
-@keyframes orbitCyanRingDesktop {
-  0.0% { transform: translate3d(213.5px, -53.2px, 0) scale(1.00); opacity: 0.92; }
-  6.3% { transform: translate3d(204.6px, -19.5px, 0) scale(1.03); opacity: 0.95; }
-  12.5% { transform: translate3d(164.6px, 17.3px, 0) scale(1.06); opacity: 0.98; }
-  18.8% { transform: translate3d(99.6px, 51.3px, 0) scale(1.07); opacity: 0.99; }
-  25.0% { transform: translate3d(19.4px, 77.6px, 0) scale(1.08); opacity: 1.00; }
-  31.3% { transform: translate3d(-63.8px, 92.1px, 0) scale(1.07); opacity: 0.99; }
-  37.5% { transform: translate3d(-137.3px, 92.5px, 0) scale(1.06); opacity: 0.98; }
-  43.8% { transform: translate3d(-189.8px, 78.9px, 0) scale(1.03); opacity: 0.95; }
-  50.0% { transform: translate3d(-213.5px, 53.2px, 0) scale(1.00); opacity: 0.93; }
-  56.3% { transform: translate3d(-204.6px, 19.5px, 0) scale(0.97); opacity: 0.90; }
-  62.5% { transform: translate3d(-164.6px, -17.3px, 0) scale(0.94); opacity: 0.87; }
-  68.8% { transform: translate3d(-99.6px, -51.3px, 0) scale(0.93); opacity: 0.86; }
-  75.0% { transform: translate3d(-19.4px, -77.6px, 0) scale(0.92); opacity: 0.85; }
-  81.3% { transform: translate3d(63.8px, -92.1px, 0) scale(0.93); opacity: 0.86; }
-  87.5% { transform: translate3d(137.3px, -92.5px, 0) scale(0.94); opacity: 0.87; }
-  93.8% { transform: translate3d(189.8px, -78.9px, 0) scale(0.97); opacity: 0.90; }
-  100.0% { transform: translate3d(213.5px, -53.2px, 0) scale(1.00); opacity: 0.92; }
-}
 
-@keyframes orbitCoralRingDesktop {
-  0.0% { transform: translate3d(164.4px, 59.9px, 0) scale(1.00); opacity: 0.92; }
-  6.3% { transform: translate3d(143.0px, 79.8px, 0) scale(1.03); opacity: 0.95; }
-  12.5% { transform: translate3d(99.8px, 87.5px, 0) scale(1.06); opacity: 0.98; }
-  18.8% { transform: translate3d(41.4px, 81.9px, 0) scale(1.07); opacity: 0.99; }
-  25.0% { transform: translate3d(-23.3px, 63.9px, 0) scale(1.08); opacity: 1.00; }
-  31.3% { transform: translate3d(-84.4px, 36.1px, 0) scale(1.07); opacity: 0.99; }
-  37.5% { transform: translate3d(-132.7px, 2.9px, 0) scale(1.06); opacity: 0.98; }
-  43.8% { transform: translate3d(-160.8px, -30.8px, 0) scale(1.03); opacity: 0.95; }
-  50.0% { transform: translate3d(-164.4px, -59.9px, 0) scale(1.00); opacity: 0.93; }
-  56.3% { transform: translate3d(-143.0px, -79.8px, 0) scale(0.97); opacity: 0.90; }
-  62.5% { transform: translate3d(-99.8px, -87.5px, 0) scale(0.94); opacity: 0.87; }
-  68.8% { transform: translate3d(-41.4px, -81.9px, 0) scale(0.93); opacity: 0.86; }
-  75.0% { transform: translate3d(23.3px, -63.9px, 0) scale(0.92); opacity: 0.85; }
-  81.3% { transform: translate3d(84.4px, -36.1px, 0) scale(0.93); opacity: 0.86; }
-  87.5% { transform: translate3d(132.7px, -2.9px, 0) scale(0.94); opacity: 0.87; }
-  93.8% { transform: translate3d(160.8px, 30.8px, 0) scale(0.97); opacity: 0.90; }
-  100.0% { transform: translate3d(164.4px, 59.9px, 0) scale(1.00); opacity: 0.92; }
+/* Responsive Orbit Radii via CSS variables */
+:root {
+  --orbit-cyan-r: 108px;
+  --orbit-coral-r: 86px;
+  --orbit-dot-r: 124px;
 }
-
-@keyframes orbitCyanDotDesktop {
-  0.0% { transform: translate3d(248.6px, -26.1px, 0) scale(1.00); opacity: 0.92; }
-  6.3% { transform: translate3d(233.5px, 12.0px, 0) scale(1.03); opacity: 0.95; }
-  12.5% { transform: translate3d(182.8px, 48.3px, 0) scale(1.06); opacity: 0.98; }
-  18.8% { transform: translate3d(104.3px, 77.3px, 0) scale(1.07); opacity: 0.99; }
-  25.0% { transform: translate3d(9.9px, 94.5px, 0) scale(1.08); opacity: 1.00; }
-  31.3% { transform: translate3d(-86.0px, 97.3px, 0) scale(1.07); opacity: 0.99; }
-  37.5% { transform: translate3d(-168.8px, 85.3px, 0) scale(1.06); opacity: 0.98; }
-  43.8% { transform: translate3d(-225.9px, 60.3px, 0) scale(1.03); opacity: 0.95; }
-  50.0% { transform: translate3d(-248.6px, 26.1px, 0) scale(1.00); opacity: 0.93; }
-  56.3% { transform: translate3d(-233.5px, -12.0px, 0) scale(0.97); opacity: 0.90; }
-  62.5% { transform: translate3d(-182.8px, -48.3px, 0) scale(0.94); opacity: 0.87; }
-  68.8% { transform: translate3d(-104.3px, -77.3px, 0) scale(0.93); opacity: 0.86; }
-  75.0% { transform: translate3d(-9.9px, -94.5px, 0) scale(0.92); opacity: 0.85; }
-  81.3% { transform: translate3d(86.0px, -97.3px, 0) scale(0.93); opacity: 0.86; }
-  87.5% { transform: translate3d(168.8px, -85.3px, 0) scale(0.94); opacity: 0.87; }
-  93.8% { transform: translate3d(225.9px, -60.3px, 0) scale(0.97); opacity: 0.90; }
-  100.0% { transform: translate3d(248.6px, -26.1px, 0) scale(1.00); opacity: 0.92; }
+@media (min-width: 640px) {
+  :root {
+    --orbit-cyan-r: 155px;
+    --orbit-coral-r: 122px;
+    --orbit-dot-r: 178px;
+  }
 }
-
-/* Mobile Orbits around Ar-jay (Framing halo strictly behind portrait) */
-@keyframes orbitCyanRingMobile {
-  0.0% { transform: translate3d(111.6px, -27.8px, 0) scale(1.00); opacity: 0.92; }
-  6.3% { transform: translate3d(107.5px, -7.9px, 0) scale(1.03); opacity: 0.95; }
-  12.5% { transform: translate3d(87.1px, 13.3px, 0) scale(1.06); opacity: 0.98; }
-  18.8% { transform: translate3d(53.4px, 32.4px, 0) scale(1.07); opacity: 0.99; }
-  25.0% { transform: translate3d(11.6px, 46.6px, 0) scale(1.08); opacity: 1.00; }
-  31.3% { transform: translate3d(-32.0px, 53.7px, 0) scale(1.07); opacity: 0.99; }
-  37.5% { transform: translate3d(-70.7px, 52.6px, 0) scale(1.06); opacity: 0.98; }
-  43.8% { transform: translate3d(-98.6px, 43.5px, 0) scale(1.03); opacity: 0.95; }
-  50.0% { transform: translate3d(-111.6px, 27.8px, 0) scale(1.00); opacity: 0.93; }
-  56.3% { transform: translate3d(-107.5px, 7.9px, 0) scale(0.97); opacity: 0.90; }
-  62.5% { transform: translate3d(-87.1px, -13.3px, 0) scale(0.94); opacity: 0.87; }
-  68.8% { transform: translate3d(-53.4px, -32.4px, 0) scale(0.93); opacity: 0.86; }
-  75.0% { transform: translate3d(-11.6px, -46.6px, 0) scale(0.92); opacity: 0.85; }
-  81.3% { transform: translate3d(32.0px, -53.7px, 0) scale(0.93); opacity: 0.86; }
-  87.5% { transform: translate3d(70.7px, -52.6px, 0) scale(0.94); opacity: 0.87; }
-  93.8% { transform: translate3d(98.6px, -43.5px, 0) scale(0.97); opacity: 0.90; }
-  100.0% { transform: translate3d(111.6px, -27.8px, 0) scale(1.00); opacity: 0.92; }
-}
-
-@keyframes orbitCoralRingMobile {
-  0.0% { transform: translate3d(89.3px, 32.5px, 0) scale(1.00); opacity: 0.92; }
-  6.3% { transform: translate3d(77.2px, 44.4px, 0) scale(1.03); opacity: 0.95; }
-  12.5% { transform: translate3d(53.5px, 49.6px, 0) scale(1.06); opacity: 0.98; }
-  18.8% { transform: translate3d(21.5px, 47.2px, 0) scale(1.07); opacity: 0.99; }
-  25.0% { transform: translate3d(-13.7px, 37.6px, 0) scale(1.08); opacity: 1.00; }
-  31.3% { transform: translate3d(-46.8px, 22.3px, 0) scale(1.07); opacity: 0.99; }
-  37.5% { transform: translate3d(-72.8px, 3.6px, 0) scale(1.06); opacity: 0.98; }
-  43.8% { transform: translate3d(-87.7px, -15.6px, 0) scale(1.03); opacity: 0.95; }
-  50.0% { transform: translate3d(-89.3px, -32.5px, 0) scale(1.00); opacity: 0.93; }
-  56.3% { transform: translate3d(-77.2px, -44.4px, 0) scale(0.97); opacity: 0.90; }
-  62.5% { transform: translate3d(-53.5px, -49.6px, 0) scale(0.94); opacity: 0.87; }
-  68.8% { transform: translate3d(-21.5px, -47.2px, 0) scale(0.93); opacity: 0.86; }
-  75.0% { transform: translate3d(13.7px, -37.6px, 0) scale(0.92); opacity: 0.85; }
-  81.3% { transform: translate3d(46.8px, -22.3px, 0) scale(0.93); opacity: 0.86; }
-  87.5% { transform: translate3d(72.8px, -3.6px, 0) scale(0.94); opacity: 0.87; }
-  93.8% { transform: translate3d(87.7px, 15.6px, 0) scale(0.97); opacity: 0.90; }
-  100.0% { transform: translate3d(89.3px, 32.5px, 0) scale(1.00); opacity: 0.92; }
-}
-
-@keyframes orbitCyanDotMobile {
-  0.0% { transform: translate3d(129.3px, -13.6px, 0) scale(1.00); opacity: 0.92; }
-  6.3% { transform: translate3d(121.7px, 8.8px, 0) scale(1.03); opacity: 0.95; }
-  12.5% { transform: translate3d(95.6px, 29.8px, 0) scale(1.06); opacity: 0.98; }
-  18.8% { transform: translate3d(54.9px, 46.3px, 0) scale(1.07); opacity: 0.99; }
-  25.0% { transform: translate3d(5.9px, 55.7px, 0) scale(1.08); opacity: 1.00; }
-  31.3% { transform: translate3d(-44.1px, 56.7px, 0) scale(1.07); opacity: 0.99; }
-  37.5% { transform: translate3d(-87.3px, 49.0px, 0) scale(1.06); opacity: 0.98; }
-  43.8% { transform: translate3d(-117.2px, 33.9px, 0) scale(1.03); opacity: 0.95; }
-  50.0% { transform: translate3d(-129.3px, 13.6px, 0) scale(1.00); opacity: 0.93; }
-  56.3% { transform: translate3d(-121.7px, -8.8px, 0) scale(0.97); opacity: 0.90; }
-  62.5% { transform: translate3d(-95.6px, -29.8px, 0) scale(0.94); opacity: 0.87; }
-  68.8% { transform: translate3d(-54.9px, -46.3px, 0) scale(0.93); opacity: 0.86; }
-  75.0% { transform: translate3d(-5.9px, -55.7px, 0) scale(0.92); opacity: 0.85; }
-  81.3% { transform: translate3d(44.1px, -56.7px, 0) scale(0.93); opacity: 0.86; }
-  87.5% { transform: translate3d(87.3px, -49.0px, 0) scale(0.94); opacity: 0.87; }
-  93.8% { transform: translate3d(117.2px, -33.9px, 0) scale(0.97); opacity: 0.90; }
-  100.0% { transform: translate3d(129.3px, -13.6px, 0) scale(1.00); opacity: 0.92; }
-}
-
-/* Responsive Orbital Animation Classes */
-.anim-orbit-cyan-ring {
-  animation: orbitCyanRingMobile 11s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-  will-change: transform, opacity;
-}
-.anim-orbit-coral-ring {
-  animation: orbitCoralRingMobile 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-  will-change: transform, opacity;
-}
-.anim-orbit-cyan-dot {
-  animation: orbitCyanDotMobile 5.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-  will-change: transform, opacity;
-}
-
 @media (min-width: 768px) {
-  .anim-orbit-cyan-ring {
-    animation-name: orbitCyanRingDesktop;
+  :root {
+    --orbit-cyan-r: 175px;
+    --orbit-coral-r: 138px;
+    --orbit-dot-r: 200px;
   }
-  .anim-orbit-coral-ring {
-    animation-name: orbitCoralRingDesktop;
-  }
-  .anim-orbit-cyan-dot {
-    animation-name: orbitCyanDotDesktop;
+}
+@media (min-width: 1024px) {
+  :root {
+    --orbit-cyan-r: 215px;
+    --orbit-coral-r: 168px;
+    --orbit-dot-r: 245px;
   }
 }
 
-/* Dynamic Studio Lighting Aura behind Ar-jay's portrait */
-@keyframes dynamicStudioLighting {
-  0%, 100% {
-    background: radial-gradient(ellipse at 52% 48%, rgba(255, 90, 95, 0.24) 0%, rgba(34, 211, 238, 0.14) 38%, rgba(0, 0, 0, 0) 72%);
-    transform: scale(1);
-    opacity: 0.88;
+/* 100% Pure Linear Continuous Spins (Zero stops, zero deceleration, continuous velocity) */
+@keyframes spinContinuousClockwise {
+  from {
+    transform: rotate(0deg);
   }
-  25% {
-    background: radial-gradient(ellipse at 44% 42%, rgba(0, 229, 255, 0.28) 0%, rgba(34, 211, 238, 0.16) 40%, rgba(0, 0, 0, 0) 72%);
-    transform: scale(1.06);
-    opacity: 1;
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinContinuousCounterClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.anim-orbit-spin-cyan {
+  animation: spinContinuousClockwise 13s linear infinite;
+  will-change: transform;
+}
+.anim-orbit-counter-cyan {
+  animation: spinContinuousCounterClockwise 13s linear infinite;
+  will-change: transform;
+}
+
+.anim-orbit-spin-coral {
+  animation: spinContinuousClockwise 9.5s linear infinite;
+  will-change: transform;
+}
+.anim-orbit-counter-coral {
+  animation: spinContinuousCounterClockwise 9.5s linear infinite;
+  will-change: transform;
+}
+
+.anim-orbit-spin-dot {
+  animation: spinContinuousClockwise 6.8s linear infinite;
+  will-change: transform;
+}
+.anim-orbit-counter-dot {
+  animation: spinContinuousCounterClockwise 6.8s linear infinite;
+  will-change: transform;
+}
+
+/* 100% Pure GPU Opacity & Scale Breathing for Studio Lighting (Zero CPU repaint!) */
+@keyframes studioAuraCyan {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.96);
   }
   50% {
-    background: radial-gradient(ellipse at 58% 52%, rgba(255, 90, 95, 0.28) 0%, rgba(255, 120, 125, 0.16) 42%, rgba(0, 0, 0, 0) 72%);
-    transform: scale(1.04);
-    opacity: 0.95;
-  }
-  75% {
-    background: radial-gradient(ellipse at 46% 46%, rgba(34, 211, 238, 0.26) 0%, rgba(255, 90, 95, 0.16) 36%, rgba(0, 0, 0, 0) 72%);
-    transform: scale(1.07);
-    opacity: 1;
-  }
-}
-
-/* Left edge cyan rim light reflection */
-@keyframes leftRimCyanPulse {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scaleY(0.96);
-  }
-  30%, 50% {
-    opacity: 0.9;
-    transform: scaleY(1.08);
-  }
-  75% {
-    opacity: 0.4;
-    transform: scaleY(0.98);
-  }
-}
-
-/* Right edge coral rim light reflection */
-@keyframes rightRimCoralPulse {
-  0%, 100% {
-    opacity: 0.9;
-    transform: scaleY(1.06);
-  }
-  35% {
-    opacity: 0.35;
-    transform: scaleY(0.95);
-  }
-  65%, 85% {
     opacity: 0.85;
-    transform: scaleY(1.04);
+    transform: scale(1.06);
   }
 }
 
-.anim-studio-lighting {
-  animation: dynamicStudioLighting 10s ease-in-out infinite;
-  will-change: background, transform, opacity;
+@keyframes studioAuraCoral {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.95);
+  }
 }
 
-.anim-left-rim-cyan {
-  animation: leftRimCyanPulse 5.5s ease-in-out infinite;
-  will-change: opacity, transform;
+.anim-aura-cyan {
+  animation: studioAuraCyan 6.8s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
-.anim-right-rim-coral {
-  animation: rightRimCoralPulse 8s ease-in-out infinite;
-  will-change: opacity, transform;
+.anim-aura-coral {
+  animation: studioAuraCoral 9.5s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 /* Modal Smooth Transitions */
@@ -349,10 +239,7 @@ body {
 @keyframes modalContentPopIn {
   0% {
     opacity: 0;
-    transform: scale(0.92) translate3d(0, 16px, 0);
-  }
-  70% {
-    transform: scale(1.01) translate3d(0, -2px, 0);
+    transform: scale(0.94) translate3d(0, 10px, 0);
   }
   100% {
     opacity: 1;
@@ -361,11 +248,11 @@ body {
 }
 
 .modal-backdrop-anim {
-  animation: modalBackdropFadeIn 0.26s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: modalBackdropFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .modal-content-anim {
-  animation: modalContentPopIn 0.34s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: modalContentPopIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Hide scrollbars cleanly for horizontal swipe carousels */

@@ -820,7 +820,7 @@ export default function PortfolioPage() {
 
       {/* Slide-out / Mobile Navigation Overlay & Drawer */}
       <div
-        className={`fixed inset-0 z-50 transition-all duration-300 ease-out ${
+        className={`fixed inset-0 z-50 transition-opacity duration-300 ease-out ${
           isMenuOpen
             ? 'opacity-100 pointer-events-auto visible'
             : 'opacity-0 pointer-events-none invisible'
@@ -835,7 +835,7 @@ export default function PortfolioPage() {
 
         {/* Sliding Drawer Panel (from right) */}
         <div
-          className={`absolute top-0 right-0 bottom-0 w-full max-w-[320px] sm:max-w-[360px] bg-zinc-950/95 border-l border-zinc-800/80 shadow-2xl p-6 sm:p-7 flex flex-col justify-between transition-transform duration-300 ease-out transform ${
+          className={`absolute top-0 right-0 bottom-0 w-full max-w-[320px] sm:max-w-[360px] bg-zinc-950/95 border-l border-zinc-800/80 shadow-2xl p-6 sm:p-7 flex flex-col justify-between transition-transform duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform transform ${
             isMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
@@ -874,9 +874,9 @@ export default function PortfolioPage() {
                 href={item.href}
                 onClick={() => setIsMenuOpen(false)}
                 style={{
-                  transitionDelay: isMenuOpen ? `${80 + idx * 40}ms` : '0ms',
+                  transitionDelay: isMenuOpen ? `${60 + idx * 35}ms` : '0ms',
                 }}
-                className={`group flex items-center justify-between py-2 text-base font-semibold text-zinc-300 hover:text-white transition-all transform ${
+                className={`group flex items-center justify-between py-2 text-base font-semibold text-zinc-300 hover:text-white transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] transform ${
                   isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-6 opacity-0'
                 }`}
               >
@@ -897,9 +897,9 @@ export default function PortfolioPage() {
                 setIsChatModalOpen(true);
               }}
               style={{
-                transitionDelay: isMenuOpen ? '340ms' : '0ms',
+                transitionDelay: isMenuOpen ? '280ms' : '0ms',
               }}
-              className={`w-full mt-3 py-3 rounded-2xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold shadow-lg shadow-rose-900/40 hover:scale-[1.02] active:scale-[0.98] transition-all transform flex items-center justify-center gap-2 cursor-pointer ${
+              className={`w-full mt-3 py-3 rounded-2xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold shadow-lg shadow-rose-900/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] transform flex items-center justify-center gap-2 cursor-pointer ${
                 isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
               }`}
             >
