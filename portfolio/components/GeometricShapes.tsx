@@ -10,17 +10,20 @@ interface GeometricShapesProps {
 
 export default function GeometricShapes({ children, className = '' }: GeometricShapesProps) {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          // Switch to Display Margin mode when scrolled past Hero (55% of viewport height)
-          const threshold = Math.max(window.innerHeight * 0.55, 340);
-          setIsScrolled(window.scrollY > threshold);
+          // Trigger transition as soon as user scrolls past top header (~55px)
+          setIsScrolled(window.scrollY > 55);
           ticking = false;
         });
         ticking = true;
@@ -28,21 +31,33 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', checkMobile, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   // When wrapping Ar-jay's portrait:
   if (children) {
+    // Starting coordinates corresponding to Ar-jay's portrait position
+    const startLeft = isMobile ? '74%' : '50%';
+    const startTop = isMobile ? '26%' : '44%';
+
     return (
       <div className={`relative flex items-center justify-center select-none ${className}`}>
-        {/* 1. Hero 3D Continuous Orbital Halo System (Anchor has NO isolating z-index; shapes pass in FRONT at z-30 and BEHIND at z-10) */}
+        {/* 1. Hero 3D Continuous Orbital Halo System (Shapes pass in FRONT at z-30 across suit and BEHIND at z-10) */}
         <div className="absolute top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 pointer-events-none">
-          {/* A. Cyan Glowing Ring — 100% Perfect Round Circle, True 3D Front & Back Orbit */}
+          {/* A. Hero Cyan Glowing Ring — Staggered peel-off at delay 0ms */}
           <div
-            className={`absolute w-0 h-0 anim-orbit-cyan pointer-events-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              isScrolled ? 'opacity-0 scale-75' : 'opacity-100 scale-100'
+            className={`absolute w-0 h-0 anim-orbit-cyan pointer-events-none transition-all duration-500 ease-out ${
+              isScrolled ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'
             }`}
+            style={{
+              transitionDelay: isScrolled ? '0ms' : '280ms',
+            }}
           >
             <div
               className="w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full aspect-square border-[2.5px] border-[#22D3EE] relative shrink-0 -translate-x-1/2 -translate-y-1/2"
@@ -55,11 +70,14 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
             </div>
           </div>
 
-          {/* B. Coral Glowing Ring — 100% Perfect Round Circle, True 3D Front & Back Orbit */}
+          {/* B. Hero Coral Glowing Ring — Staggered peel-off at delay 180ms */}
           <div
-            className={`absolute w-0 h-0 anim-orbit-coral pointer-events-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              isScrolled ? 'opacity-0 scale-75' : 'opacity-100 scale-100'
+            className={`absolute w-0 h-0 anim-orbit-coral pointer-events-none transition-all duration-500 ease-out ${
+              isScrolled ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'
             }`}
+            style={{
+              transitionDelay: isScrolled ? '180ms' : '140ms',
+            }}
           >
             <div
               className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 lg:w-12 lg:h-12 rounded-full aspect-square border-[2.5px] border-[#FF5A5F] relative shrink-0 -translate-x-1/2 -translate-y-1/2"
@@ -72,11 +90,14 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
             </div>
           </div>
 
-          {/* C. Solid Vibrant Cyan Dot / Orb — 100% Perfect Round Circle, Fast 3D Satellite Orbit */}
+          {/* C. Hero Solid Vibrant Cyan Dot — Staggered peel-off at delay 360ms */}
           <div
-            className={`absolute w-0 h-0 anim-orbit-dot pointer-events-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              isScrolled ? 'opacity-0 scale-75' : 'opacity-100 scale-100'
+            className={`absolute w-0 h-0 anim-orbit-dot pointer-events-none transition-all duration-500 ease-out ${
+              isScrolled ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'
             }`}
+            style={{
+              transitionDelay: isScrolled ? '360ms' : '0ms',
+            }}
           >
             <div
               className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 rounded-full aspect-square bg-[#00E5FF] relative shrink-0 -translate-x-1/2 -translate-y-1/2"
@@ -89,116 +110,119 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
           </div>
         </div>
 
-        {/* 2. Ar-jay's Cutout Portrait (Foreground layer at z-20; front 3D orbit sweeps across suit at z-30, back orbit passes behind at z-10) */}
+        {/* 2. Ar-jay's Cutout Portrait (Foreground layer at z-20) */}
         <div className="relative z-20 flex items-center justify-center pointer-events-auto">
           {children}
         </div>
 
-        {/* 3. Global Playful Display Margin Floating Shapes — Portaled directly into document.body so they stay fixed ALL ALONG the entire website down to the footer! */}
+        {/* 3. Global Playful Display Margin Floating Shapes — Portaled directly into document.body at z-40 so they stay visible ALL ALONG down to the footer! */}
         {mounted &&
           createPortal(
             <div
               aria-hidden="true"
-              className="fixed inset-0 pointer-events-none z-30 overflow-hidden"
+              className="fixed inset-0 pointer-events-none z-40"
             >
-              {/* Ball 1: Perfect Cyan Circular Ring — Smooth Traveling Transition from Center Ar-jay to Left Open Margin */}
+              {/* Ball 1: Perfect Cyan Circular Ring — Leaves first (0ms delay) to Left Margin */}
               <div
-                className="absolute transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto cursor-pointer group"
-                style={
-                  isScrolled
+                className="absolute transition-all duration-900 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto cursor-pointer group"
+                style={{
+                  transitionDelay: isScrolled ? '0ms' : '280ms',
+                  ...(isScrolled
                     ? {
-                        left: 'clamp(12px, 3.5vw, 48px)',
-                        top: '38%',
+                        left: isMobile ? '12px' : 'clamp(16px, 3.5vw, 48px)',
+                        top: isMobile ? '40%' : '38%',
                         transform: 'translate(0, -50%) scale(1)',
-                        opacity: 0.92,
+                        opacity: 0.95,
                       }
                     : {
-                        left: '50%',
-                        top: '44%',
+                        left: startLeft,
+                        top: startTop,
                         transform: 'translate(-50%, -50%) scale(0.3)',
                         opacity: 0,
                         pointerEvents: 'none',
-                      }
-                }
+                      }),
+                }}
                 title="Playful Cyan Halo"
               >
                 <div className="anim-playful-bob-1">
                   <div
-                    className="w-9 h-9 sm:w-11 sm:h-11 lg:w-14 lg:h-14 rounded-full aspect-square border-[2.5px] border-[#22D3EE] group-hover:scale-125 transition-transform duration-300 relative shrink-0"
+                    className="w-8 h-8 sm:w-11 sm:h-11 lg:w-14 lg:h-14 rounded-full aspect-square border-[2.5px] border-[#22D3EE] group-hover:scale-125 transition-transform duration-300 relative shrink-0"
                     style={{
                       boxShadow:
-                        '0 0 22px rgba(34, 211, 238, 0.9), inset 0 0 10px rgba(34, 211, 238, 0.4)',
+                        '0 0 22px rgba(34, 211, 238, 0.95), 0 0 45px rgba(34, 211, 238, 0.4), inset 0 0 10px rgba(34, 211, 238, 0.4)',
                     }}
                   >
-                    <div className="absolute inset-0 rounded-full bg-[#22D3EE]/20 blur-sm pointer-events-none" />
+                    <div className="absolute inset-0 rounded-full bg-[#22D3EE]/25 blur-sm pointer-events-none" />
                   </div>
                 </div>
               </div>
 
-              {/* Ball 2: Perfect Coral Circular Ring — Smooth Traveling Transition from Center Ar-jay to Right Open Margin */}
+              {/* Ball 2: Perfect Coral Circular Ring — Leaves second (180ms delay) to Right Margin */}
               <div
-                className="absolute transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto cursor-pointer group"
-                style={
-                  isScrolled
+                className="absolute transition-all duration-900 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto cursor-pointer group"
+                style={{
+                  transitionDelay: isScrolled ? '180ms' : '140ms',
+                  ...(isScrolled
                     ? {
-                        right: 'clamp(12px, 3.5vw, 48px)',
-                        top: '64%',
+                        right: isMobile ? '12px' : 'clamp(16px, 3.5vw, 48px)',
+                        top: isMobile ? '68%' : '64%',
                         transform: 'translate(0, -50%) scale(1)',
-                        opacity: 0.92,
+                        opacity: 0.95,
                       }
                     : {
-                        right: '50%',
-                        top: '44%',
+                        right: isMobile ? 'calc(100% - 74%)' : '50%',
+                        top: startTop,
                         transform: 'translate(50%, -50%) scale(0.3)',
                         opacity: 0,
                         pointerEvents: 'none',
-                      }
-                }
+                      }),
+                }}
                 title="Playful Coral Halo"
               >
                 <div className="anim-playful-bob-2">
                   <div
-                    className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full aspect-square border-[2.5px] border-[#FF5A5F] group-hover:scale-125 transition-transform duration-300 relative shrink-0"
+                    className="w-7 h-7 sm:w-9 sm:h-9 lg:w-12 lg:h-12 rounded-full aspect-square border-[2.5px] border-[#FF5A5F] group-hover:scale-125 transition-transform duration-300 relative shrink-0"
                     style={{
                       boxShadow:
-                        '0 0 20px rgba(255, 90, 95, 0.95), inset 0 0 9px rgba(255, 90, 95, 0.4)',
+                        '0 0 20px rgba(255, 90, 95, 0.95), 0 0 40px rgba(255, 90, 95, 0.4), inset 0 0 9px rgba(255, 90, 95, 0.4)',
                     }}
                   >
-                    <div className="absolute inset-0 rounded-full bg-[#FF5A5F]/20 blur-sm pointer-events-none" />
+                    <div className="absolute inset-0 rounded-full bg-[#FF5A5F]/25 blur-sm pointer-events-none" />
                   </div>
                 </div>
               </div>
 
-              {/* Ball 3: Perfect Cyan Circular Dot — Smooth Traveling Transition from Center Ar-jay to Upper-Right Open Margin */}
+              {/* Ball 3: Perfect Cyan Circular Dot — Leaves third (360ms delay) to Upper-Right Margin */}
               <div
-                className="absolute transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto cursor-pointer group"
-                style={
-                  isScrolled
+                className="absolute transition-all duration-900 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto cursor-pointer group"
+                style={{
+                  transitionDelay: isScrolled ? '360ms' : '0ms',
+                  ...(isScrolled
                     ? {
-                        right: 'clamp(20px, 5vw, 68px)',
-                        top: '20%',
+                        right: isMobile ? '14px' : 'clamp(20px, 4.5vw, 64px)',
+                        top: isMobile ? '20%' : '20%',
                         transform: 'translate(0, -50%) scale(1)',
-                        opacity: 0.98,
+                        opacity: 1,
                       }
                     : {
-                        right: '50%',
-                        top: '44%',
+                        right: isMobile ? 'calc(100% - 74%)' : '50%',
+                        top: startTop,
                         transform: 'translate(50%, -50%) scale(0.3)',
                         opacity: 0,
                         pointerEvents: 'none',
-                      }
-                }
+                      }),
+                }}
                 title="Playful Cyan Orb"
               >
                 <div className="anim-playful-bob-3">
                   <div
-                    className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 rounded-full aspect-square bg-[#00E5FF] group-hover:scale-150 transition-transform duration-300 relative shrink-0"
+                    className="w-4.5 h-4.5 sm:w-5.5 sm:h-5.5 lg:w-7 lg:h-7 rounded-full aspect-square bg-[#00E5FF] group-hover:scale-150 transition-transform duration-300 relative shrink-0"
                     style={{
                       boxShadow:
                         '0 0 26px rgba(0, 229, 255, 1), 0 0 50px rgba(0, 229, 255, 0.75)',
                     }}
                   >
-                    <div className="absolute -inset-1 rounded-full bg-[#00E5FF]/40 blur-sm pointer-events-none" />
+                    <div className="absolute -inset-1 rounded-full bg-[#00E5FF]/45 blur-sm pointer-events-none" />
                   </div>
                 </div>
               </div>
