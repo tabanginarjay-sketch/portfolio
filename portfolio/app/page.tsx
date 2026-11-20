@@ -87,7 +87,7 @@ export default function PortfolioPage() {
     },
   ];
 
-  // Official Certificates & Accreditations (From Ar-jay's verified credentials)
+  // Official Certificates & Accreditations (All 5 verified files uploaded by Ar-jay)
   const certificates = [
     {
       id: 'cert-1',
@@ -96,6 +96,7 @@ export default function PortfolioPage() {
       date: 'October 29, 2026',
       credentialId: 'CISCO-COURSE-COMPLETION',
       badge: 'Cisco Verified',
+      pdfUrl: '/certificates/cisco_cybersecurity.pdf',
       description:
         'Official student-level course completion credential covering foundational cybersecurity principles, threat detection, online defense strategies, vulnerability mitigation, and organizational network safety.',
       skills: ['Cybersecurity', 'Threat Analysis', 'Network Defense', 'Incident Mitigation'],
@@ -108,6 +109,7 @@ export default function PortfolioPage() {
       date: 'October 30, 2026',
       credentialId: 'ILCDB_R8_GKSPATFCFGAM_2026_196',
       badge: 'DICT Regional Office 8 (16 Hours)',
+      pdfUrl: '/certificates/dict_cybersecurity.pdf',
       description:
         'Official 16-hour credential awarded by the DICT ICT Academy covering international cybersecurity governance, risk management frameworks, and enterprise IT defense conducted in Tacloban City.',
       skills: ['Cybersecurity Governance', 'IT Management', 'Security Standards', 'Risk Management'],
@@ -120,6 +122,7 @@ export default function PortfolioPage() {
       date: 'October 29, 2026',
       credentialId: 'MWA-9V75-3SVS',
       badge: 'All 4 AI Dev Courses Completed',
+      pdfUrl: '/certificates/aidev_fundamentals.pdf',
       verifyUrl: 'https://course.marwieang.com/verify/MWA-9V75-3SVS',
       description:
         'Comprehensive completion credential for mastering AI-driven development workflows, prompt engineering, AI coding assistants, and modern software paradigms taught by Mar Wie Ang.',
@@ -133,10 +136,24 @@ export default function PortfolioPage() {
       date: 'October 7, 2026',
       credentialId: 'BCP-JOBS180-QC',
       badge: 'Career Seminar Attendance',
+      pdfUrl: '/certificates/bcp_marketing_me.pdf',
       description:
         'Official Certificate of Attendance for participating in the career seminar Marketing ME Live at Bestlink College of the Philippines, Quezon City, presented by Managing Director Kim Chua.',
       skills: ['Personal Branding', 'Professional Communication', 'Career Positioning', 'Client Relations'],
       image: '/certificates/bcp_marketing_me.jpg',
+    },
+    {
+      id: 'cert-5',
+      title: 'Curriculum Vitae (CV) & Career History',
+      issuer: 'Ar-Jay Q. Tabangin • Bestlink College of the Philippines (BSIT)',
+      date: '2026',
+      credentialId: 'CV-ARJAY-TABANGIN',
+      badge: 'Official Resume & Credentials',
+      pdfUrl: '/certificates/arjay_cv.pdf',
+      description:
+        'Official Curriculum Vitae detailing BS Information Technology academic background at BCP, corporate customer service experience at Concentrix & Teleperformance, freelance development & design, and client-delivered platforms.',
+      skills: ['BSIT Candidate', 'Full Stack Development', 'UI/UX Design', 'Customer Support', 'Photo/Video Editing'],
+      image: '/certificates/arjay_cv_preview.jpg',
     },
   ];
 
@@ -251,10 +268,14 @@ export default function PortfolioPage() {
                 Hi, <br />
                 I&apos;m <span className="text-[#FF5A5F]">Ar-jay</span>
               </h1>
-              <p className="text-zinc-300 text-lg sm:text-xl font-medium tracking-wide pt-2">
-                User Interface Designer
-                Developer &bull; UI/UX Designer &bull; Media Editor
-              </p>
+              <div className="pt-2 space-y-1">
+                <p className="text-white text-lg sm:text-xl font-semibold tracking-wide">
+                  Developer &amp; UI/UX Designer
+                </p>
+                <p className="text-zinc-400 text-sm sm:text-base font-medium">
+                  Certified Customer Service &bull; Photo/Video Editor
+                </p>
+              </div>
             </div>
 
             {/* Hire Me CTA Button matching the reference pill */}
@@ -561,8 +582,8 @@ export default function PortfolioPage() {
             </p>
           </div>
 
-          {/* Certificates Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          {/* Certificates Grid - All 5 official credentials uploaded by Ar-jay */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {certificates.map((cert) => (
               <div
                 key={cert.id}
@@ -603,9 +624,18 @@ export default function PortfolioPage() {
                 </div>
 
                 <div className="pt-3 border-t border-zinc-900/80 flex items-center justify-between text-xs">
-                  <span className="text-zinc-500 text-[11px]">Click card to view details</span>
+                  <a
+                    href={cert.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-zinc-400 hover:text-white text-[11px] font-medium inline-flex items-center gap-1.5 transition-colors"
+                  >
+                    <Download className="w-3 h-3 text-[#FF5A5F]" />
+                    <span>Original PDF</span>
+                  </a>
                   <span className="text-[#FF5A5F] font-bold group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-1">
-                    Preview Certificate <Eye className="w-3.5 h-3.5" />
+                    Preview <Eye className="w-3.5 h-3.5" />
                   </span>
                 </div>
               </div>
@@ -761,8 +791,7 @@ export default function PortfolioPage() {
                         <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F]" />
                       </div>
                       <p className="text-xs text-zinc-500">
-                        © 2026 Ar-jay Tabangin • Full Stack Developer & UI/UX Designer. All rights reserved.
-                        © 2026 Ar-jay Tabangin • Developer, UI/UX Designer, Certified Customer Service &amp; Media Editor. All rights reserved.
+                        &copy; 2026 Ar-jay Tabangin &bull; Developer, UI/UX Designer, Certified Customer Service &amp; Media Editor. All rights reserved.
                       </p>
                     </div>
 
@@ -974,17 +1003,16 @@ export default function PortfolioPage() {
                         </div>
 
                         <div className="pt-4 border-t border-zinc-900 flex flex-wrap items-center justify-between gap-3">
-                          <div className="flex items-center gap-3">
+                          <div className="flex flex-wrap items-center gap-3">
                             {selectedCertificate.pdfUrl && (
                               <a
                                 href={selectedCertificate.pdfUrl}
-                                download="Ar-jay_Tabangin_CV.pdf"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 flex items-center gap-1.5"
                               >
                                 <Download className="w-3.5 h-3.5" />
-                                <span>Download Official PDF</span>
+                                <span>Download / View PDF</span>
                               </a>
                             )}
                             {selectedCertificate.verifyUrl && (
