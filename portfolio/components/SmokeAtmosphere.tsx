@@ -182,29 +182,28 @@ export default function SmokeAtmosphere() {
         ctx.restore();
       }
 
-      // Smoothly carve out the center column where Ar-jay's portrait stands
-      // so smoke NEVER crosses his face, collar, or suit!
+      // Gently soften smoke right behind Ar-jay's head/face so details stay crisp,
+      // while allowing silky ribbons to drift seamlessly behind shoulders & lower mist (ZERO hard box!)
       const clearX = width * 0.5;
-      const clearY = height * 0.46;
-      const clearRadiusX = Math.min(width * 0.24, 280);
-      const clearRadiusY = Math.min(height * 0.48, 380);
+      const clearY = height * 0.34;
+      const clearRadius = Math.min(width * 0.30, 340);
 
       ctx.globalCompositeOperation = 'destination-out';
       const clearGrad = ctx.createRadialGradient(
         clearX,
         clearY,
-        clearRadiusX * 0.25,
+        clearRadius * 0.12,
         clearX,
         clearY,
-        clearRadiusX
+        clearRadius
       );
-      clearGrad.addColorStop(0, 'rgba(0, 0, 0, 1.0)');
-      clearGrad.addColorStop(0.65, 'rgba(0, 0, 0, 0.85)');
+      clearGrad.addColorStop(0, 'rgba(0, 0, 0, 0.68)');
+      clearGrad.addColorStop(0.55, 'rgba(0, 0, 0, 0.35)');
       clearGrad.addColorStop(1, 'rgba(0, 0, 0, 0.0)');
 
       ctx.fillStyle = clearGrad;
       ctx.beginPath();
-      ctx.ellipse(clearX, clearY, clearRadiusX, clearRadiusY, 0, 0, Math.PI * 2);
+      ctx.arc(clearX, clearY, clearRadius, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.globalCompositeOperation = 'source-over';
@@ -224,11 +223,13 @@ export default function SmokeAtmosphere() {
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-10 select-none">
       <canvas
         ref={canvasRef}
-        className="w-full h-full block opacity-95 transition-opacity duration-700"
+        className="w-full h-full block opacity-90 transition-opacity duration-700"
       />
-      {/* Top and bottom subtle fade into pure black canvas */}
+      {/* Seamless 4-edge vignette fade into pure black canvas */}
       <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black to-transparent pointer-events-none" />
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none" />
+      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black to-transparent pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black to-transparent pointer-events-none" />
     </div>
   );
 }

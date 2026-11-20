@@ -333,14 +333,27 @@ export default function PortfolioPage() {
 
           {/* ----------------- CENTER COLUMN: PORTRAIT IMAGE ----------------- */}
           <div className="lg:col-span-4 flex items-center justify-center order-1 lg:order-2 relative">
-            <div className="relative w-72 sm:w-84 md:w-96 lg:w-[440px] aspect-[3/4] max-h-[620px]">
+            {/* Soft, layered studio backlight halo (purely transparent radial — ZERO hard box!) */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-12 flex items-center justify-center"
+            >
+              {/* Neutral warm studio rim behind head & shoulders for crisp separation */}
+              <div className="w-[360px] h-[440px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,244,234,0.085)_0%,rgba(255,244,234,0.025)_42%,transparent_72%)] blur-2xl -translate-y-8" />
+              {/* Whisper-soft left coral & right cyan rim reflection matching hero accents */}
+              <div className="absolute w-64 h-64 rounded-full bg-[#FF5A5F]/[0.07] blur-[90px] -translate-x-20 -translate-y-6" />
+              <div className="absolute w-64 h-64 rounded-full bg-cyan-400/[0.06] blur-[90px] translate-x-20 -translate-y-16" />
+            </div>
+
+            {/* True transparent portrait PNG — seamlessly floats above smoke with zero rectangular cutoff */}
+            <div className="relative w-72 sm:w-88 md:w-[390px] lg:w-[430px] aspect-[482/744] max-h-[640px] select-none">
               <Image
-                src="/images/arjay-cinematic-portrait.png?v=chiaroscuro_v5"
+                src="/images/arjay-portrait-hero.png?v=6"
                 alt="Ar-jay Tabangin - Developer & UI/UX Designer"
                 fill
                 priority
                 unoptimized
-                className="object-contain object-top"
+                className="object-contain object-top drop-shadow-[0_24px_48px_rgba(0,0,0,0.85)]"
               />
             </div>
           </div>
