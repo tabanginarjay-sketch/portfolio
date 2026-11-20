@@ -88,7 +88,7 @@ export default function PortfolioPage() {
     },
   ];
 
-  // Official Certificates & Accreditations (All 5 verified files uploaded by Ar-jay)
+  // Official Certificates & Accreditations (The 4 verified certifications)
   const certificates = [
     {
       id: 'cert-1',
@@ -142,19 +142,6 @@ export default function PortfolioPage() {
         'Official Certificate of Attendance for participating in the career seminar Marketing ME Live at Bestlink College of the Philippines, Quezon City, presented by Managing Director Kim Chua.',
       skills: ['Personal Branding', 'Professional Communication', 'Career Positioning', 'Client Relations'],
       image: '/certificates/bcp_marketing_me.jpg?v=2',
-    },
-    {
-      id: 'cert-5',
-      title: 'Curriculum Vitae (CV) & Career History',
-      issuer: 'Ar-Jay Q. Tabangin • Bestlink College of the Philippines (BSIT)',
-      date: '2026',
-      credentialId: 'CV-ARJAY-TABANGIN',
-      badge: 'Official Resume & Credentials',
-      pdfUrl: '/certificates/arjay_cv.pdf',
-      description:
-        'Official Curriculum Vitae detailing BS Information Technology academic background at BCP, corporate customer service experience at Concentrix & Teleperformance, freelance development & design, and client-delivered platforms.',
-      skills: ['BSIT Candidate', 'Full Stack Development', 'UI/UX Design', 'Customer Support', 'Photo/Video Editing'],
-      image: '/certificates/arjay_cv_preview.jpg?v=2',
     },
   ];
 
@@ -575,8 +562,8 @@ export default function PortfolioPage() {
             </p>
           </div>
 
-          {/* Certificates Grid - All 5 official credentials uploaded by Ar-jay */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          {/* Certificates Grid - The 4 official certifications */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {certificates.map((cert) => (
               <div
                 key={cert.id}
