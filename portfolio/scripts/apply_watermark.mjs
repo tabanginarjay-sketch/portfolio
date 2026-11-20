@@ -107,6 +107,9 @@ async function main() {
     'dict_cybersecurity.jpg',
     'aidev_fundamentals.jpg',
     'bcp_marketing_me.jpg',
+    'bcp_laravel_webinar.jpg',
+    'bcp_research_seminar.jpg',
+    'concentrix_anthem_cct.jpg',
   ];
 
   for (const file of certFiles) {

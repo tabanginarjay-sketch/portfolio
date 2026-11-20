@@ -166,7 +166,7 @@ export default function PortfolioPage() {
     },
   ];
 
-  // Official Certificates & Accreditations (The 4 verified certifications)
+  // Official Certificates & Accreditations (All 7 verified certifications)
   const certificates = [
     {
       id: 'cert-1',
@@ -220,6 +220,42 @@ export default function PortfolioPage() {
         'Official Certificate of Attendance for participating in the career seminar Marketing ME Live at Bestlink College of the Philippines, Quezon City, presented by Managing Director Kim Chua.',
       skills: ['Personal Branding', 'Professional Communication', 'Career Positioning', 'Client Relations'],
       image: '/certificates/bcp_marketing_me.jpg?v=wm2',
+    },
+    {
+      id: 'cert-5',
+      title: 'Introduction to Laravel Webinar',
+      issuer: 'Bestlink College of the Philippines — BSIT Department',
+      date: 'October 1, 2026',
+      credentialId: 'BCP-BSIT-LARAVEL-2026',
+      badge: 'BCP BSIT Webinar',
+      description:
+        'Certificate of Appreciation for active participation in the academic webinar "Introduction to Laravel" covering modern PHP web application fundamentals, led by Resource Speaker Dr. Enrico P. Chavez (TUP – Manila).',
+      skills: ['Laravel', 'PHP', 'Web Applications', 'Backend Fundamentals'],
+      image: '/certificates/bcp_laravel_webinar.jpg?v=wm2',
+    },
+    {
+      id: 'cert-6',
+      title: '3rd Year Program Specific Research Seminar 2025',
+      issuer: 'Bestlink College of the Philippines — Center for Research and Development',
+      date: 'August 3, 2025',
+      credentialId: 'RS05661',
+      badge: 'Research Seminar',
+      description:
+        'Official Certificate of Attendance for actively participating in the 3rd Year Program Specific Research Seminar 2025 themed "Starting the Research Journey: Building the Foundation for Academic and Social Impact".',
+      skills: ['IT Research', 'Research Methodology', 'Academic Writing', 'Capstone Readiness'],
+      image: '/certificates/bcp_research_seminar.jpg?v=wm2',
+    },
+    {
+      id: 'cert-7',
+      title: 'Health Care CCT Graduate — Communication & Culture Training',
+      issuer: 'Concentrix & Anthem Pay By Phone Member Services',
+      date: 'November 15, 2019',
+      credentialId: 'CNX-ANTHEM-CCT-2019',
+      badge: 'Concentrix • Anthem',
+      description:
+        'Official graduation certificate from Concentrix & Anthem Pay By Phone Member Services for completing Health Care Communication & Culture Training (CCT) and earning endorsement to Product Specific Training.',
+      skills: ['Healthcare Support', 'Client Communication', 'Cultural Alignment', 'Customer Service'],
+      image: '/certificates/concentrix_anthem_cct.jpg?v=wm2',
     },
   ];
 
@@ -747,11 +783,10 @@ export default function PortfolioPage() {
                   >
                     {/* Timeline Node Dot */}
                     <span
-                      className={`absolute -left-[25px] sm:-left-[33px] top-7 w-3.5 h-3.5 rounded-full border-2 border-black ${
-                        exp.current
-                          ? 'bg-[#FF5A5F] shadow-[0_0_12px_rgba(255,90,95,0.8)]'
-                          : 'bg-zinc-600 group-hover:bg-[#FF5A5F] transition-colors'
-                      }`}
+                      className={`absolute -left-[25px] sm:-left-[33px] top-7 w-3.5 h-3.5 rounded-full border-2 border-black ${exp.current
+                        ? 'bg-[#FF5A5F] shadow-[0_0_12px_rgba(255,90,95,0.8)]'
+                        : 'bg-zinc-600 group-hover:bg-[#FF5A5F] transition-colors'
+                        }`}
                     />
 
                     <div className="flex flex-wrap items-start justify-between gap-2">
@@ -812,11 +847,10 @@ export default function PortfolioPage() {
                     >
                       <div className="flex items-center justify-between gap-2">
                         <span
-                          className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
-                            edu.status === 'Current'
-                              ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                              : 'bg-zinc-900 text-zinc-400 border-zinc-800'
-                          }`}
+                          className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${edu.status === 'Current'
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                            : 'bg-zinc-900 text-zinc-400 border-zinc-800'
+                            }`}
                         >
                           {edu.status}
                         </span>
@@ -847,9 +881,8 @@ export default function PortfolioPage() {
                   {achievements.map((ach, idx) => (
                     <div
                       key={ach.id}
-                      className={`flex items-start gap-3.5 ${
-                        idx !== 0 ? 'pt-4 border-t border-zinc-900' : ''
-                      }`}
+                      className={`flex items-start gap-3.5 ${idx !== 0 ? 'pt-4 border-t border-zinc-900' : ''
+                        }`}
                     >
                       <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
                         <Award className="w-4 h-4" />
@@ -892,74 +925,91 @@ export default function PortfolioPage() {
             </p>
           </div>
 
-          {/* Certificates Grid - The 4 official certifications */}
+          {/* Certificates Grid - All 7 official certifications */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {certificates.map((cert) => (
-              <div
-                key={cert.id}
-                onClick={() => setSelectedCertificate(cert)}
-                className="group relative p-5 rounded-3xl bg-zinc-950/80 hover:bg-zinc-900/90 border border-zinc-850 hover:border-[#FF5A5F]/60 transition-all cursor-pointer shadow-lg hover:shadow-2xl flex flex-col justify-between space-y-4"
-              >
-                <div className="space-y-4">
-                  {/* Certificate Thumbnail Preview */}
-                  <div 
-                    onContextMenu={(e) => e.preventDefault()}
-                    className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 select-none"
-                  >
-                    <Image
-                      src={cert.image}
-                      alt={cert.title}
-                      fill
-                      unoptimized
-                      className="object-cover object-top group-hover:scale-105 transition-transform duration-300 pointer-events-none"
-                    />
-                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/90 text-[10px] font-mono font-bold text-[#FF5A5F] border border-zinc-800">
-                      {cert.badge}
+            {certificates.map((cert, idx) => {
+              const isOddLastCard =
+                certificates.length % 2 === 1 && idx === certificates.length - 1;
+              return (
+                <div
+                  key={cert.id}
+                  onClick={() => setSelectedCertificate(cert)}
+                  className={`group relative p-5 rounded-3xl bg-zinc-950/80 hover:bg-zinc-900/90 border border-zinc-850 hover:border-[#FF5A5F]/60 transition-colors cursor-pointer shadow-lg hover:shadow-2xl flex flex-col justify-between space-y-4 ${
+                    isOddLastCard
+                      ? 'md:col-span-2 md:max-w-[calc(50%-0.75rem)] md:mx-auto md:w-full'
+                      : ''
+                  }`}
+                >
+                  <div className="space-y-4">
+                    {/* Certificate Thumbnail Preview */}
+                    <div
+                      onContextMenu={(e) => e.preventDefault()}
+                      className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 select-none"
+                    >
+                      <Image
+                        src={cert.image}
+                        alt={cert.title}
+                        fill
+                        unoptimized
+                        className="object-cover object-top group-hover:scale-105 transition-transform duration-300 pointer-events-none"
+                      />
+                      <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/90 text-[10px] font-mono font-bold text-[#FF5A5F] border border-zinc-800">
+                        {cert.badge}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-zinc-900 text-zinc-400 border border-zinc-800 shrink-0">
+                          {cert.date}
+                        </span>
+                        <span className="text-[11px] font-mono text-zinc-500 truncate">
+                          {cert.credentialId}
+                        </span>
+                      </div>
+
+                      <h3 className="font-bold text-white text-base group-hover:text-[#FF5A5F] transition-colors leading-snug">
+                        {cert.title}
+                      </h3>
+                      <p className="text-xs text-zinc-400 font-medium">{cert.issuer}</p>
+
+                      <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
+                        {cert.description}
+                      </p>
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-zinc-900 text-zinc-400 border border-zinc-800">
-                        {cert.date}
+                  <div className="pt-3 border-t border-zinc-900/80 flex items-center justify-between text-xs">
+                    {cert.pdfUrl ? (
+                      <a
+                        href={cert.pdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-zinc-400 hover:text-white text-[11px] font-medium inline-flex items-center gap-1.5 transition-colors"
+                      >
+                        <Download className="w-3 h-3 text-[#FF5A5F]" />
+                        <span>Original PDF</span>
+                      </a>
+                    ) : (
+                      <span className="text-zinc-500 text-[11px] font-medium inline-flex items-center gap-1.5">
+                        <Award className="w-3 h-3 text-[#FF5A5F]" />
+                        <span>Verified Certificate</span>
                       </span>
-                      <span className="text-[11px] font-mono text-zinc-500">{cert.credentialId}</span>
-                    </div>
-
-                    <h3 className="font-bold text-white text-base group-hover:text-[#FF5A5F] transition-colors leading-snug">
-                      {cert.title}
-                    </h3>
-                    <p className="text-xs text-zinc-400 font-medium">{cert.issuer}</p>
-
-                    <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
-                      {cert.description}
-                    </p>
+                    )}
+                    <span className="text-[#FF5A5F] font-bold group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-1">
+                      Preview <Eye className="w-3.5 h-3.5" />
+                    </span>
                   </div>
                 </div>
-
-                <div className="pt-3 border-t border-zinc-900/80 flex items-center justify-between text-xs">
-                  <a
-                    href={cert.pdfUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="text-zinc-400 hover:text-white text-[11px] font-medium inline-flex items-center gap-1.5 transition-colors"
-                  >
-                    <Download className="w-3 h-3 text-[#FF5A5F]" />
-                    <span>Original PDF</span>
-                  </a>
-                  <span className="text-[#FF5A5F] font-bold group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-1">
-                    Preview <Eye className="w-3.5 h-3.5" />
-                  </span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Certificate Credential Note */}
           <div className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center">
             <p className="text-xs text-zinc-400">
-              📜 <strong>Verified Credentials:</strong> All credentials above are officially completed and verified by Cisco Networking Academy, DICT Region VIII, AI Dev PH, and Jobs180. Click any card to preview the official certificate or download the CV.
+              📜 <strong>Verified Credentials:</strong> All 7 credentials above are officially awarded by Cisco Networking Academy, DICT Region VIII, AI Dev PH, Bestlink College of the Philippines, Jobs180, and Concentrix / Anthem. Click any card to preview the protected certificate.
             </p>
           </div>
         </div>
@@ -1120,11 +1170,10 @@ export default function PortfolioPage() {
                   key={cat}
                   type="button"
                   onClick={() => setActiveEditCategory(cat)}
-                  className={`px-3 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
-                    activeEditCategory === cat
-                      ? 'bg-[#FF5A5F] text-white shadow-xs'
-                      : 'text-zinc-400 hover:text-white'
-                  }`}
+                  className={`px-3 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${activeEditCategory === cat
+                    ? 'bg-[#FF5A5F] text-white shadow-xs'
+                    : 'text-zinc-400 hover:text-white'
+                    }`}
                 >
                   {cat === 'All' ? `All (${editSamples.length})` : cat}
                 </button>
@@ -1293,446 +1342,446 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-                {/* ========================================================================= */}
-                {/* 6. CALL TO ACTION & FOOTER                                                */}
-                {/* ========================================================================= */}
-                <footer className="relative z-20 py-16 border-t border-zinc-900 bg-black">
-                  <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-center sm:justify-start gap-2.5 text-lg font-bold text-white">
-                        <span className="w-8 h-8 rounded-lg bg-zinc-950 border border-white/15 flex items-center justify-center p-1">
-                          <Image
-                            src="/images/arjay-logo.png"
-                            alt="Ar-jay AJ Monogram Logo"
-                            width={24}
-                            height={24}
-                            unoptimized
-                            className="w-full h-full object-contain"
-                          />
-                        </span>
-                        <span>Ar-jay Tabangin</span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F]" />
-                      </div>
-                      <p className="text-xs text-zinc-500">
-                        &copy; 2026 Ar-jay Tabangin &bull; Developer, UI/UX Designer, Certified Customer Service &amp; Media Editor. All rights reserved.
-                      </p>
-                    </div>
+      {/* ========================================================================= */}
+      {/* 6. CALL TO ACTION & FOOTER                                                */}
+      {/* ========================================================================= */}
+      <footer className="relative z-20 py-16 border-t border-zinc-900 bg-black">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+          <div className="space-y-1">
+            <div className="flex items-center justify-center sm:justify-start gap-2.5 text-lg font-bold text-white">
+              <span className="w-8 h-8 rounded-lg bg-zinc-950 border border-white/15 flex items-center justify-center p-1">
+                <Image
+                  src="/images/arjay-logo.png"
+                  alt="Ar-jay AJ Monogram Logo"
+                  width={24}
+                  height={24}
+                  unoptimized
+                  className="w-full h-full object-contain"
+                />
+              </span>
+              <span>Ar-jay Tabangin</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F]" />
+            </div>
+            <p className="text-xs text-zinc-500">
+              &copy; 2026 Ar-jay Tabangin &bull; Developer, UI/UX Designer, Certified Customer Service &amp; Media Editor. All rights reserved.
+            </p>
+          </div>
 
-                    <div className="flex flex-wrap items-center justify-center sm:justify-end gap-4">
-                      {/* Footer Social Links */}
-                      <div className="flex items-center gap-3 pr-2 text-zinc-400">
-                        <a
-                          href="https://www.facebook.com/share/1CstVHcQAw/?mibextid=wwXIfr"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-white transition-colors text-xs font-bold font-serif"
-                          aria-label="Facebook"
-                        >
-                          f
-                        </a>
-                        <a
-                          href="https://github.com/tabanginarjay-sketch"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-white transition-colors"
-                          aria-label="GitHub"
-                        >
-                          <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-                          </svg>
-                        </a>
-                        <a
-                          href="https://www.instagram.com/jay.fowp?jplx=YjY0dzk2dzMycG9r&utm_source=qr"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-white transition-colors"
-                          aria-label="Instagram"
-                        >
-                          <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                          </svg>
-                        </a>
-                        <a
-                          href="https://www.linkedin.com/in/jay-t-a6bb1a217"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-white transition-colors flex items-center justify-center"
-                          aria-label="LinkedIn"
-                        >
-                          <span className="w-3.5 h-3.5 rounded bg-[#0A66C2] flex items-center justify-center text-[8px] font-bold text-white">
-                            in
-                          </span>
-                        </a>
-                      </div>
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-4">
+            {/* Footer Social Links */}
+            <div className="flex items-center gap-3 pr-2 text-zinc-400">
+              <a
+                href="https://www.facebook.com/share/1CstVHcQAw/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors text-xs font-bold font-serif"
+                aria-label="Facebook"
+              >
+                f
+              </a>
+              <a
+                href="https://github.com/tabanginarjay-sketch"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+                aria-label="GitHub"
+              >
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                  <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                </svg>
+              </a>
+              <a
+                href="https://www.instagram.com/jay.fowp?jplx=YjY0dzk2dzMycG9r&utm_source=qr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+                aria-label="Instagram"
+              >
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                </svg>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/jay-t-a6bb1a217"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors flex items-center justify-center"
+                aria-label="LinkedIn"
+              >
+                <span className="w-3.5 h-3.5 rounded bg-[#0A66C2] flex items-center justify-center text-[8px] font-bold text-white">
+                  in
+                </span>
+              </a>
+            </div>
 
-                      <button
-                        onClick={() => setIsChatModalOpen(true)}
-                        className="px-5 py-2.5 rounded-full bg-[#FF5A5F] hover:bg-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
-                      >
-                        Get in Touch
-                      </button>
-                      <a
-                        href="#hero"
-                        className="px-4 py-2.5 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white text-xs font-medium border border-zinc-800 transition-colors"
-                      >
-                        Back to Top ↑
-                      </a>
-                    </div>
-                  </div>
-                </footer>
+            <button
+              onClick={() => setIsChatModalOpen(true)}
+              className="px-5 py-2.5 rounded-full bg-[#FF5A5F] hover:bg-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+            >
+              Get in Touch
+            </button>
+            <a
+              href="#hero"
+              className="px-4 py-2.5 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white text-xs font-medium border border-zinc-800 transition-colors"
+            >
+              Back to Top ↑
+            </a>
+          </div>
+        </div>
+      </footer>
 
-                {/* ========================================================================= */}
-                {/* 7. INTERACTIVE "LET'S CHAT / HIRE ME" MODAL                               */}
-                {/* ========================================================================= */}
-                {isChatModalOpen && (
-                  <div
-                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in"
-                    onClick={closeChatModal}
-                  >
-                    <div
-                      className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl bg-zinc-950 border border-zinc-800 p-6 sm:p-8 shadow-2xl space-y-6"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="space-y-1">
-                          <span className="text-[11px] font-bold uppercase tracking-wider text-[#FF5A5F] flex items-center gap-1.5">
-                            <Sparkles className="w-3.5 h-3.5" />
-                            Direct Consultation
-                          </span>
-                          <h3 className="text-2xl font-bold text-white">Let&apos;s Build Together</h3>
-                          <p className="text-xs text-zinc-400">
-                            Send a direct message straight to Ar-jay&apos;s inbox (tabanginarjay@gmail.com).
-                          </p>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={closeChatModal}
-                          aria-label="Close modal"
-                          className="p-2 rounded-xl bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800 cursor-pointer transition-colors"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-
-                      {contactStatus === 'sent' ? (
-                        <div className="py-6 text-center space-y-4">
-                          <div className="w-14 h-14 mx-auto rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                            <CheckCircle2 className="w-8 h-8" />
-                          </div>
-                          <div className="space-y-1.5">
-                            <h4 className="text-xl font-bold text-white">Message Sent!</h4>
-                            <p className="text-xs text-zinc-400 max-w-sm mx-auto leading-relaxed">
-                              Thank you for reaching out. Your inquiry has been sent to{' '}
-                              <span className="text-zinc-200 font-medium">tabanginarjay@gmail.com</span>.
-                              Ar-jay will get back to you shortly.
-                            </p>
-                          </div>
-                          <div className="pt-2 flex items-center justify-center gap-3">
-                            <button
-                              type="button"
-                              onClick={() => setContactStatus('idle')}
-                              className="px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 text-xs font-bold transition-colors cursor-pointer"
-                            >
-                              Send Another
-                            </button>
-                            <button
-                              type="button"
-                              onClick={closeChatModal}
-                              className="px-6 py-2 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
-                            >
-                              Done
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <form onSubmit={handleContactSubmit} className="space-y-4 text-xs">
-                          <div className="space-y-1 text-left">
-                            <label htmlFor="contact-name" className="font-bold text-zinc-300">
-                              Your Name
-                            </label>
-                            <input
-                              id="contact-name"
-                              name="name"
-                              type="text"
-                              required
-                              value={contactName}
-                              onChange={(e) => setContactName(e.target.value)}
-                              disabled={contactStatus === 'sending'}
-                              placeholder="e.g. John Doe"
-                              className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors disabled:opacity-60"
-                            />
-                          </div>
-
-                          <div className="space-y-1 text-left">
-                            <label htmlFor="contact-email" className="font-bold text-zinc-300">
-                              Your Email Address
-                            </label>
-                            <input
-                              id="contact-email"
-                              name="email"
-                              type="email"
-                              required
-                              value={contactEmail}
-                              onChange={(e) => setContactEmail(e.target.value)}
-                              disabled={contactStatus === 'sending'}
-                              placeholder="e.g. john@company.com"
-                              className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors disabled:opacity-60"
-                            />
-                          </div>
-
-                          <div className="space-y-1 text-left">
-                            <label htmlFor="contact-message" className="font-bold text-zinc-300">
-                              Project Overview / Message
-                            </label>
-                            <textarea
-                              id="contact-message"
-                              name="message"
-                              rows={4}
-                              required
-                              value={contactMessage}
-                              onChange={(e) => setContactMessage(e.target.value)}
-                              disabled={contactStatus === 'sending'}
-                              placeholder="Tell me about the website, mobile app, or design you would like to build..."
-                              className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors resize-none disabled:opacity-60"
-                            />
-                          </div>
-
-                          {contactStatus === 'error' && (
-                            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-200 space-y-2 text-left">
-                              <div className="flex items-start gap-2">
-                                <AlertCircle className="w-4 h-4 text-[#FF5A5F] shrink-0 mt-0.5" />
-                                <p className="text-[11px] leading-relaxed">{contactError}</p>
-                              </div>
-                              <a
-                                href={buildMailtoHref()}
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-white text-[11px] font-bold transition-colors"
-                              >
-                                <Mail className="w-3.5 h-3.5 text-[#FF5A5F]" />
-                                <span>Open Pre-filled Email App Instead</span>
-                              </a>
-                            </div>
-                          )}
-
-                          <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
-                            <a
-                              href={buildMailtoHref()}
-                              className="text-xs text-zinc-400 hover:text-white flex items-center gap-1.5 transition-colors"
-                            >
-                              <Mail className="w-3.5 h-3.5 text-[#FF5A5F]" />
-                              <span>tabanginarjay@gmail.com</span>
-                            </a>
-
-                            <button
-                              type="submit"
-                              disabled={contactStatus === 'sending'}
-                              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] hover:brightness-110 text-white font-bold transition-all shadow-md active:scale-95 flex items-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-                            >
-                              {contactStatus === 'sending' ? (
-                                <>
-                                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                                  <span>Sending...</span>
-                                </>
-                              ) : (
-                                <>
-                                  <span>Send Message</span>
-                                  <Send className="w-3.5 h-3.5" />
-                                </>
-                              )}
-                            </button>
-                          </div>
-                        </form>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* ========================================================================= */}
-                {/* 8. CERTIFICATE PREVIEW MODAL                                              */}
-                {/* ========================================================================= */}
-                {selectedCertificate && (
-                  <div
-                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in"
-                    onClick={() => setSelectedCertificate(null)}
-                  >
-                    <div
-                      className="relative w-full max-w-3xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-5 my-auto max-h-[92vh] flex flex-col"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div 
-                        onContextMenu={(e) => e.preventDefault()}
-                        className="relative aspect-[4/3] sm:aspect-[16/10] max-h-[58vh] w-full bg-zinc-900/90 flex items-center justify-center p-3 select-none"
-                      >
-                        <Image
-                          src={selectedCertificate.image}
-                          alt={selectedCertificate.title}
-                          fill
-                          unoptimized
-                          className="object-contain p-2 pointer-events-none"
-                        />
-                        <button
-                          onClick={() => setSelectedCertificate(null)}
-                          className="absolute top-4 right-4 p-2 rounded-full bg-black/70 text-white hover:bg-black transition-colors cursor-pointer z-10"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-
-                      <div className="p-6 pt-0 space-y-4 overflow-y-auto">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <span className="text-[11px] font-mono font-bold text-[#FF5A5F] px-2 py-0.5 rounded bg-rose-500/10 border border-rose-500/20">
-                              {selectedCertificate.credentialId}
-                            </span>
-                            <span className="text-[11px] font-mono text-zinc-400">
-                              {selectedCertificate.badge}
-                            </span>
-                          </div>
-                          <h4 className="text-xl sm:text-2xl font-bold text-white leading-snug">{selectedCertificate.title}</h4>
-                          <p className="text-xs text-zinc-400">{selectedCertificate.issuer} • Issued {selectedCertificate.date}</p>
-                        </div>
-
-                        <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                          {selectedCertificate.description}
-                        </p>
-
-                        <div className="flex flex-wrap gap-1.5 pt-1">
-                          {selectedCertificate.skills?.map((s: string) => (
-                            <span
-                              key={s}
-                              className="px-2.5 py-0.5 rounded-lg bg-zinc-900 text-[11px] font-medium text-zinc-300 border border-zinc-800"
-                            >
-                              {s}
-                            </span>
-                          ))}
-                        </div>
-
-                        <div className="pt-4 border-t border-zinc-900 flex flex-wrap items-center justify-between gap-3">
-                          <div className="flex flex-wrap items-center gap-3">
-                            {selectedCertificate.pdfUrl && (
-                              <a
-                                href={selectedCertificate.pdfUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 flex items-center gap-1.5"
-                              >
-                                <Download className="w-3.5 h-3.5" />
-                                <span>Download / View PDF</span>
-                              </a>
-                            )}
-                            {selectedCertificate.verifyUrl && (
-                              <a
-                                href={selectedCertificate.verifyUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white text-xs font-bold transition-all flex items-center gap-1.5"
-                              >
-                                <ExternalLink className="w-3.5 h-3.5 text-[#FF5A5F]" />
-                                <span>Online Verification</span>
-                              </a>
-                            )}
-                            <a
-                              href={selectedCertificate.image}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs text-zinc-400 hover:text-white transition-colors underline flex items-center gap-1"
-                            >
-                              <ExternalLink className="w-3 h-3" />
-                              <span>View Full Image</span>
-                            </a>
-                          </div>
-
-                          <button
-                            onClick={() => setSelectedCertificate(null)}
-                            className="px-5 py-2 rounded-xl bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-800 transition-colors cursor-pointer"
-                          >
-                            Close
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* ========================================================================= */}
-                {/* 9. PROJECT DETAILS MODAL                                                 */}
-                {/* ========================================================================= */}
-                {selectedProject && (
-                  <div
-                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in"
-                    onClick={() => setSelectedProject(null)}
-                  >
-                    <div
-                      className="relative w-full max-w-xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-5"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div className="relative aspect-video w-full bg-zinc-900">
-                        <Image
-                          src={selectedProject.image}
-                          alt={selectedProject.title}
-                          fill
-                          className="object-cover"
-                        />
-                        <button
-                          onClick={() => setSelectedProject(null)}
-                          className="absolute top-4 right-4 p-2 rounded-full bg-black/60 text-white hover:bg-black"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-
-                      <div className="p-6 pt-0 space-y-4">
-                        <div className="space-y-1">
-                          <span className="text-[11px] font-mono font-bold text-[#FF5A5F]">
-                            {selectedProject.type}
-                          </span>
-                          <h4 className="text-2xl font-bold text-white">{selectedProject.title}</h4>
-                        </div>
-
-                        <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                          {selectedProject.description}
-                        </p>
-
-                        <div className="flex flex-wrap gap-1.5 pt-1">
-                          {selectedProject.tags.map((tag: string) => (
-                            <span
-                              key={tag}
-                              className="px-2.5 py-0.5 rounded-lg bg-zinc-900 text-[11px] font-medium text-zinc-300 border border-zinc-800"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-
-                        <div className="pt-4 border-t border-zinc-900 flex items-center justify-between">
-                          <div>
-                            {selectedProject.link && selectedProject.link !== '#' ? (
-                              <a
-                                href={selectedProject.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 inline-flex items-center gap-1.5"
-                              >
-                                <span>Visit Live Platform</span>
-                                <ExternalLink className="w-3.5 h-3.5" />
-                              </a>
-                            ) : (
-                              <span className="text-xs text-zinc-500 font-mono">
-                                Status: {selectedProject.status}
-                              </span>
-                            )}
-                          </div>
-
-                          <button
-                            onClick={() => setSelectedProject(null)}
-                            className="px-5 py-2 rounded-xl bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-800 transition-colors cursor-pointer"
-                          >
-                            Close
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+      {/* ========================================================================= */}
+      {/* 7. INTERACTIVE "LET'S CHAT / HIRE ME" MODAL                               */}
+      {/* ========================================================================= */}
+      {isChatModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in"
+          onClick={closeChatModal}
+        >
+          <div
+            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl bg-zinc-950 border border-zinc-800 p-6 sm:p-8 shadow-2xl space-y-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-1">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#FF5A5F] flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Direct Consultation
+                </span>
+                <h3 className="text-2xl font-bold text-white">Let&apos;s Build Together</h3>
+                <p className="text-xs text-zinc-400">
+                  Send a direct message straight to Ar-jay&apos;s inbox (tabanginarjay@gmail.com).
+                </p>
               </div>
-              );
+              <button
+                type="button"
+                onClick={closeChatModal}
+                aria-label="Close modal"
+                className="p-2 rounded-xl bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800 cursor-pointer transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {contactStatus === 'sent' ? (
+              <div className="py-6 text-center space-y-4">
+                <div className="w-14 h-14 mx-auto rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                  <CheckCircle2 className="w-8 h-8" />
+                </div>
+                <div className="space-y-1.5">
+                  <h4 className="text-xl font-bold text-white">Message Sent!</h4>
+                  <p className="text-xs text-zinc-400 max-w-sm mx-auto leading-relaxed">
+                    Thank you for reaching out. Your inquiry has been sent to{' '}
+                    <span className="text-zinc-200 font-medium">tabanginarjay@gmail.com</span>.
+                    Ar-jay will get back to you shortly.
+                  </p>
+                </div>
+                <div className="pt-2 flex items-center justify-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setContactStatus('idle')}
+                    className="px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 text-xs font-bold transition-colors cursor-pointer"
+                  >
+                    Send Another
+                  </button>
+                  <button
+                    type="button"
+                    onClick={closeChatModal}
+                    className="px-6 py-2 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleContactSubmit} className="space-y-4 text-xs">
+                <div className="space-y-1 text-left">
+                  <label htmlFor="contact-name" className="font-bold text-zinc-300">
+                    Your Name
+                  </label>
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    required
+                    value={contactName}
+                    onChange={(e) => setContactName(e.target.value)}
+                    disabled={contactStatus === 'sending'}
+                    placeholder="e.g. John Doe"
+                    className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors disabled:opacity-60"
+                  />
+                </div>
+
+                <div className="space-y-1 text-left">
+                  <label htmlFor="contact-email" className="font-bold text-zinc-300">
+                    Your Email Address
+                  </label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    required
+                    value={contactEmail}
+                    onChange={(e) => setContactEmail(e.target.value)}
+                    disabled={contactStatus === 'sending'}
+                    placeholder="e.g. john@company.com"
+                    className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors disabled:opacity-60"
+                  />
+                </div>
+
+                <div className="space-y-1 text-left">
+                  <label htmlFor="contact-message" className="font-bold text-zinc-300">
+                    Project Overview / Message
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    rows={4}
+                    required
+                    value={contactMessage}
+                    onChange={(e) => setContactMessage(e.target.value)}
+                    disabled={contactStatus === 'sending'}
+                    placeholder="Tell me about the website, mobile app, or design you would like to build..."
+                    className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors resize-none disabled:opacity-60"
+                  />
+                </div>
+
+                {contactStatus === 'error' && (
+                  <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-200 space-y-2 text-left">
+                    <div className="flex items-start gap-2">
+                      <AlertCircle className="w-4 h-4 text-[#FF5A5F] shrink-0 mt-0.5" />
+                      <p className="text-[11px] leading-relaxed">{contactError}</p>
+                    </div>
+                    <a
+                      href={buildMailtoHref()}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-white text-[11px] font-bold transition-colors"
+                    >
+                      <Mail className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                      <span>Open Pre-filled Email App Instead</span>
+                    </a>
+                  </div>
+                )}
+
+                <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
+                  <a
+                    href={buildMailtoHref()}
+                    className="text-xs text-zinc-400 hover:text-white flex items-center gap-1.5 transition-colors"
+                  >
+                    <Mail className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                    <span>tabanginarjay@gmail.com</span>
+                  </a>
+
+                  <button
+                    type="submit"
+                    disabled={contactStatus === 'sending'}
+                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] hover:brightness-110 text-white font-bold transition-all shadow-md active:scale-95 flex items-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {contactStatus === 'sending' ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <span>Sending...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Send Message</span>
+                        <Send className="w-3.5 h-3.5" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 8. CERTIFICATE PREVIEW MODAL                                              */}
+      {/* ========================================================================= */}
+      {selectedCertificate && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in"
+          onClick={() => setSelectedCertificate(null)}
+        >
+          <div
+            className="relative w-full max-w-3xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-5 my-auto max-h-[92vh] flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              onContextMenu={(e) => e.preventDefault()}
+              className="relative aspect-[4/3] sm:aspect-[16/10] max-h-[58vh] w-full bg-zinc-900/90 flex items-center justify-center p-3 select-none"
+            >
+              <Image
+                src={selectedCertificate.image}
+                alt={selectedCertificate.title}
+                fill
+                unoptimized
+                className="object-contain p-2 pointer-events-none"
+              />
+              <button
+                onClick={() => setSelectedCertificate(null)}
+                className="absolute top-4 right-4 p-2 rounded-full bg-black/70 text-white hover:bg-black transition-colors cursor-pointer z-10"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-6 pt-0 space-y-4 overflow-y-auto">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-mono font-bold text-[#FF5A5F] px-2 py-0.5 rounded bg-rose-500/10 border border-rose-500/20">
+                    {selectedCertificate.credentialId}
+                  </span>
+                  <span className="text-[11px] font-mono text-zinc-400">
+                    {selectedCertificate.badge}
+                  </span>
+                </div>
+                <h4 className="text-xl sm:text-2xl font-bold text-white leading-snug">{selectedCertificate.title}</h4>
+                <p className="text-xs text-zinc-400">{selectedCertificate.issuer} • Issued {selectedCertificate.date}</p>
+              </div>
+
+              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                {selectedCertificate.description}
+              </p>
+
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {selectedCertificate.skills?.map((s: string) => (
+                  <span
+                    key={s}
+                    className="px-2.5 py-0.5 rounded-lg bg-zinc-900 text-[11px] font-medium text-zinc-300 border border-zinc-800"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+
+              <div className="pt-4 border-t border-zinc-900 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-3">
+                  {selectedCertificate.pdfUrl && (
+                    <a
+                      href={selectedCertificate.pdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 flex items-center gap-1.5"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Download / View PDF</span>
+                    </a>
+                  )}
+                  {selectedCertificate.verifyUrl && (
+                    <a
+                      href={selectedCertificate.verifyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white text-xs font-bold transition-all flex items-center gap-1.5"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                      <span>Online Verification</span>
+                    </a>
+                  )}
+                  <a
+                    href={selectedCertificate.image}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-zinc-400 hover:text-white transition-colors underline flex items-center gap-1"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    <span>View Full Image</span>
+                  </a>
+                </div>
+
+                <button
+                  onClick={() => setSelectedCertificate(null)}
+                  className="px-5 py-2 rounded-xl bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-800 transition-colors cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 9. PROJECT DETAILS MODAL                                                 */}
+      {/* ========================================================================= */}
+      {selectedProject && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in"
+          onClick={() => setSelectedProject(null)}
+        >
+          <div
+            className="relative w-full max-w-xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative aspect-video w-full bg-zinc-900">
+              <Image
+                src={selectedProject.image}
+                alt={selectedProject.title}
+                fill
+                className="object-cover"
+              />
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="absolute top-4 right-4 p-2 rounded-full bg-black/60 text-white hover:bg-black"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-6 pt-0 space-y-4">
+              <div className="space-y-1">
+                <span className="text-[11px] font-mono font-bold text-[#FF5A5F]">
+                  {selectedProject.type}
+                </span>
+                <h4 className="text-2xl font-bold text-white">{selectedProject.title}</h4>
+              </div>
+
+              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                {selectedProject.description}
+              </p>
+
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {selectedProject.tags.map((tag: string) => (
+                  <span
+                    key={tag}
+                    className="px-2.5 py-0.5 rounded-lg bg-zinc-900 text-[11px] font-medium text-zinc-300 border border-zinc-800"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <div className="pt-4 border-t border-zinc-900 flex items-center justify-between">
+                <div>
+                  {selectedProject.link && selectedProject.link !== '#' ? (
+                    <a
+                      href={selectedProject.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 inline-flex items-center gap-1.5"
+                    >
+                      <span>Visit Live Platform</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  ) : (
+                    <span className="text-xs text-zinc-500 font-mono">
+                      Status: {selectedProject.status}
+                    </span>
+                  )}
+                </div>
+
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="px-5 py-2 rounded-xl bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-800 transition-colors cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
