@@ -66,14 +66,20 @@ export default function PortfolioPage() {
     }
   };
 
-  const buildMailtoHref = () => {
+  const GMAIL_COMPOSE_URL =
+    'https://mail.google.com/mail/?view=cm&fs=1&to=tabanginarjay@gmail.com&su=Portfolio%20Inquiry%20for%20Ar-jay%20Tabangin';
+
+  const buildGmailComposeHref = () => {
+    const hasDetails = contactName.trim() || contactEmail.trim() || contactMessage.trim();
+    if (!hasDetails) return GMAIL_COMPOSE_URL;
+
     const subject = encodeURIComponent(
       `Portfolio Inquiry from ${contactName.trim() || 'Website Visitor'}`
     );
     const body = encodeURIComponent(
       `Name: ${contactName.trim()}\nEmail: ${contactEmail.trim()}\n\nMessage:\n${contactMessage.trim()}`
     );
-    return `mailto:tabanginarjay@gmail.com?subject=${subject}&body=${body}`;
+    return `https://mail.google.com/mail/?view=cm&fs=1&to=tabanginarjay@gmail.com&su=${subject}&body=${body}`;
   };
 
   const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -520,31 +526,30 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       <header className="relative z-50 w-full max-w-7xl mx-auto px-5 sm:px-10 lg:px-12 py-4 sm:py-5 lg:py-7 flex items-center justify-between">
         {/* Brand Logo & Email Link */}
-        <div className="flex items-center gap-6 sm:gap-10">
+        <div className="flex items-center gap-4 sm:gap-6">
           <a
             href="#"
-            className="group flex items-center gap-2.5 sm:gap-3 text-xl sm:text-2xl font-bold tracking-tight text-white"
+            className="group flex items-center"
             aria-label="Ar-jay Home"
           >
-            <span className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-zinc-950 border border-white/15 group-hover:border-[#FF5A5F]/60 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(255,90,95,0.12)] group-hover:shadow-[0_0_24px_rgba(255,90,95,0.3)] transition-all duration-300">
+            <span className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-zinc-950 border border-white/15 group-hover:border-[#FF5A5F]/60 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(255,90,95,0.12)] group-hover:shadow-[0_0_24px_rgba(255,90,95,0.3)] transition-all duration-300">
               <Image
                 src="/images/arjay-logo.png"
                 alt="Ar-jay AJ Monogram Logo"
-                width={32}
-                height={32}
+                width={36}
+                height={36}
                 priority
                 unoptimized
                 className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
               />
             </span>
-            <span className="flex items-center gap-1.5">
-              <span className="tracking-tight">Ar-jay</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F] group-hover:scale-150 transition-transform" />
-            </span>
           </a>
 
           <a
-            href="mailto:tabanginarjay@gmail.com"
+            href={GMAIL_COMPOSE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Compose email in Gmail"
             className="hidden sm:inline-block text-xs sm:text-sm text-zinc-400 hover:text-white transition-colors"
           >
             tabanginarjay@gmail.com
@@ -554,8 +559,11 @@ export default function PortfolioPage() {
         {/* Right Menu Hamburger Button */}
         <div className="flex items-center gap-4">
           <a
-            href="mailto:tabanginarjay@gmail.com"
-            className="sm:hidden text-xs text-zinc-400 hover:text-white"
+            href={GMAIL_COMPOSE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Compose email in Gmail"
+            className="sm:hidden text-xs text-zinc-400 hover:text-white transition-colors"
           >
             Email
           </a>
@@ -1718,18 +1726,22 @@ export default function PortfolioPage() {
                       <p className="text-[11px] leading-relaxed">{contactError}</p>
                     </div>
                     <a
-                      href={buildMailtoHref()}
+                      href={buildGmailComposeHref()}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-white text-[11px] font-bold transition-colors"
                     >
                       <Mail className="w-3.5 h-3.5 text-[#FF5A5F]" />
-                      <span>Open Pre-filled Email App Instead</span>
+                      <span>Open Pre-filled Gmail Instead</span>
                     </a>
                   </div>
                 )}
 
                 <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
                   <a
-                    href={buildMailtoHref()}
+                    href={buildGmailComposeHref()}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-xs text-zinc-400 hover:text-white flex items-center gap-1.5 transition-colors"
                   >
                     <Mail className="w-3.5 h-3.5 text-[#FF5A5F]" />
