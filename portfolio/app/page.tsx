@@ -30,6 +30,8 @@ import {
   Trophy,
   Calendar,
   SlidersHorizontal,
+  Lock,
+  ShieldCheck,
 } from 'lucide-react';
 import SmokeAtmosphere from '../components/SmokeAtmosphere';
 import GeometricShapes from '../components/GeometricShapes';
@@ -43,15 +45,20 @@ export default function PortfolioPage() {
   const [selectedCertificate, setSelectedCertificate] = useState<any | null>(null);
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
 
-  // Horizontal Certificates Carousel state & refs
+  // Horizontal Certificates Carousel & Anti-Capture Shield state & refs
   const pageRootRef = useRef<HTMLDivElement | null>(null);
+  const certSectionRef = useRef<HTMLElement | null>(null);
+  const isCertInViewRef = useRef<boolean>(false);
   const certSliderRef = useRef<HTMLDivElement | null>(null);
   const certCardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const certScrollRafRef = useRef<number | null>(null);
   const certHoverTimerRef = useRef<number | null>(null);
+  const certShieldTimerRef = useRef<number | null>(null);
   const [activeCertIndex, setActiveCertIndex] = useState(0);
   const [canScrollCertPrev, setCanScrollCertPrev] = useState(false);
   const [canScrollCertNext, setCanScrollCertNext] = useState(true);
+  const [isCertShielded, setIsCertShielded] = useState(false);
+  const [certShieldReason, setCertShieldReason] = useState<'capture' | 'blur' | null>(null);
   const [hoveredCert, setHoveredCert] = useState<{
     cert: any;
     side: 'left' | 'right';
@@ -373,6 +380,106 @@ export default function PortfolioPage() {
     return () => window.removeEventListener('scroll', dismissOnScroll);
   }, [hoveredCert]);
 
+  // Track when the Certificates section is onscreen so anti-screenshot shield only activates when needed
+  useEffect(() => {
+    const sectionEl = certSectionRef.current;
+    if (!sectionEl) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        isCertInViewRef.current = entries[0]?.isIntersecting ?? false;
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(sectionEl);
+    return () => observer.disconnect();
+  }, []);
+
+  // Anti-Screenshot & Screen-Capture Privacy Shield for Certificates section & Preview Modal
+  useEffect(() => {
+    const isProtectingCerts = () =>
+      Boolean(selectedCertificate || hoveredCert || isCertInViewRef.current);
+
+    const triggerCaptureShield = (durationMs = 2800) => {
+      setHoveredCert(null);
+      setCertShieldReason('capture');
+      setIsCertShielded(true);
+      if (certShieldTimerRef.current !== null) {
+        window.clearTimeout(certShieldTimerRef.current);
+      }
+      certShieldTimerRef.current = window.setTimeout(() => {
+        setIsCertShielded(false);
+        setCertShieldReason(null);
+        certShieldTimerRef.current = null;
+      }, durationMs);
+    };
+
+    const handleKeyCapture = (e: KeyboardEvent) => {
+      if (!isProtectingCerts()) return;
+
+      const key = e.key?.toLowerCase() || '';
+      const isPrintScreen = e.key === 'PrintScreen' || e.code === 'PrintScreen';
+      const isMacScreenshot = e.metaKey && e.shiftKey && ['3', '4', '5', '6'].includes(e.key);
+      const isWinSnipping = (e.metaKey || e.ctrlKey) && e.shiftKey && key === 's';
+      const isPrintOrSave = (e.ctrlKey || e.metaKey) && (key === 'p' || key === 's' || key === 'u');
+      const isDevTools =
+        e.key === 'F12' ||
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].includes(key));
+
+      if (isPrintScreen || isMacScreenshot || isWinSnipping || isPrintOrSave || isDevTools) {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerCaptureShield();
+        if (isPrintScreen && navigator.clipboard?.writeText) {
+          navigator.clipboard.writeText('').catch(() => {});
+        }
+      }
+    };
+
+    // Obscure certificate visuals immediately when window loses focus (e.g. Snipping Tool / OS overlay)
+    const handleWindowBlur = () => {
+      if (!isProtectingCerts()) return;
+      setHoveredCert(null);
+      setCertShieldReason('blur');
+      setIsCertShielded(true);
+    };
+
+    const handleWindowFocus = () => {
+      setIsCertShielded((prev) => {
+        if (!prev) return prev;
+        return false;
+      });
+      setCertShieldReason((prev) => (prev === 'blur' ? null : prev));
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden && isProtectingCerts()) {
+        setHoveredCert(null);
+        setCertShieldReason('blur');
+        setIsCertShielded(true);
+      } else if (!document.hidden) {
+        setIsCertShielded(false);
+        setCertShieldReason(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyCapture, true);
+    window.addEventListener('keyup', handleKeyCapture, true);
+    window.addEventListener('blur', handleWindowBlur);
+    window.addEventListener('focus', handleWindowFocus);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyCapture, true);
+      window.removeEventListener('keyup', handleKeyCapture, true);
+      window.removeEventListener('blur', handleWindowBlur);
+      window.removeEventListener('focus', handleWindowFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (certShieldTimerRef.current !== null) {
+        window.clearTimeout(certShieldTimerRef.current);
+      }
+    };
+  }, [selectedCertificate, hoveredCert]);
+
   // Smooth zero-lag scroll-reveal observer across all sections & cards
   useEffect(() => {
     const root = pageRootRef.current;
@@ -643,7 +750,7 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 1. TOP HEADER NAVIGATION (Matching the Reference Screenshot)             */}
       {/* ========================================================================= */}
-      <header className="hero-anim-down relative z-50 w-full max-w-7xl mx-auto px-5 sm:px-10 lg:px-12 py-4 sm:py-5 lg:py-7 flex items-center justify-between">
+      <header className="hero-anim-down relative z-50 w-full max-w-7xl mx-auto pt-[max(1rem,env(safe-area-inset-top))] pb-4 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] sm:px-8 lg:px-12 sm:py-5 lg:py-7 flex items-center justify-between">
         {/* Brand Logo & Email Link */}
         <div className="flex items-center gap-4 sm:gap-6">
           <a
@@ -766,17 +873,17 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       <section
         id="hero"
-        className="relative w-full max-w-7xl mx-auto px-5 sm:px-10 lg:px-12 pt-0 sm:pt-2 lg:pt-4 pb-16 lg:pb-20 lg:min-h-[85vh] flex flex-col justify-between overflow-hidden"
+        className="relative w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 pt-1 sm:pt-3 lg:pt-4 pb-12 sm:pb-16 lg:pb-20 lg:min-h-[82dvh] xl:min-h-[85dvh] flex flex-col justify-between overflow-hidden"
       >
         {/* Subtle, non-intrusive ethereal smoke transition effect behind content */}
         <SmokeAtmosphere />
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-5 lg:gap-10 items-center relative z-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6 md:gap-8 lg:gap-6 xl:gap-10 items-center relative z-20">
           {/* ----------------- LEFT COLUMN: HEADING & CTA ----------------- */}
-          <div className="lg:col-span-4 space-y-4 sm:space-y-5 lg:space-y-6 text-left order-2 lg:order-1 pt-0 relative z-30">
+          <div className="md:col-span-1 lg:col-span-4 space-y-4 sm:space-y-5 lg:space-y-6 text-left order-2 lg:order-1 pt-0 relative z-30">
             <div className="space-y-1">
               <h1
                 style={{ '--delay': '80ms' } as React.CSSProperties}
-                className="hero-anim-up font-serif text-[42px] sm:text-5xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08] lg:leading-[1.1]"
+                className="hero-anim-up font-serif text-[38px] sm:text-5xl lg:text-[52px] xl:text-7xl font-bold tracking-tight text-white leading-[1.08] lg:leading-[1.1]"
               >
                 Hi, <br />
                 I&apos;m <span className="text-[#FF5A5F]">Ar-jay</span>
@@ -785,10 +892,10 @@ export default function PortfolioPage() {
                 style={{ '--delay': '170ms' } as React.CSSProperties}
                 className="hero-anim-up pt-1.5 lg:pt-2 space-y-0.5 lg:space-y-1"
               >
-                <p className="text-white text-base sm:text-xl font-semibold tracking-wide">
+                <p className="text-white text-base sm:text-lg xl:text-xl font-semibold tracking-wide">
                   Developer &amp; UI/UX Designer
                 </p>
-                <p className="text-zinc-400 text-xs sm:text-base font-medium">
+                <p className="text-zinc-400 text-xs sm:text-sm xl:text-base font-medium">
                   Certified Customer Service &bull; Photo/Video Editor
                 </p>
               </div>
@@ -814,7 +921,7 @@ export default function PortfolioPage() {
             {/* Left Social Links */}
             <div
               style={{ '--delay': '330ms' } as React.CSSProperties}
-              className="hero-anim-up pt-3 sm:pt-5 lg:pt-8 flex flex-col space-y-3 lg:space-y-4"
+              className="hero-anim-up pt-3 sm:pt-4 lg:pt-7 flex flex-col space-y-3 lg:space-y-4"
             >
               <div className="flex items-center gap-5 text-zinc-400">
                 <a
@@ -859,28 +966,28 @@ export default function PortfolioPage() {
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2 text-xs text-zinc-400 hover:text-white transition-colors"
               >
-                <span className="w-4 h-4 rounded-full bg-[#0A66C2] flex items-center justify-center text-[9px] font-bold text-white group-hover:scale-110 transition-transform">
+                <span className="w-4 h-4 rounded-full bg-[#0A66C2] flex items-center justify-center text-[9px] font-bold text-white group-hover:scale-110 transition-transform shrink-0">
                   in
                 </span>
-                <span>www.linkedin.com/in/jay-t-a6bb1a217</span>
+                <span className="break-all sm:break-normal">www.linkedin.com/in/jay-t-a6bb1a217</span>
               </a>
             </div>
           </div>
 
           {/* ----------------- CENTER COLUMN: PORTRAIT IMAGE ----------------- */}
-          <div className="lg:col-span-4 flex items-center justify-center order-1 lg:order-2 relative">
+          <div className="md:col-span-2 lg:col-span-4 flex items-center justify-center order-1 lg:order-2 relative">
             {/* Zero-cost radial studio backlight halo (pure gradients, zero heavy CSS blur filters!) */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -inset-8 lg:-inset-12 flex items-center justify-center"
+              className="pointer-events-none absolute -inset-8 lg:-inset-10 flex items-center justify-center"
             >
-              <div className="w-[280px] h-[340px] sm:w-[340px] sm:h-[420px] lg:w-[440px] lg:h-[520px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,244,234,0.08)_0%,rgba(255,90,95,0.04)_36%,rgba(34,211,238,0.025)_56%,transparent_72%)] -translate-y-6 lg:-translate-y-8" />
+              <div className="w-[260px] h-[320px] sm:w-[320px] sm:h-[400px] lg:w-[360px] lg:h-[440px] xl:w-[440px] xl:h-[520px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,244,234,0.08)_0%,rgba(255,90,95,0.04)_36%,rgba(34,211,238,0.025)_56%,transparent_72%)] -translate-y-4 lg:-translate-y-8" />
             </div>
 
-            {/* True transparent portrait PNG — compact & balanced on iOS/Android, editorial scale on desktop */}
+            {/* True transparent portrait PNG — balanced across Android, iOS, Tablet, Laptop & Desktop */}
             <div
               style={{ '--delay': '110ms' } as React.CSSProperties}
-              className="hero-anim-portrait relative w-[228px] sm:w-[275px] md:w-[330px] lg:w-[430px] aspect-[482/744] max-h-[355px] sm:max-h-[430px] lg:max-h-[640px] -mt-1 -mb-16 sm:-mb-20 lg:mt-0 lg:mb-0 select-none"
+              className="hero-anim-portrait relative w-[215px] sm:w-[270px] md:w-[310px] lg:w-[320px] xl:w-[420px] aspect-[482/744] max-h-[335px] sm:max-h-[420px] md:max-h-[470px] lg:max-h-[520px] xl:max-h-[630px] -mt-1 -mb-14 sm:-mb-16 md:-mb-8 lg:mt-0 lg:mb-0 select-none"
             >
               <Image
                 src="/images/arjay-portrait-hero.png?v=6"
@@ -894,7 +1001,7 @@ export default function PortfolioPage() {
           </div>
 
           {/* ----------------- RIGHT COLUMN: EXPERTISE & GEOMETRIC ACCENT ----------------- */}
-          <div className="lg:col-span-4 space-y-6 text-left order-3 relative mt-8 lg:mt-0">
+          <div className="md:col-span-1 lg:col-span-4 space-y-5 lg:space-y-6 text-left order-3 relative mt-6 md:mt-0">
             {/* Dynamic floating geometric shapes with independent multi-directional drift & mouse parallax */}
             <GeometricShapes />
 
@@ -984,8 +1091,8 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 3. BACKGROUND & TRACK RECORD (EXPERIENCE, EDUCATION & ACHIEVEMENTS)       */}
       {/* ========================================================================= */}
-      <section id="experience" className="relative z-20 py-24 border-t border-zinc-900 bg-[#050505]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-14">
+      <section id="experience" className="relative z-20 py-16 sm:py-20 lg:py-24 border-t border-zinc-900 bg-[#050505]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-10 sm:space-y-14">
           {/* Section Header */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <div data-reveal="up" className="space-y-2">
@@ -1029,17 +1136,17 @@ export default function PortfolioPage() {
                 </div>
               </div>
 
-              <div className="relative pl-6 sm:pl-8 space-y-6 before:content-[''] before:absolute before:left-[7px] before:top-3 before:bottom-3 before:w-px before:bg-gradient-to-b before:from-[#FF5A5F] before:via-zinc-800 before:to-transparent">
+              <div className="relative pl-5 sm:pl-8 space-y-5 sm:space-y-6 before:content-[''] before:absolute before:left-[7px] before:top-3 before:bottom-3 before:w-px before:bg-gradient-to-b before:from-[#FF5A5F] before:via-zinc-800 before:to-transparent">
                 {workExperience.map((exp, idx) => (
                   <div
                     key={exp.id}
                     data-reveal="left"
                     style={{ '--reveal-delay': `${idx * 90}ms` } as React.CSSProperties}
-                    className="relative group p-6 rounded-3xl bg-zinc-950/85 hover:bg-zinc-900/80 border border-zinc-850 hover:border-[#FF5A5F]/40 hover:-translate-y-1 transition-[transform,border-color,background-color] duration-300 shadow-lg space-y-3.5"
+                    className="relative group p-4 sm:p-6 rounded-3xl bg-zinc-950/85 hover:bg-zinc-900/80 border border-zinc-850 hover:border-[#FF5A5F]/40 hover:-translate-y-1 transition-[transform,border-color,background-color] duration-300 shadow-lg space-y-3.5"
                   >
                     {/* Timeline Node Dot */}
                     <span
-                      className={`absolute -left-[25px] sm:-left-[33px] top-7 w-3.5 h-3.5 rounded-full border-2 border-black ${exp.current
+                      className={`absolute -left-[21px] sm:-left-[33px] top-6 sm:top-7 w-3.5 h-3.5 rounded-full border-2 border-black ${exp.current
                         ? 'bg-[#FF5A5F] shadow-[0_0_12px_rgba(255,90,95,0.8)]'
                         : 'bg-zinc-600 group-hover:bg-[#FF5A5F] transition-colors'
                         }`}
@@ -1168,17 +1275,28 @@ export default function PortfolioPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. CERTIFICATES & CREDENTIALS SECTION                                     */}
+      {/* 4. CERTIFICATES & CREDENTIALS SECTION (CAPTURE-PROTECTED)                 */}
       {/* ========================================================================= */}
-      <section id="certificates" className="relative z-20 py-16 sm:py-24 border-t border-zinc-900 bg-black">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-7 sm:space-y-10">
+      <section
+        id="certificates"
+        ref={certSectionRef}
+        onContextMenu={(e) => e.preventDefault()}
+        className="cert-protected relative z-20 py-16 sm:py-20 lg:py-24 border-t border-zinc-900 bg-black"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-7 sm:space-y-10">
           {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 sm:gap-6">
             <div data-reveal="up" className="space-y-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
-                <Award className="w-3.5 h-3.5" />
-                Verified Credentials
-              </span>
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
+                  <Award className="w-3.5 h-3.5" />
+                  Verified Credentials
+                </span>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-zinc-950 border border-zinc-800 text-[10px] font-mono font-semibold text-zinc-300">
+                  <ShieldCheck className="w-3 h-3 text-[#FF5A5F]" />
+                  Capture Protected
+                </span>
+              </div>
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
                 Certificates & Accreditations
               </h2>
@@ -1192,7 +1310,7 @@ export default function PortfolioPage() {
             <div
               data-reveal="right"
               style={{ '--reveal-delay': '100ms' } as React.CSSProperties}
-              className="inline-flex items-center gap-3 self-start md:self-auto px-3.5 py-2 rounded-full bg-zinc-950 border border-zinc-800/90 text-xs"
+              className="inline-flex items-center gap-3 self-start md:self-auto px-3.5 py-2 rounded-full bg-zinc-950 border border-zinc-800/90 text-xs shrink-0"
             >
               <span className="font-mono font-bold text-white tabular-nums">
                 {String(activeCertIndex + 1).padStart(2, '0')}
@@ -1209,17 +1327,58 @@ export default function PortfolioPage() {
             </div>
           </div>
 
+          {/* Print Redaction Notice (only shown if someone tries Print / Save-as-PDF) */}
+          <div className="cert-print-notice">
+            Protected Credentials — Ar-jay Tabangin&apos;s certificates are restricted from printing and screenshot exports.
+          </div>
+
           {/* Horizontal Swipeable / Slideable Certificates Track */}
           <div
             data-reveal="zoom"
             style={{ '--reveal-delay': '120ms' } as React.CSSProperties}
-            className="space-y-5"
+            className="cert-no-print relative space-y-5"
           >
+            {/* Anti-Screenshot / Capture Blackout Privacy Shield Overlay */}
+            {isCertShielded && (
+              <div
+                role="alert"
+                className="absolute inset-0 z-30 rounded-3xl bg-black/95 border border-[#FF5A5F]/40 flex flex-col items-center justify-center p-6 text-center space-y-3"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-rose-500/15 border border-rose-500/35 flex items-center justify-center text-[#FF5A5F]">
+                  <Lock className="w-6 h-6" />
+                </div>
+                <div className="space-y-1 max-w-sm">
+                  <h3 className="text-base sm:text-lg font-bold text-white">
+                    {certShieldReason === 'capture'
+                      ? 'Screenshot & Capture Restricted'
+                      : 'Protected Credential View Paused'}
+                  </h3>
+                  <p className="text-xs text-zinc-400 leading-relaxed">
+                    {certShieldReason === 'capture'
+                      ? 'Screen capture, printing, and saving are disabled to protect Ar-jay Tabangin’s official credentials.'
+                      : 'Return focus to this window to continue viewing protected certificates.'}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsCertShielded(false);
+                    setCertShieldReason(null);
+                  }}
+                  className="px-4 py-1.5 rounded-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-xs font-bold text-white transition-colors cursor-pointer"
+                >
+                  Resume View
+                </button>
+              </div>
+            )}
+
             <div
               ref={certSliderRef}
               onScroll={handleCertScroll}
               aria-label="Certificates carousel"
-              className="relative flex items-stretch gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar -mx-6 px-6 scroll-pl-6 sm:-mx-10 sm:px-10 sm:scroll-pl-10 lg:mx-0 lg:px-0 lg:scroll-pl-0 pt-2 pb-3"
+              className={`relative flex items-stretch gap-4 sm:gap-5 lg:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar -mx-4 px-4 scroll-pl-4 sm:-mx-8 sm:px-8 sm:scroll-pl-8 lg:mx-0 lg:px-0 lg:scroll-pl-0 pt-2 pb-3 transition-opacity duration-150 ${
+                isCertShielded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+              }`}
             >
               {certificates.map((cert, idx) => (
                 <div
@@ -1233,13 +1392,14 @@ export default function PortfolioPage() {
                     clearCertHover();
                     setSelectedCertificate(cert);
                   }}
-                  className="group relative snap-start shrink-0 w-[80vw] max-w-[360px] sm:w-[70vw] sm:max-w-[440px] md:w-[calc(50%-0.75rem)] lg:w-[calc(44%-0.75rem)] p-4 sm:p-5 rounded-3xl bg-zinc-950/80 hover:bg-zinc-900/90 border border-zinc-850 hover:border-[#FF5A5F]/75 hover:-translate-y-1.5 transition-[transform,border-color,background-color,box-shadow] duration-300 ease-out cursor-pointer shadow-lg hover:shadow-[0_20px_50px_-18px_rgba(255,90,95,0.28)] flex flex-col justify-between space-y-4"
+                  className="group relative snap-start shrink-0 w-[82vw] max-w-[345px] sm:w-[70vw] sm:max-w-[420px] md:w-[calc(54%-0.75rem)] lg:w-[calc(46%-0.75rem)] xl:w-[calc(42%-0.75rem)] 2xl:w-[calc(38%-0.75rem)] p-4 sm:p-5 rounded-3xl bg-zinc-950/80 hover:bg-zinc-900/90 border border-zinc-850 hover:border-[#FF5A5F]/75 hover:-translate-y-1.5 transition-[transform,border-color,background-color,box-shadow] duration-300 ease-out cursor-pointer shadow-lg hover:shadow-[0_20px_50px_-18px_rgba(255,90,95,0.28)] flex flex-col justify-between space-y-4"
                 >
                   <div className="space-y-4">
-                    {/* Certificate Thumbnail Preview */}
+                    {/* Certificate Thumbnail Preview (Anti-Save / Anti-Long-Press Shielded) */}
                     <div
                       onContextMenu={(e) => e.preventDefault()}
-                      className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 select-none"
+                      onDragStart={(e) => e.preventDefault()}
+                      className="cert-protected relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 select-none"
                     >
                       <Image
                         src={cert.image}
@@ -1249,10 +1409,17 @@ export default function PortfolioPage() {
                         draggable={false}
                         className="object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out pointer-events-none"
                       />
-                      <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/90 text-[10px] font-mono font-bold text-[#FF5A5F] border border-zinc-800">
+                      {/* Transparent anti-save / anti-long-press protective veil */}
+                      <div
+                        aria-hidden="true"
+                        onContextMenu={(e) => e.preventDefault()}
+                        onDragStart={(e) => e.preventDefault()}
+                        className="absolute inset-0 z-10 bg-transparent"
+                      />
+                      <div className="absolute top-3 left-3 z-20 max-w-[85%] truncate px-2.5 py-1 rounded-full bg-black/90 text-[10px] font-mono font-bold text-[#FF5A5F] border border-zinc-800">
                         {cert.badge}
                       </div>
-                      <div className="hidden lg:inline-flex items-center gap-1.5 absolute bottom-3 right-3 px-2.5 py-1 rounded-full bg-black/85 border border-[#FF5A5F]/50 text-[10px] font-semibold text-white opacity-0 translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 transition-[opacity,transform] duration-200 pointer-events-none">
+                      <div className="hidden lg:inline-flex items-center gap-1.5 absolute bottom-3 right-3 z-20 px-2.5 py-1 rounded-full bg-black/85 border border-[#FF5A5F]/50 text-[10px] font-semibold text-white opacity-0 translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 transition-[opacity,transform] duration-200 pointer-events-none">
                         <Eye className="w-3 h-3 text-[#FF5A5F]" />
                         <span>Live Preview</span>
                       </div>
@@ -1366,8 +1533,8 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 5. FEATURED WEBSITES & PROJECTS SECTION ("yung ibang nagawa naming website")*/}
       {/* ========================================================================= */}
-      <section id="projects" className="relative z-20 py-24 border-t border-zinc-900 bg-[#050505]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
+      <section id="projects" className="relative z-20 py-16 sm:py-20 lg:py-24 border-t border-zinc-900 bg-[#050505]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-10 sm:space-y-12">
           {/* Section Header */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <div data-reveal="up" className="space-y-2">
@@ -1388,13 +1555,13 @@ export default function PortfolioPage() {
             <div
               data-reveal="right"
               style={{ '--reveal-delay': '100ms' } as React.CSSProperties}
-              className="flex items-center gap-1.5 p-1 rounded-2xl bg-zinc-900/90 border border-zinc-800 self-start sm:self-auto overflow-x-auto"
+              className="flex items-center gap-1.5 p-1 rounded-2xl bg-zinc-900/90 border border-zinc-800 self-start sm:self-auto max-w-full overflow-x-auto no-scrollbar"
             >
               {(['ALL', 'WEB', 'PWA', 'UIUX'] as const).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === tab
+                  className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all cursor-pointer ${activeTab === tab
                     ? 'bg-[#FF5A5F] text-white shadow-xs'
                     : 'text-zinc-400 hover:text-white'
                     }`}
@@ -1494,14 +1661,14 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 6. PHOTO EDITING & BEFORE/AFTER RETOUCHING SAMPLES                        */}
       {/* ========================================================================= */}
-      <section id="edits" className="relative z-20 py-24 border-t border-zinc-900 bg-black overflow-hidden">
+      <section id="edits" className="relative z-20 py-16 sm:py-20 lg:py-24 border-t border-zinc-900 bg-black overflow-hidden">
         {/* Subtle studio radial ambient (zero blur filter cost) */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute top-12 left-1/2 -translate-x-1/2 w-[820px] h-[420px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,90,95,0.06)_0%,transparent_70%)]"
         />
 
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-10 sm:space-y-12">
           {/* Section Header */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div data-reveal="up" className="space-y-2">
@@ -1579,8 +1746,8 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 5. SKILLS & TECHNICAL ARSENAL                                             */}
       {/* ========================================================================= */}
-      <section id="skills" className="relative z-20 py-24 border-t border-zinc-900 bg-[#050505]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
+      <section id="skills" className="relative z-20 py-16 sm:py-20 lg:py-24 border-t border-zinc-900 bg-[#050505]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-10 sm:space-y-12">
           <div data-reveal="up" className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F]">
               Core Capabilities
@@ -1594,7 +1761,7 @@ export default function PortfolioPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-6">
             {/* Frontend & Web Development */}
             <div
               data-reveal="up"
@@ -1724,10 +1891,10 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 6. CALL TO ACTION & FOOTER                                                */}
       {/* ========================================================================= */}
-      <footer className="relative z-20 py-16 border-t border-zinc-900 bg-black">
+      <footer className="relative z-20 pt-14 sm:pt-16 pb-[max(3.5rem,calc(2.5rem+env(safe-area-inset-bottom)))] border-t border-zinc-900 bg-black">
         <div
           data-reveal="up"
-          className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left"
+          className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left"
         >
           <div className="space-y-1">
             <div className="flex items-center justify-center sm:justify-start gap-2.5 text-lg font-bold text-white">
@@ -1819,11 +1986,11 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {isChatModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in"
           onClick={closeChatModal}
         >
           <div
-            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl bg-zinc-950 border border-zinc-800 p-6 sm:p-8 shadow-2xl space-y-6"
+            className="relative w-full max-w-lg max-h-[92dvh] overflow-y-auto rounded-3xl bg-zinc-950 border border-zinc-800 p-5 sm:p-8 shadow-2xl space-y-5 sm:space-y-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4">
@@ -1984,39 +2151,68 @@ export default function PortfolioPage() {
       )}
 
       {/* ========================================================================= */}
-      {/* 8. CERTIFICATE PREVIEW MODAL                                              */}
+      {/* 8. CERTIFICATE PREVIEW MODAL (ANTI-SCREENSHOT & CAPTURE PROTECTED)        */}
       {/* ========================================================================= */}
       {selectedCertificate && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in"
+          onContextMenu={(e) => e.preventDefault()}
+          className="cert-protected cert-no-print fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-md animate-in fade-in"
           onClick={() => setSelectedCertificate(null)}
         >
           <div
-            className="relative w-full max-w-3xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-5 my-auto max-h-[92vh] flex flex-col"
+            className="relative w-full max-w-3xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-4 sm:space-y-5 my-auto max-h-[92dvh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <div
               onContextMenu={(e) => e.preventDefault()}
-              className="relative aspect-[4/3] sm:aspect-[16/10] max-h-[58vh] w-full bg-zinc-900/90 flex items-center justify-center p-3 select-none"
+              onDragStart={(e) => e.preventDefault()}
+              className="cert-protected relative aspect-[4/3] sm:aspect-[16/10] max-h-[50dvh] sm:max-h-[56dvh] w-full bg-zinc-900/90 flex items-center justify-center p-3 select-none"
             >
               <Image
                 src={selectedCertificate.image}
                 alt={selectedCertificate.title}
                 fill
                 unoptimized
-                className="object-contain p-2 pointer-events-none"
+                draggable={false}
+                className={`object-contain p-2 pointer-events-none transition-opacity duration-150 ${
+                  isCertShielded ? 'opacity-0' : 'opacity-100'
+                }`}
               />
+              {/* Transparent anti-save / anti-long-press protective veil */}
+              <div
+                aria-hidden="true"
+                onContextMenu={(e) => e.preventDefault()}
+                onDragStart={(e) => e.preventDefault()}
+                className="absolute inset-0 z-10 bg-transparent"
+              />
+              {isCertShielded && (
+                <div className="absolute inset-0 z-20 bg-black/95 flex flex-col items-center justify-center p-6 text-center space-y-2.5">
+                  <div className="w-11 h-11 rounded-2xl bg-rose-500/15 border border-rose-500/35 flex items-center justify-center text-[#FF5A5F]">
+                    <Lock className="w-5 h-5" />
+                  </div>
+                  <p className="text-sm font-bold text-white">
+                    {certShieldReason === 'capture'
+                      ? 'Screenshot & Capture Restricted'
+                      : 'Protected Preview Paused'}
+                  </p>
+                  <p className="text-xs text-zinc-400 max-w-xs">
+                    Screen capture, saving, and printing are restricted on Ar-jay&apos;s verified credentials.
+                  </p>
+                </div>
+              )}
               <button
+                type="button"
                 onClick={() => setSelectedCertificate(null)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-black/70 text-white hover:bg-black transition-colors cursor-pointer z-10"
+                aria-label="Close certificate preview"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full bg-black/75 text-white hover:bg-black transition-colors cursor-pointer z-30"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-6 pt-0 space-y-4 overflow-y-auto">
+            <div className="p-4 sm:p-6 pt-0 space-y-3.5 sm:space-y-4 overflow-y-auto">
               <div className="space-y-1">
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="text-[11px] font-mono font-bold text-[#FF5A5F] px-2 py-0.5 rounded bg-rose-500/10 border border-rose-500/20">
                     {selectedCertificate.credentialId}
                   </span>
@@ -2024,7 +2220,7 @@ export default function PortfolioPage() {
                     {selectedCertificate.badge}
                   </span>
                 </div>
-                <h4 className="text-xl sm:text-2xl font-bold text-white leading-snug">{selectedCertificate.title}</h4>
+                <h4 className="text-lg sm:text-2xl font-bold text-white leading-snug">{selectedCertificate.title}</h4>
                 <p className="text-xs text-zinc-400">{selectedCertificate.issuer} • Issued {selectedCertificate.date}</p>
               </div>
 
@@ -2044,7 +2240,7 @@ export default function PortfolioPage() {
               </div>
 
               <div className="pt-4 border-t border-zinc-900 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
                   {selectedCertificate.pdfUrl && (
                     <a
                       href={selectedCertificate.pdfUrl}
@@ -2067,18 +2263,14 @@ export default function PortfolioPage() {
                       <span>Online Verification</span>
                     </a>
                   )}
-                  <a
-                    href={selectedCertificate.image}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-zinc-400 hover:text-white transition-colors underline flex items-center gap-1"
-                  >
-                    <ExternalLink className="w-3 h-3" />
-                    <span>View Full Image</span>
-                  </a>
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-zinc-400">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                    <span>Capture Protected</span>
+                  </span>
                 </div>
 
                 <button
+                  type="button"
                   onClick={() => setSelectedCertificate(null)}
                   className="px-5 py-2 rounded-xl bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-800 transition-colors cursor-pointer"
                 >
@@ -2095,14 +2287,14 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {selectedProject && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-md animate-in fade-in"
           onClick={() => setSelectedProject(null)}
         >
           <div
-            className="relative w-full max-w-xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-5"
+            className="relative w-full max-w-xl max-h-[92dvh] overflow-y-auto rounded-3xl bg-zinc-950 border border-zinc-800 shadow-2xl space-y-5 flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative aspect-video w-full bg-zinc-900">
+            <div className="relative aspect-video w-full bg-zinc-900 shrink-0">
               <Image
                 src={selectedProject.image}
                 alt={selectedProject.title}
@@ -2174,12 +2366,12 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 10. FLOATING HOVER CERTIFICATE SPOTLIGHT (DESKTOP QUICK-INSPECT PREVIEW)  */}
       {/* ========================================================================= */}
-      {hoveredCert && !selectedCertificate && (
+      {hoveredCert && !selectedCertificate && !isCertShielded && (
         <div
           key={hoveredCert.cert.id}
           aria-hidden="true"
           style={{ top: `${hoveredCert.top}px` }}
-          className={`cert-spotlight-enter hidden lg:block fixed z-40 w-[410px] xl:w-[445px] max-h-[calc(100vh-40px)] pointer-events-none ${
+          className={`cert-spotlight-enter cert-protected cert-no-print hidden lg:block fixed z-40 w-[410px] xl:w-[445px] max-h-[calc(100vh-40px)] pointer-events-none ${
             hoveredCert.side === 'right' ? 'right-6 xl:right-10' : 'left-6 xl:left-10'
           }`}
         >

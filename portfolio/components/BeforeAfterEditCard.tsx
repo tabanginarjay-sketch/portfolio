@@ -292,13 +292,13 @@ export default function BeforeAfterEditCard({
         </div>
 
         {/* Category Badge */}
-        <span className="absolute top-2.5 sm:top-3.5 right-2.5 sm:right-3.5 z-20 rounded-full bg-black/85 border border-zinc-700/80 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-[#FF5A5F] shadow-xs">
+        <span className="absolute top-2.5 sm:top-3.5 right-2.5 sm:right-3.5 z-20 max-w-[46%] truncate rounded-full bg-black/85 border border-zinc-700/80 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-[#FF5A5F] shadow-xs">
           {category}
         </span>
       </div>
 
       {/* Card Body */}
-      <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
+      <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
         <div className="space-y-3">
           <div className="flex items-center justify-between gap-2">
             <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-400">
