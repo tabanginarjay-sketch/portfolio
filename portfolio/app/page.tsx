@@ -22,6 +22,7 @@ import {
   Video,
   Headphones,
 } from 'lucide-react';
+import SmokeAtmosphere from '../components/SmokeAtmosphere';
 
 export default function PortfolioPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -251,8 +252,10 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       <section
         id="hero"
-        className="relative w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-20 lg:min-h-[85vh] flex flex-col justify-between"
+        className="relative w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-20 lg:min-h-[85vh] flex flex-col justify-between overflow-hidden"
       >
+        {/* Subtle, non-intrusive ethereal smoke transition effect behind content */}
+        <SmokeAtmosphere />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-20">
           {/* ----------------- LEFT COLUMN: HEADING & CTA ----------------- */}
           <div className="lg:col-span-4 space-y-6 text-left order-2 lg:order-1 pt-6 lg:pt-0">
