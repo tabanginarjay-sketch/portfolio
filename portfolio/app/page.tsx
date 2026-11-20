@@ -32,18 +32,55 @@ import {
   SlidersHorizontal,
   Lock,
   ShieldCheck,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import SmokeAtmosphere from '../components/SmokeAtmosphere';
 import GeometricShapes from '../components/GeometricShapes';
 import BeforeAfterEditCard from '../components/BeforeAfterEditCard';
 
 export default function PortfolioPage() {
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'ALL' | 'WEB' | 'PWA' | 'UIUX'>('ALL');
   const [activeEditCategory, setActiveEditCategory] = useState<string>('All');
   const [selectedCertificate, setSelectedCertificate] = useState<any | null>(null);
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
+
+  // Load saved theme preference on mount
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem('arjay-portfolio-theme') as 'dark' | 'light' | null;
+      if (savedTheme === 'light' || savedTheme === 'dark') {
+        setTheme(savedTheme);
+        if (savedTheme === 'light') {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('light');
+        } else {
+          document.documentElement.classList.remove('light');
+          document.documentElement.classList.add('dark');
+        }
+      }
+    } catch {}
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    setTheme((prev) => {
+      const nextTheme = prev === 'dark' ? 'light' : 'dark';
+      try {
+        localStorage.setItem('arjay-portfolio-theme', nextTheme);
+      } catch {}
+      if (nextTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+      } else {
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+      }
+      return nextTheme;
+    });
+  }, []);
 
   // Horizontal Certificates Carousel & Anti-Capture Shield state & refs
   const pageRootRef = useRef<HTMLDivElement | null>(null);
@@ -760,7 +797,9 @@ export default function PortfolioPage() {
   return (
     <div
       ref={pageRootRef}
-      className="relative min-h-screen overflow-x-clip bg-[#000000] text-white selection:bg-[#FF5A5F]/30 selection:text-[#FF5A5F]"
+      className={`relative min-h-screen overflow-x-clip selection:bg-[#FF5A5F]/30 selection:text-[#FF5A5F] transition-colors duration-300 ${
+        theme === 'light' ? 'light-theme bg-[#f8fafc] text-zinc-900' : 'bg-[#000000] text-white'
+      }`}
     >
       {/* ========================================================================= */}
       {/* 1. TOP HEADER NAVIGATION (Matching the Reference Screenshot)             */}
@@ -797,8 +836,29 @@ export default function PortfolioPage() {
           </a>
         </div>
 
-        {/* Right Menu Hamburger Button */}
-        <div className="flex items-center gap-4">
+        {/* Right Menu & Theme Switcher Controls */}
+        <div className="flex items-center gap-2.5 sm:gap-3.5">
+          {/* Light / Dark Mode Toggle Button */}
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/90 hover:bg-zinc-800 text-zinc-300 hover:text-white transition-all duration-300 shadow-sm cursor-pointer text-xs font-semibold"
+            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            {theme === 'dark' ? (
+              <>
+                <Sun className="w-3.5 h-3.5 text-amber-400 group-hover:rotate-45 transition-transform duration-300" />
+                <span className="hidden xs:inline sm:inline">Light</span>
+              </>
+            ) : (
+              <>
+                <Moon className="w-3.5 h-3.5 text-indigo-500 group-hover:-rotate-12 transition-transform duration-300" />
+                <span className="hidden xs:inline sm:inline">Dark</span>
+              </>
+            )}
+          </button>
+
           <a
             href={GMAIL_COMPOSE_URL}
             target="_blank"
@@ -889,6 +949,47 @@ export default function PortfolioPage() {
                 <ArrowRight className="w-3.5 h-3.5 text-zinc-600 group-hover:text-[#FF5A5F] group-hover:translate-x-1 transition-all" />
               </a>
             ))}
+
+            {/* Drawer Theme Switcher Row */}
+            <div
+              style={{
+                transitionDelay: isMenuOpen ? '240ms' : '0ms',
+              }}
+              className={`flex items-center justify-between p-3 rounded-2xl bg-zinc-900/80 border border-zinc-800 transition-all duration-300 transform ${
+                isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                {theme === 'dark' ? (
+                  <Moon className="w-4 h-4 text-[#22D3EE]" />
+                ) : (
+                  <Sun className="w-4 h-4 text-amber-500" />
+                )}
+                <div>
+                  <span className="text-xs font-bold block text-white">Appearance</span>
+                  <span className="text-[10px] text-zinc-400 font-mono">
+                    {theme === 'dark' ? 'Dark Theme' : 'Light Theme'}
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+              >
+                {theme === 'dark' ? (
+                  <>
+                    <Sun className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Light</span>
+                  </>
+                ) : (
+                  <>
+                    <Moon className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>Dark</span>
+                  </>
+                )}
+              </button>
+            </div>
 
             {/* Direct Contact Button */}
             <button

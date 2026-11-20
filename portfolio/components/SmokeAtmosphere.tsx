@@ -362,22 +362,22 @@ export default function SmokeAtmosphere() {
   return (
     <div
       ref={wrapperRef}
-      className="absolute inset-0 overflow-hidden pointer-events-none z-10 select-none"
+      className="absolute inset-0 overflow-hidden pointer-events-none z-10 select-none smoke-atmosphere-container"
     >
       <canvas
         ref={canvasRef}
-        className="w-full h-full block opacity-90"
+        className="w-full h-full block opacity-90 smoke-canvas"
       />
       {/* Subtle, delicate tint applied exclusively to the drifting smoke tendrils (background remains pure black) */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 pointer-events-none mix-blend-color opacity-25 bg-gradient-to-r from-[#22D3EE]/70 via-transparent to-[#FF5A5F]/70"
+        className="absolute inset-0 pointer-events-none mix-blend-color opacity-25 bg-gradient-to-r from-[#22D3EE]/70 via-transparent to-[#FF5A5F]/70 smoke-tint"
       />
       {/* Seamless 4-edge vignette fade into pure black canvas */}
-      <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black to-transparent pointer-events-none" />
-      <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none" />
-      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black to-transparent pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black to-transparent pointer-events-none smoke-vignette-top" />
+      <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none smoke-vignette-bottom" />
+      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black to-transparent pointer-events-none smoke-vignette-left" />
+      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black to-transparent pointer-events-none smoke-vignette-right" />
     </div>
   );
 }

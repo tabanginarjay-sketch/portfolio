@@ -470,3 +470,260 @@ body {
     text-align: center;
   }
 }
+
+/* ========================================================================= */
+/* LIGHT MODE THEME SYSTEM (Editorial High-Contrast Clean Luxury Look)       */
+/* ========================================================================= */
+html.light,
+.light-theme {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  color-scheme: light;
+}
+
+html.light body,
+.light-theme body,
+.light-theme {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Scrollbars in Light Mode */
+html.light ::-webkit-scrollbar-track,
+.light-theme ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+html.light ::-webkit-scrollbar-thumb,
+.light-theme ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+html.light ::-webkit-scrollbar-thumb:hover,
+.light-theme ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Background conversions */
+html.light .bg-black,
+html.light .bg-\[\#000000\],
+html.light .bg-\[\#050505\],
+.light-theme .bg-black,
+.light-theme .bg-\[\#000000\],
+.light-theme .bg-\[\#050505\] {
+  background-color: #f8fafc !important;
+}
+
+html.light .bg-zinc-950,
+html.light .bg-zinc-950\/60,
+html.light .bg-zinc-950\/70,
+html.light .bg-zinc-950\/80,
+html.light .bg-zinc-950\/90,
+html.light .bg-zinc-950\/95,
+.light-theme .bg-zinc-950,
+.light-theme .bg-zinc-950\/60,
+.light-theme .bg-zinc-950\/70,
+.light-theme .bg-zinc-950\/80,
+.light-theme .bg-zinc-950\/90,
+.light-theme .bg-zinc-950\/95 {
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .bg-zinc-900,
+html.light .bg-zinc-900\/60,
+html.light .bg-zinc-900\/80,
+html.light .bg-zinc-900\/90,
+html.light .bg-zinc-900\/95,
+.light-theme .bg-zinc-900,
+.light-theme .bg-zinc-900\/60,
+.light-theme .bg-zinc-900\/80,
+.light-theme .bg-zinc-900\/90,
+.light-theme .bg-zinc-900\/95 {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .bg-white\/\[0\.025\],
+html.light .bg-white\/5,
+html.light .bg-white\/10,
+.light-theme .bg-white\/\[0\.025\],
+.light-theme .bg-white\/5,
+.light-theme .bg-white\/10 {
+  background-color: #f8fafc !important;
+}
+
+/* Text color conversions */
+html.light .text-white,
+.light-theme .text-white {
+  color: #0f172a !important;
+}
+
+html.light .text-zinc-100,
+.light-theme .text-zinc-100 {
+  color: #0f172a !important;
+}
+
+html.light .text-zinc-200,
+.light-theme .text-zinc-200 {
+  color: #1e293b !important;
+}
+
+html.light .text-zinc-300,
+.light-theme .text-zinc-300 {
+  color: #334155 !important;
+}
+
+html.light .text-zinc-400,
+.light-theme .text-zinc-400 {
+  color: #475569 !important;
+}
+
+html.light .text-zinc-500,
+.light-theme .text-zinc-500 {
+  color: #64748b !important;
+}
+
+html.light .text-zinc-600,
+.light-theme .text-zinc-600 {
+  color: #64748b !important;
+}
+
+/* Hover text adjustments */
+html.light .hover\:text-white:hover,
+.light-theme .hover\:text-white:hover {
+  color: #0f172a !important;
+}
+
+/* CRITICAL: Keep buttons with coral background text pure white! */
+html.light a.bg-gradient-to-r,
+html.light button.bg-gradient-to-r,
+html.light .bg-\[\#FF5A5F\],
+html.light .bg-\[\#FF5A5F\] *,
+html.light .bg-gradient-to-r *,
+.light-theme a.bg-gradient-to-r,
+.light-theme button.bg-gradient-to-r,
+.light-theme .bg-\[\#FF5A5F\],
+.light-theme .bg-\[\#FF5A5F\] *,
+.light-theme .bg-gradient-to-r * {
+  color: #ffffff !important;
+}
+
+/* Border color conversions */
+html.light .border-zinc-900,
+html.light .border-zinc-850,
+html.light .border-zinc-800,
+html.light .border-zinc-700,
+html.light .border-zinc-800\/80,
+html.light .border-zinc-800\/90,
+.light-theme .border-zinc-900,
+.light-theme .border-zinc-850,
+.light-theme .border-zinc-800,
+.light-theme .border-zinc-700,
+.light-theme .border-zinc-800\/80,
+.light-theme .border-zinc-800\/90 {
+  border-color: #e2e8f0 !important;
+}
+
+html.light .border-white\/10,
+html.light .border-white\/15,
+html.light .border-white\/20,
+html.light .border-white\/30,
+.light-theme .border-white\/10,
+.light-theme .border-white\/15,
+.light-theme .border-white\/20,
+.light-theme .border-white\/30 {
+  border-color: rgba(15, 23, 42, 0.12) !important;
+}
+
+/* Inputs & Form controls in Light Mode */
+html.light input,
+html.light textarea,
+html.light select,
+.light-theme input,
+.light-theme textarea,
+.light-theme select {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+html.light input::placeholder,
+html.light textarea::placeholder,
+.light-theme input::placeholder,
+.light-theme textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Modals & Backdrops in Light Mode */
+html.light .bg-black\/80,
+html.light .bg-black\/85,
+html.light .bg-black\/90,
+.light-theme .bg-black\/80,
+.light-theme .bg-black\/85,
+.light-theme .bg-black\/90 {
+  background-color: rgba(15, 23, 42, 0.45) !important;
+}
+
+/* Navigation Drawer in Light Mode */
+html.light .bg-zinc-950\/95,
+.light-theme .bg-zinc-950\/95 {
+  background-color: #ffffff !important;
+}
+
+/* Smoke Atmosphere in Light Mode */
+html.light .smoke-canvas,
+.light-theme .smoke-canvas {
+  filter: invert(0.9) contrast(1.1) opacity(0.32);
+  mix-blend-mode: multiply;
+}
+html.light .smoke-tint,
+.light-theme .smoke-tint {
+  opacity: 0.12;
+  mix-blend-mode: multiply;
+}
+html.light .smoke-vignette-top,
+.light-theme .smoke-vignette-top {
+  background: linear-gradient(to bottom, #f8fafc, transparent) !important;
+}
+html.light .smoke-vignette-bottom,
+.light-theme .smoke-vignette-bottom {
+  background: linear-gradient(to top, #f8fafc, rgba(248, 250, 252, 0.7), transparent) !important;
+}
+html.light .smoke-vignette-left,
+.light-theme .smoke-vignette-left {
+  background: linear-gradient(to right, #f8fafc, transparent) !important;
+}
+html.light .smoke-vignette-right,
+.light-theme .smoke-vignette-right {
+  background: linear-gradient(to left, #f8fafc, transparent) !important;
+}
+
+/* Vignette Gradients Across the Page */
+html.light .bg-gradient-to-t.from-black,
+.light-theme .bg-gradient-to-t.from-black {
+  background-image: linear-gradient(to top, #f8fafc, transparent) !important;
+}
+html.light .bg-gradient-to-b.from-black,
+.light-theme .bg-gradient-to-b.from-black {
+  background-image: linear-gradient(to bottom, #f8fafc, transparent) !important;
+}
+
+/* Tag Pills in Light Mode */
+html.light .bg-zinc-900.text-zinc-300,
+.light-theme .bg-zinc-900.text-zinc-300 {
+  background-color: #f1f5f9 !important;
+  color: #1e293b !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Status Badges */
+html.light .text-emerald-400,
+.light-theme .text-emerald-400 {
+  color: #059669 !important;
+}
+html.light .bg-emerald-500\/10,
+html.light .bg-emerald-500\/15,
+.light-theme .bg-emerald-500\/10,
+.light-theme .bg-emerald-500\/15 {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}

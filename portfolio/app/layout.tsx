@@ -37,9 +37,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${plusJakarta.variable} dark bg-black text-white antialiased scroll-smooth`}
+      className={`${playfair.variable} ${plusJakarta.variable} dark antialiased scroll-smooth`}
     >
-      <body className="min-h-screen bg-[#050505] text-zinc-100 font-sans selection:bg-[#FF5A5F]/30 selection:text-[#FF5A5F] overflow-x-clip">
+      <body className="min-h-screen font-sans selection:bg-[#FF5A5F]/30 selection:text-[#FF5A5F] overflow-x-clip transition-colors duration-300">
         {children}
         <VisitTracker />
         <Analytics />
