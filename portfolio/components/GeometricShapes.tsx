@@ -136,8 +136,8 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
                   transitionDelay: isScrolled ? '0ms' : '80ms',
                   ...(isScrolled
                     ? {
-                        left: isMobile ? '12px' : 'clamp(16px, 3.5vw, 48px)',
-                        top: isMobile ? '40%' : '38%',
+                        left: isMobile ? '4px' : 'clamp(16px, 3.5vw, 48px)',
+                        top: isMobile ? '32%' : '38%',
                         transform: 'translate(0, -50%) scale(1)',
                         opacity: 0.95,
                       }
@@ -153,10 +153,10 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
               >
                 <div className="anim-playful-bob-1">
                   <div
-                    className="w-8 h-8 sm:w-11 sm:h-11 lg:w-14 lg:h-14 rounded-full aspect-square border-[2.5px] border-[#22D3EE] group-hover:scale-125 transition-transform duration-300 relative shrink-0"
+                    className="w-5 h-5 sm:w-11 sm:h-11 lg:w-14 lg:h-14 rounded-full aspect-square border-[2px] sm:border-[2.5px] border-[#22D3EE] group-hover:scale-125 transition-transform duration-300 relative shrink-0"
                     style={{
                       boxShadow:
-                        '0 0 22px rgba(34, 211, 238, 0.95), 0 0 45px rgba(34, 211, 238, 0.4), inset 0 0 10px rgba(34, 211, 238, 0.4)',
+                        '0 0 18px rgba(34, 211, 238, 0.95), 0 0 35px rgba(34, 211, 238, 0.4), inset 0 0 8px rgba(34, 211, 238, 0.4)',
                     }}
                   >
                     <div className="absolute inset-0 rounded-full bg-[#22D3EE]/25 blur-sm pointer-events-none" />
@@ -174,8 +174,8 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
                   transitionDelay: isScrolled ? '50ms' : '40ms',
                   ...(isScrolled
                     ? {
-                        right: isMobile ? '12px' : 'clamp(16px, 3.5vw, 48px)',
-                        top: isMobile ? '68%' : '64%',
+                        right: isMobile ? '4px' : 'clamp(16px, 3.5vw, 48px)',
+                        top: isMobile ? '74%' : '64%',
                         transform: 'translate(0, -50%) scale(1)',
                         opacity: 0.95,
                       }
@@ -191,10 +191,10 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
               >
                 <div className="anim-playful-bob-2">
                   <div
-                    className="w-7 h-7 sm:w-9 sm:h-9 lg:w-12 lg:h-12 rounded-full aspect-square border-[2.5px] border-[#FF5A5F] group-hover:scale-125 transition-transform duration-300 relative shrink-0"
+                    className="w-4.5 h-4.5 sm:w-9 sm:h-9 lg:w-12 lg:h-12 rounded-full aspect-square border-[2px] sm:border-[2.5px] border-[#FF5A5F] group-hover:scale-125 transition-transform duration-300 relative shrink-0"
                     style={{
                       boxShadow:
-                        '0 0 20px rgba(255, 90, 95, 0.95), 0 0 40px rgba(255, 90, 95, 0.4), inset 0 0 9px rgba(255, 90, 95, 0.4)',
+                        '0 0 16px rgba(255, 90, 95, 0.95), 0 0 30px rgba(255, 90, 95, 0.4), inset 0 0 7px rgba(255, 90, 95, 0.4)',
                     }}
                   >
                     <div className="absolute inset-0 rounded-full bg-[#FF5A5F]/25 blur-sm pointer-events-none" />
@@ -212,8 +212,8 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
                   transitionDelay: isScrolled ? '100ms' : '0ms',
                   ...(isScrolled
                     ? {
-                        right: isMobile ? '14px' : 'clamp(20px, 4.5vw, 64px)',
-                        top: isMobile ? '18%' : '20%',
+                        right: isMobile ? '6px' : 'clamp(20px, 4.5vw, 64px)',
+                        top: isMobile ? '12%' : '20%',
                         transform: 'translate(0, -50%) scale(1)',
                         opacity: 1,
                       }
@@ -229,10 +229,10 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
               >
                 <div className="anim-playful-bob-3">
                   <div
-                    className="w-4.5 h-4.5 sm:w-5.5 sm:h-5.5 lg:w-7 lg:h-7 rounded-full aspect-square bg-[#00E5FF] group-hover:scale-150 transition-transform duration-300 relative shrink-0"
+                    className="w-3.5 h-3.5 sm:w-5.5 sm:h-5.5 lg:w-7 lg:h-7 rounded-full aspect-square bg-[#00E5FF] group-hover:scale-150 transition-transform duration-300 relative shrink-0"
                     style={{
                       boxShadow:
-                        '0 0 26px rgba(0, 229, 255, 1), 0 0 50px rgba(0, 229, 255, 0.75)',
+                        '0 0 18px rgba(0, 229, 255, 1), 0 0 35px rgba(0, 229, 255, 0.75)',
                     }}
                   >
                     <div className="absolute -inset-1 rounded-full bg-[#00E5FF]/45 blur-sm pointer-events-none" />
