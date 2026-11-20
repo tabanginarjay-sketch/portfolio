@@ -23,6 +23,7 @@ import {
   Headphones,
 } from 'lucide-react';
 import SmokeAtmosphere from '../components/SmokeAtmosphere';
+import GeometricShapes from '../components/GeometricShapes';
 
 export default function PortfolioPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -360,15 +361,8 @@ export default function PortfolioPage() {
 
           {/* ----------------- RIGHT COLUMN: EXPERTISE & GEOMETRIC ACCENT ----------------- */}
           <div className="lg:col-span-4 space-y-6 text-left order-3 relative">
-            {/* Geometric floating rings matching the reference */}
-            <div className="relative h-20 w-44 mb-2">
-              {/* Cyan / Teal glowing ring */}
-              <div className="absolute top-0 right-16 w-14 h-14 rounded-full border-2 border-[#22D3EE] shadow-[0_0_20px_rgba(34,211,238,0.35)]" />
-              {/* Coral smaller interlocking ring */}
-              <div className="absolute top-2 right-12 w-8 h-8 rounded-full border-2 border-[#FF5A5F]" />
-              {/* Cyan solid floating sphere */}
-              <div className="absolute top-10 right-4 w-6 h-6 rounded-full bg-[#00E5FF] shadow-[0_0_16px_rgba(0,229,255,0.6)]" />
-            </div>
+            {/* Dynamic floating geometric shapes with independent multi-directional drift & mouse parallax */}
+            <GeometricShapes />
 
             <div className="space-y-3">
               <span className="text-[#FF5A5F] text-xs font-bold uppercase tracking-wider block">
