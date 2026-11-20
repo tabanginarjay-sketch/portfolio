@@ -15,9 +15,9 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Ar-jay Tabangin | Full Stack Developer & UI/UX Designer",
-  description: "Personal Portfolio of Ar-jay Tabangin - Full Stack Developer, Software Engineer & UI/UX Designer.",
-  keywords: ["Ar-jay Tabangin", "Ar-jay", "Developer", "Portfolio", "UI/UX Designer", "Next.js", "React"],
+  title: "Ar-jay Tabangin | Developer, UI/UX Designer & Photo/Video Editor",
+  description: "Personal Portfolio of Ar-jay Tabangin - Developer, UI/UX Designer, Certified Customer Service Professional, and Photo/Video Editor based in the Philippines.",
+  keywords: ["Ar-jay Tabangin", "Ar-jay", "Developer", "UI/UX Designer", "Customer Service", "Photo Video Editor", "Portfolio", "Next.js", "React"],
 };
 
 export const viewport: Viewport = {

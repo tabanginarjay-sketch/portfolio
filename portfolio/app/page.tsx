@@ -19,6 +19,8 @@ import {
   Mail,
   Send,
   Eye,
+  Video,
+  Headphones,
 } from 'lucide-react';
 
 export default function PortfolioPage() {
@@ -246,7 +248,7 @@ export default function PortfolioPage() {
                 I&apos;m <span className="text-[#FF5A5F]">Ar-jay</span>
               </h1>
               <p className="text-zinc-300 text-lg sm:text-xl font-medium tracking-wide pt-2">
-                User Interface Designer
+                Developer &bull; UI/UX Designer &bull; Media Editor
               </p>
             </div>
 
@@ -354,13 +356,15 @@ export default function PortfolioPage() {
 
               <h2 className="text-xl sm:text-2xl font-bold text-white leading-snug">
                 Based in Philippines <br />
-                i&apos;m developer and <br />
-                UI/UX designer.
+                developer and <br />
+                UI/UX designer, <br />
+                certified customer service, <br />
+                Photo/Video editor.
               </h2>
 
               <p className="text-zinc-400 text-sm leading-relaxed max-w-sm pt-1">
-                Hey are looking for designer to build your brand and grow your business? let&apos;s
-                shake hands with me.
+                Versatile creator building modern web applications, designing user-centered interfaces,
+                delivering certified client support, and producing compelling photo &amp; video media.
               </p>
             </div>
 
@@ -601,19 +605,18 @@ export default function PortfolioPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Frontend */}
-            <div className="p-7 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Frontend & Web Development */}
+            <div className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 transition-colors">
               <div className="w-12 h-12 rounded-2xl bg-rose-500/10 text-[#FF5A5F] flex items-center justify-center border border-rose-500/20">
                 <Code2 className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">Frontend Architecture</h3>
+              <h3 className="text-lg font-bold text-white">Web & App Development</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Responsive layouts, App Router, micro-interactions, client-side state, and mobile PWA
-                performance optimization.
+                Responsive layouts, App Router, performant client-side state, modern web architectures, and mobile PWA optimization.
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
-                {['Next.js 15', 'React 19', 'TypeScript', 'Tailwind CSS', 'PWA Manifest', 'HTML5/CSS3'].map(
+                {['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'REST APIs', 'Git'].map(
                   (s) => (
                     <span
                       key={s}
@@ -627,14 +630,13 @@ export default function PortfolioPage() {
             </div>
 
             {/* UI/UX Design */}
-            <div className="p-7 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4">
+            <div className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 transition-colors">
               <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
                 <Palette className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-bold text-white">UI/UX & Product Design</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                User research, high-fidelity wireframing, dark atelier aesthetics, typography
-                hierarchy, and interactive user journeys.
+                User research, high-fidelity wireframing, dark atelier aesthetics, typography hierarchy, and interactive prototypes.
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
                 {[
@@ -643,7 +645,7 @@ export default function PortfolioPage() {
                   'Wireframing',
                   'Dark Theme UI',
                   'Prototyping',
-                  'Accessibility',
+                  'UX Research',
                 ].map((s) => (
                   <span
                     key={s}
@@ -655,24 +657,51 @@ export default function PortfolioPage() {
               </div>
             </div>
 
-            {/* Backend & Databases */}
-            <div className="p-7 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
-                <Database className="w-6 h-6" />
+            {/* Photo & Video Editing */}
+            <div className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 transition-colors">
+              <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/20">
+                <Video className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">Backend & Integrations</h3>
+              <h3 className="text-lg font-bold text-white">Photo & Video Editing</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                RESTful API endpoints, strict backend validation guards, schema normalization, and
-                cloud database synchronizations.
+                Professional multimedia post-production, color grading, cinematic video editing, thumbnail design, and promotional media.
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
                 {[
-                  'Node.js',
-                  'PostgreSQL',
-                  'Prisma ORM',
-                  'Airtable REST API',
-                  'Git / GitHub',
-                  'Vercel',
+                  'Photoshop',
+                  'Premiere Pro',
+                  'After Effects',
+                  'CapCut',
+                  'Color Grading',
+                  'Media Assets',
+                ].map((s) => (
+                  <span
+                    key={s}
+                    className="px-2.5 py-1 rounded-xl bg-zinc-900 text-xs font-medium text-zinc-200 border border-zinc-800"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Certified Customer Service */}
+            <div className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 transition-colors">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+                <Headphones className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-white">Certified Customer Service</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Empathetic client communication, CRM ticket management, technical problem resolution, and client success delivery.
+              </p>
+              <div className="flex flex-wrap gap-2 pt-2">
+                {[
+                  'Customer Support',
+                  'CRM & Helpdesk',
+                  'Active Listening',
+                  'Issue Escalation',
+                  'Live Assistance',
+                  'Client Success',
                 ].map((s) => (
                   <span
                     key={s}
@@ -698,7 +727,7 @@ export default function PortfolioPage() {
               <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F]" />
             </div>
             <p className="text-xs text-zinc-500">
-              © 2026 Ar-jay Tabangin • Full Stack Developer & UI/UX Designer. All rights reserved.
+              © 2026 Ar-jay Tabangin • Developer, UI/UX Designer, Certified Customer Service &amp; Media Editor. All rights reserved.
             </p>
           </div>
 
