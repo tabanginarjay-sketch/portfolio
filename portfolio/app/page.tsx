@@ -30,111 +30,125 @@ export default function PortfolioPage() {
   const [selectedCertificate, setSelectedCertificate] = useState<any | null>(null);
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
 
-  // Projects data (Ready for user to customize & drop actual websites)
+  // Projects data (Featuring Ar-jay's actual deployed platforms & applications)
   const projects = [
     {
       id: 'proj-1',
-      title: 'Sole Surgeon Atelier & Storefront',
+      title: 'EduScholar - Scholarship System',
       category: 'WEB',
-      type: 'Full-Stack E-Commerce & Service Portal',
+      type: 'Full-Stack Student Scholarship Management Platform',
       description:
-        'A precision footwear restoration atelier e-commerce and booking application with live Airtable integration, order intake, and dynamic cart.',
-      tags: ['Next.js 15', 'TypeScript', 'Tailwind CSS', 'Airtable API', 'Lucide'],
-      image: '/images/thumb_photo-1542120178-984cbcccff94.jpg',
-      link: '#',
+        'A comprehensive cloud scholarship application, document verification, grant tracking, and automated qualification evaluation portal deployed live on Railway for Bestlink College of the Philippines.',
+      tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Railway Deployment', 'Auth'],
+      image: '/images/thumb_photo-1513350027966-f016e1adcecd.jpg',
+      link: 'https://eduscholar-production.up.railway.app/',
       github: '#',
-      status: 'Live & Operational',
+      status: 'Live on Railway',
     },
     {
       id: 'proj-2',
-      title: 'Sole Surgeon Worker Portal (PCS)',
-      category: 'PWA',
-      type: 'Progressive Web App (PWA)',
+      title: 'Kusina Ordering App',
+      category: 'WEB',
+      type: 'Restaurant Food Ordering & Menu App',
       description:
-        'A specialized shop-floor Production Control System for technicians to manage sequential restoration batches with strict backend locking guards.',
-      tags: ['PWA', 'Next.js 15', 'TypeScript', 'Airtable REST', 'Web Manifest'],
-      image: '/images/thumb_photo-1584125073721-71adc0702886.jpg',
+        'A streamlined restaurant digital menu, dynamic item builder, real-time checkout cart, and customer dispatch system developed for Anna Quintos Lagmay.',
+      tags: ['React', 'TypeScript', 'Tailwind CSS', 'REST API', 'Cart Management', 'Mobile UI'],
+      image: '/images/thumb_photo-1542120178-984cbcccff94.jpg',
       link: '#',
       github: '#',
-      status: 'Exam Verified (100% Tests Passed)',
+      status: 'Client Delivered',
     },
     {
       id: 'proj-3',
-      title: 'Dark Atelier UI / Design System',
+      title: 'Campus Navigator',
       category: 'UIUX',
-      type: 'Design System & Component Library',
+      type: 'Interactive University Wayfinding & Navigation',
       description:
-        'A dark luxury glassmorphism design system inspired by editorial studio layouts, featuring micro-interactions, KaTeX math rendering, and vector icons.',
-      tags: ['UI/UX', 'Figma', 'Tailwind v4', 'Glassmorphism'],
+        'An interactive campus directory and floor-by-floor wayfinding design system enabling students, faculty, and campus visitors at Bestlink College of the Philippines to navigate university facilities effortlessly.',
+      tags: ['UI/UX Design', 'Figma', 'Interactive Maps', 'Wayfinding', 'Tailwind CSS'],
       image: '/images/thumb_photo-1521097472625-419f0a4bbb6d.jpg',
       link: '#',
       github: '#',
-      status: 'Design Prototype',
+      status: 'Campus Implemented',
     },
     {
       id: 'proj-4',
-      title: 'SaaS Analytics & Client Portal',
-      category: 'WEB',
-      type: 'Web Application',
+      title: 'Sole Surgeon Atelier & Worker PWA',
+      category: 'PWA',
+      type: 'E-Commerce Atelier & Worker Progressive Web App',
       description:
-        'A modern responsive analytics portal with real-time data visualizers, role-based authentication, and automated reporting pipelines.',
-      tags: ['React', 'Next.js', 'PostgreSQL', 'Prisma', 'Tailwind'],
-      image: '/images/thumb_photo-1513350027966-f016e1adcecd.jpg',
+        'A precision footwear restoration atelier e-commerce booking portal and offline-first shop floor PWA with sequential stage progression, barcode intake, and live Airtable data synchronizations.',
+      tags: ['Next.js 15', 'PWA Manifest', 'Service Worker', 'TypeScript', 'Tailwind v4', 'Airtable API'],
+      image: '/images/thumb_photo-1584125073721-71adc0702886.jpg',
       link: '#',
       github: '#',
-      status: 'Client Production',
+      status: 'Production PWA',
     },
   ];
 
-  // Certificates placeholder data (Ready for user to drop their certificates)
+  // Official Certificates & Accreditations (From Ar-jay's verified credentials)
   const certificates = [
     {
       id: 'cert-1',
-      title: 'Full Stack Web Development & Modern Frameworks',
-      issuer: 'Professional Technical Accreditation',
-      date: '2026',
-      credentialId: 'CERT-FS-2026-0914',
-      badge: 'Verified Developer',
+      title: 'Introduction to Cybersecurity',
+      issuer: 'Cisco Networking Academy',
+      date: 'October 29, 2026',
+      credentialId: 'CISCO-NETACAD-VERIFIED',
+      badge: 'Cisco Verified',
       description:
-        'Comprehensive certification covering Next.js, React, TypeScript, state orchestration, serverless APIs, and relational databases.',
-      skills: ['Next.js', 'React', 'TypeScript', 'RESTful APIs', 'Git'],
-      image: '/images/thumb_photo-1606890542599-2ac4eb58c5f1.jpg',
+        'Official course completion credential covering foundational cybersecurity principles, threat detection, online defense strategies, vulnerability mitigation, and organizational network safety.',
+      skills: ['Cybersecurity', 'Threat Analysis', 'Network Defense', 'Incident Mitigation'],
+      image: '/certificates/cisco_cybersecurity.jpg',
     },
     {
       id: 'cert-2',
-      title: 'User Interface & User Experience (UI/UX) Design',
-      issuer: 'Human-Computer Interaction Institute',
-      date: '2025',
-      credentialId: 'CERT-UIUX-8842',
-      badge: 'Certified UI/UX',
+      title: 'Global Knowledge Standards, Practices and Technologies for Cybersecurity Function, Governance and Management',
+      issuer: 'Department of Information and Communications Technology (DICT) Region VIII',
+      date: 'October 30, 2026',
+      credentialId: 'ILCDB_R8_GKSPATFCFGAM_2026_196',
+      badge: 'DICT Regional Office 8',
       description:
-        'Specialization in wireframing, high-fidelity interactive prototyping, design systems, accessibility guidelines, and user psychology.',
-      skills: ['Figma', 'Design Systems', 'Micro-Interactions', 'Prototyping'],
-      image: '/images/thumb_photo-1517015901815-ad0932fb389e.jpg',
+        'Official 16-hour professional credential awarded by the DICT ICT Academy covering international cybersecurity governance, risk management frameworks, and enterprise IT defense.',
+      skills: ['Cybersecurity Governance', 'IT Management', 'Security Standards', 'Risk Management'],
+      image: '/certificates/dict_cybersecurity.jpg',
     },
     {
       id: 'cert-3',
-      title: 'Database Architecture & Backend Systems',
-      issuer: 'Software Engineering Council',
-      date: '2025',
-      credentialId: 'CERT-DB-5519',
-      badge: 'Database Architect',
+      title: 'Fundamentals of AI-Driven Development',
+      issuer: 'AI Dev PH Discord Community',
+      date: 'October 29, 2026',
+      credentialId: 'MWA-9V75-3SVS',
+      badge: 'All 4 Courses Completed',
+      verifyUrl: 'https://course.marwieang.com/verify/MWA-9V75-3SVS',
       description:
-        'Database modeling, PostgreSQL schema optimization, query planning, ORM configurations, and third-party SaaS integrations.',
-      skills: ['PostgreSQL', 'Prisma ORM', 'Database Normalization', 'API Security'],
-      image: '/images/thumb_photo-1533145862815-f4059758ae5f.jpg',
+        'Comprehensive completion credential for mastering AI-driven development workflows, prompt engineering, AI coding assistants, and modern software paradigms taught by Mar Wie Ang.',
+      skills: ['AI-Driven Development', 'Prompt Engineering', 'Full Stack AI', 'Modern Workflows'],
+      image: '/certificates/aidev_fundamentals.jpg',
     },
     {
       id: 'cert-4',
-      title: 'Progressive Web Apps (PWA) & Mobile Engineering',
-      issuer: 'Web Standards Organization',
-      date: '2026',
-      credentialId: 'CERT-PWA-3301',
-      badge: 'PWA Specialist',
+      title: 'Career Seminar: Marketing ME Live',
+      issuer: 'Jobs180.com & Bestlink College of the Philippines (BCP)',
+      date: 'October 7, 2026',
+      credentialId: 'BCP-JOBS180-2026',
+      badge: 'Career Leadership',
       description:
-        'Building offline-capable, responsive mobile web applications utilizing Web App Manifests, service workers, and responsive breakpoints.',
-      skills: ['PWA Manifest', 'Service Workers', 'Mobile-First Design'],
-      image: '/images/thumb_photo-1623684225794-a8f1f5037f5c.jpg',
+        'Professional seminar focusing on personal branding, industry career positioning, professional communications, and high-impact digital presence.',
+      skills: ['Personal Branding', 'Professional Communication', 'Career Positioning', 'Client Relations'],
+      image: '/certificates/bcp_marketing_me.jpg',
+    },
+    {
+      id: 'cert-5',
+      title: 'Professional Curriculum Vitae (CV)',
+      issuer: 'Ar-Jay Q. Tabangin',
+      date: '2026',
+      credentialId: 'CV-ARJAY-TABANGIN',
+      badge: 'Official Resume',
+      pdfUrl: '/Ar-jay_Tabangin_CV.pdf',
+      description:
+        'Complete curriculum vitae detailing education at Bestlink College of the Philippines (BSIT), prior customer service roles at Teleperformance and Concentrix, freelance design & editing, and key achievements.',
+      skills: ['UI/UX', 'Full Stack Development', 'Customer Service', 'Photo/Video Editing'],
+      image: '/certificates/arjay_cv_preview.jpg',
     },
   ];
 
@@ -248,6 +262,7 @@ export default function PortfolioPage() {
                 I&apos;m <span className="text-[#FF5A5F]">Ar-jay</span>
               </h1>
               <p className="text-zinc-300 text-lg sm:text-xl font-medium tracking-wide pt-2">
+                User Interface Designer
                 Developer &bull; UI/UX Designer &bull; Media Editor
               </p>
             </div>
@@ -368,16 +383,40 @@ export default function PortfolioPage() {
               </p>
             </div>
 
-            {/* Download CV Link */}
-            <div className="pt-2">
+            {/* Download CV Link & Quick Preview */}
+            <div className="pt-2 flex items-center gap-5">
               <a
-                href="#contact"
-                onClick={() => setIsChatModalOpen(true)}
+                href="/Ar-jay_Tabangin_CV.pdf"
+                download="Ar-jay_Tabangin_CV.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-[#FF5A5F] hover:text-rose-400 text-sm font-bold border-b border-[#FF5A5F] pb-0.5 transition-colors group cursor-pointer"
               >
                 <span>Download CV</span>
                 <Download className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
               </a>
+              <button
+                type="button"
+                onClick={() =>
+                  setSelectedCertificate({
+                    id: 'cert-cv',
+                    title: 'Curriculum Vitae (CV) - Ar-Jay Q. Tabangin',
+                    issuer: 'Freelance Programmer, Editor & Customer Service',
+                    date: '2026',
+                    credentialId: 'CV-ARJAY-TABANGIN',
+                    badge: 'Official CV',
+                    pdfUrl: '/Ar-jay_Tabangin_CV.pdf',
+                    description:
+                      'Complete curriculum vitae detailing BSIT education at Bestlink College of the Philippines, corporate customer service at Teleperformance and Concentrix, freelance design & editing, and key achievements.',
+                    skills: ['UI/UX', 'Full Stack Development', 'Customer Care', 'Photo/Video Editing'],
+                    image: '/certificates/arjay_cv_preview.jpg',
+                  })
+                }
+                className="text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer flex items-center gap-1"
+              >
+                <Eye className="w-3 h-3 text-zinc-500" />
+                <span>Quick Preview</span>
+              </button>
             </div>
           </div>
         </div>
@@ -425,19 +464,18 @@ export default function PortfolioPage() {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                    activeTab === tab
-                      ? 'bg-[#FF5A5F] text-white shadow-xs'
-                      : 'text-zinc-400 hover:text-white'
-                  }`}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === tab
+                    ? 'bg-[#FF5A5F] text-white shadow-xs'
+                    : 'text-zinc-400 hover:text-white'
+                    }`}
                 >
                   {tab === 'ALL'
                     ? 'All Projects'
                     : tab === 'WEB'
-                    ? 'Websites'
-                    : tab === 'PWA'
-                    ? 'PWA Apps'
-                    : 'UI/UX'}
+                      ? 'Websites'
+                      : tab === 'PWA'
+                        ? 'PWA Apps'
+                        : 'UI/UX'}
                 </button>
               ))}
             </div>
@@ -509,17 +547,17 @@ export default function PortfolioPage() {
             ))}
           </div>
 
-          {/* Interactive Project Drop Note */}
+          {/* Featured Projects Note */}
           <div className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center">
             <p className="text-xs text-zinc-400">
-              💡 <strong>Ready for your actual websites:</strong> Drop your live links, GitHub repos, or screenshots anytime. We will link your actual projects directly here!
+              💡 <strong>Featured Work:</strong> Featuring Ar-jay&apos;s real platforms and systems, including the live <strong>EduScholar Scholarship System</strong> on Railway, <strong>Kusina Ordering App</strong>, <strong>Campus Navigator</strong>, and <strong>Sole Surgeon Atelier</strong>.
             </p>
           </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. CERTIFICATES & CREDENTIALS SECTION ("mga certificates ko")             */}
+      {/* 4. CERTIFICATES & CREDENTIALS SECTION                                     */}
       {/* ========================================================================= */}
       <section id="certificates" className="relative z-20 py-24 border-t border-zinc-900 bg-black">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
@@ -533,13 +571,13 @@ export default function PortfolioPage() {
               Certificates & Accreditations
             </h2>
             <p className="text-sm text-zinc-400 max-w-xl">
-              Official certifications, coursework achievements, and verified competencies in Full
-              Stack Engineering, UI/UX architecture, and modern web frameworks.
+              Official certifications, coursework achievements, and verified credentials in
+              Cybersecurity, AI-Driven Development, and Professional Career Leadership.
             </p>
           </div>
 
           {/* Certificates Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {certificates.map((cert) => (
               <div
                 key={cert.id}
@@ -578,10 +616,10 @@ export default function PortfolioPage() {
             ))}
           </div>
 
-          {/* Interactive Certificate Drop Note */}
+          {/* Certificate Credential Note */}
           <div className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center">
             <p className="text-xs text-zinc-400">
-              📜 <strong>Ready for your actual certificates:</strong> Kapag na-drop mo na ang photos/PDFs ng certificates mo mamaya, agad nating ilalagay dito ang high-resolution previews at verified credential links!
+              📜 <strong>Verified Credentials:</strong> All credentials above are officially completed and verified by Cisco Networking Academy, DICT Region VIII, AI Dev PH, and Jobs180. Click any card to preview the official certificate or download the CV.
             </p>
           </div>
         </div>
@@ -601,11 +639,11 @@ export default function PortfolioPage() {
             </h2>
             <p className="text-sm text-zinc-400">
               The modern tools and technologies I use to architect lightning-fast, pixel-perfect
-              applications from design to deployment.
+              applications, manage media editing, and provide client service excellence.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Frontend & Web Development */}
             <div className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 transition-colors">
               <div className="w-12 h-12 rounded-2xl bg-rose-500/10 text-[#FF5A5F] flex items-center justify-center border border-rose-500/20">
@@ -613,7 +651,7 @@ export default function PortfolioPage() {
               </div>
               <h3 className="text-lg font-bold text-white">Web & App Development</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Responsive layouts, App Router, performant client-side state, modern web architectures, and mobile PWA optimization.
+                Responsive layouts, Next.js App Router, client-side state, modern web architectures, and mobile PWA optimization.
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
                 {['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'REST APIs', 'Git'].map(
@@ -664,7 +702,7 @@ export default function PortfolioPage() {
               </div>
               <h3 className="text-lg font-bold text-white">Photo & Video Editing</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Professional multimedia post-production, color grading, cinematic video editing, thumbnail design, and promotional media.
+                Professional multimedia post-production, color grading, cinematic video editing, thumbnail design, and creative media assets.
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
                 {[
@@ -716,238 +754,311 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* ========================================================================= */}
-      {/* 6. CALL TO ACTION & FOOTER                                                */}
-      {/* ========================================================================= */}
-      <footer className="relative z-20 py-16 border-t border-zinc-900 bg-black">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-          <div className="space-y-1">
-            <div className="flex items-center justify-center sm:justify-start gap-2 text-lg font-bold text-white">
-              <span>Ar-jay Tabangin</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F]" />
-            </div>
-            <p className="text-xs text-zinc-500">
-              © 2026 Ar-jay Tabangin • Developer, UI/UX Designer, Certified Customer Service &amp; Media Editor. All rights reserved.
-            </p>
-          </div>
+                {/* ========================================================================= */}
+                {/* 6. CALL TO ACTION & FOOTER                                                */}
+                {/* ========================================================================= */}
+                <footer className="relative z-20 py-16 border-t border-zinc-900 bg-black">
+                  <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-center sm:justify-start gap-2 text-lg font-bold text-white">
+                        <span>Ar-jay Tabangin</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F]" />
+                      </div>
+                      <p className="text-xs text-zinc-500">
+                        © 2026 Ar-jay Tabangin • Full Stack Developer & UI/UX Designer. All rights reserved.
+                        © 2026 Ar-jay Tabangin • Developer, UI/UX Designer, Certified Customer Service &amp; Media Editor. All rights reserved.
+                      </p>
+                    </div>
 
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setIsChatModalOpen(true)}
-              className="px-5 py-2.5 rounded-full bg-[#FF5A5F] hover:bg-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
-            >
-              Get in Touch
-            </button>
-            <a
-              href="#hero"
-              className="px-4 py-2.5 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white text-xs font-medium border border-zinc-800 transition-colors"
-            >
-              Back to Top ↑
-            </a>
-          </div>
-        </div>
-      </footer>
+                    <div className="flex items-center gap-4">
+                      <button
+                        onClick={() => setIsChatModalOpen(true)}
+                        className="px-5 py-2.5 rounded-full bg-[#FF5A5F] hover:bg-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+                      >
+                        Get in Touch
+                      </button>
+                      <a
+                        href="#hero"
+                        className="px-4 py-2.5 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white text-xs font-medium border border-zinc-800 transition-colors"
+                      >
+                        Back to Top ↑
+                      </a>
+                    </div>
+                  </div>
+                </footer>
 
-      {/* ========================================================================= */}
-      {/* 7. INTERACTIVE "LET'S CHAT / HIRE ME" MODAL                               */}
-      {/* ========================================================================= */}
-      {isChatModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
-          <div
-            className="relative w-full max-w-lg rounded-3xl bg-zinc-950 border border-zinc-800 p-6 sm:p-8 shadow-2xl space-y-6"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#FF5A5F] flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  Direct Consultation
-                </span>
-                <h3 className="text-2xl font-bold text-white">Let&apos;s Build Together</h3>
-                <p className="text-xs text-zinc-400">
-                  Ready to collaborate on your brand, website, or custom application?
-                </p>
-              </div>
-              <button
-                onClick={() => setIsChatModalOpen(false)}
-                className="p-2 rounded-xl bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
+                {/* ========================================================================= */}
+                {/* 7. INTERACTIVE "LET'S CHAT / HIRE ME" MODAL                               */}
+                {/* ========================================================================= */}
+                {isChatModalOpen && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
+                    <div
+                      className="relative w-full max-w-lg rounded-3xl bg-zinc-950 border border-zinc-800 p-6 sm:p-8 shadow-2xl space-y-6"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="space-y-1">
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-[#FF5A5F] flex items-center gap-1.5">
+                            <Sparkles className="w-3.5 h-3.5" />
+                            Direct Consultation
+                          </span>
+                          <h3 className="text-2xl font-bold text-white">Let&apos;s Build Together</h3>
+                          <p className="text-xs text-zinc-400">
+                            Ready to collaborate on your brand, website, or custom application?
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setIsChatModalOpen(false)}
+                          className="p-2 rounded-xl bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                alert('Thank you! Your message has been prepared. You can also reach out directly via email.');
-                setIsChatModalOpen(false);
-              }}
-              className="space-y-4 text-xs"
-            >
-              <div className="space-y-1 text-left">
-                <label className="font-bold text-zinc-300">Your Name</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. John Doe"
-                  className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors"
-                />
-              </div>
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          alert('Thank you! Your message has been prepared. You can also reach out directly via email.');
+                          setIsChatModalOpen(false);
+                        }}
+                        className="space-y-4 text-xs"
+                      >
+                        <div className="space-y-1 text-left">
+                          <label className="font-bold text-zinc-300">Your Name</label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. John Doe"
+                            className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors"
+                          />
+                        </div>
 
-              <div className="space-y-1 text-left">
-                <label className="font-bold text-zinc-300">Your Email Address</label>
-                <input
-                  type="email"
-                  required
-                  placeholder="e.g. john@company.com"
-                  className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors"
-                />
-              </div>
+                        <div className="space-y-1 text-left">
+                          <label className="font-bold text-zinc-300">Your Email Address</label>
+                          <input
+                            type="email"
+                            required
+                            placeholder="e.g. john@company.com"
+                            className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors"
+                          />
+                        </div>
 
-              <div className="space-y-1 text-left">
-                <label className="font-bold text-zinc-300">Project Overview / Scope</label>
-                <textarea
-                  rows={4}
-                  required
-                  placeholder="Tell me about the website, mobile app, or design you would like to build..."
-                  className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors resize-none"
-                />
-              </div>
+                        <div className="space-y-1 text-left">
+                          <label className="font-bold text-zinc-300">Project Overview / Scope</label>
+                          <textarea
+                            rows={4}
+                            required
+                            placeholder="Tell me about the website, mobile app, or design you would like to build..."
+                            className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors resize-none"
+                          />
+                        </div>
 
-              <div className="pt-2 flex items-center justify-between gap-3">
-                <a
-                  href="mailto:tabanginarjay@gmail.com"
-                  className="text-xs text-zinc-400 hover:text-white flex items-center gap-1.5"
-                >
-                  <Mail className="w-3.5 h-3.5 text-[#FF5A5F]" />
-                  <span>tabanginarjay@gmail.com</span>
-                </a>
+                        <div className="pt-2 flex items-center justify-between gap-3">
+                          <a
+                            href="mailto:tabanginarjay@gmail.com"
+                            className="text-xs text-zinc-400 hover:text-white flex items-center gap-1.5"
+                          >
+                            <Mail className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                            <span>tabanginarjay@gmail.com</span>
+                          </a>
 
-                <button
-                  type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white font-bold transition-all shadow-md active:scale-95 flex items-center gap-1.5 cursor-pointer"
-                >
-                  <span>Send Message</span>
-                  <Send className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+                          <button
+                            type="submit"
+                            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white font-bold transition-all shadow-md active:scale-95 flex items-center gap-1.5 cursor-pointer"
+                          >
+                            <span>Send Message</span>
+                            <Send className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                )}
 
-      {/* ========================================================================= */}
-      {/* 8. CERTIFICATE PREVIEW MODAL                                              */}
-      {/* ========================================================================= */}
-      {selectedCertificate && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in">
-          <div
-            className="relative w-full max-w-lg rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-5"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="relative aspect-video w-full bg-zinc-900">
-              <Image
-                src={selectedCertificate.image}
-                alt={selectedCertificate.title}
-                fill
-                className="object-cover"
-              />
-              <button
-                onClick={() => setSelectedCertificate(null)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-black/60 text-white hover:bg-black"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="p-6 pt-0 space-y-4">
-              <div className="space-y-1">
-                <span className="text-[11px] font-mono font-bold text-[#FF5A5F]">
-                  Credential ID: {selectedCertificate.credentialId}
-                </span>
-                <h4 className="text-xl font-bold text-white">{selectedCertificate.title}</h4>
-                <p className="text-xs text-zinc-400">{selectedCertificate.issuer} • Issued {selectedCertificate.date}</p>
-              </div>
-
-              <p className="text-xs text-zinc-300 leading-relaxed">
-                {selectedCertificate.description}
-              </p>
-
-              <div className="pt-2 flex items-center justify-end">
-                <button
-                  onClick={() => setSelectedCertificate(null)}
-                  className="px-5 py-2 rounded-xl bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-800 transition-colors"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ========================================================================= */}
-      {/* 9. PROJECT DETAILS MODAL                                                 */}
-      {/* ========================================================================= */}
-      {selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in">
-          <div
-            className="relative w-full max-w-xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-5"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="relative aspect-video w-full bg-zinc-900">
-              <Image
-                src={selectedProject.image}
-                alt={selectedProject.title}
-                fill
-                className="object-cover"
-              />
-              <button
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-black/60 text-white hover:bg-black"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="p-6 pt-0 space-y-4">
-              <div className="space-y-1">
-                <span className="text-[11px] font-mono font-bold text-[#FF5A5F]">
-                  {selectedProject.type}
-                </span>
-                <h4 className="text-2xl font-bold text-white">{selectedProject.title}</h4>
-              </div>
-
-              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                {selectedProject.description}
-              </p>
-
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                {selectedProject.tags.map((tag: string) => (
-                  <span
-                    key={tag}
-                    className="px-2.5 py-0.5 rounded-lg bg-zinc-900 text-[11px] font-medium text-zinc-300 border border-zinc-800"
+                {/* ========================================================================= */}
+                {/* 8. CERTIFICATE PREVIEW MODAL                                              */}
+                {/* ========================================================================= */}
+                {selectedCertificate && (
+                  <div
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in"
+                    onClick={() => setSelectedCertificate(null)}
                   >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+                    <div
+                      className="relative w-full max-w-3xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-5 my-auto max-h-[92vh] flex flex-col"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="relative aspect-[4/3] sm:aspect-[16/10] max-h-[58vh] w-full bg-zinc-900/90 flex items-center justify-center p-3">
+                        <Image
+                          src={selectedCertificate.image}
+                          alt={selectedCertificate.title}
+                          fill
+                          className="object-contain p-2"
+                        />
+                        <button
+                          onClick={() => setSelectedCertificate(null)}
+                          className="absolute top-4 right-4 p-2 rounded-full bg-black/70 text-white hover:bg-black transition-colors cursor-pointer z-10"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
 
-              <div className="pt-4 border-t border-zinc-900 flex items-center justify-between">
-                <span className="text-xs text-zinc-500">
-                  Ready to link your actual GitHub repo or live domain
-                </span>
-                <button
-                  onClick={() => setSelectedProject(null)}
-                  className="px-5 py-2 rounded-xl bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-800 transition-colors"
-                >
-                  Close
-                </button>
+                      <div className="p-6 pt-0 space-y-4 overflow-y-auto">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[11px] font-mono font-bold text-[#FF5A5F] px-2 py-0.5 rounded bg-rose-500/10 border border-rose-500/20">
+                              {selectedCertificate.credentialId}
+                            </span>
+                            <span className="text-[11px] font-mono text-zinc-400">
+                              {selectedCertificate.badge}
+                            </span>
+                          </div>
+                          <h4 className="text-xl sm:text-2xl font-bold text-white leading-snug">{selectedCertificate.title}</h4>
+                          <p className="text-xs text-zinc-400">{selectedCertificate.issuer} • Issued {selectedCertificate.date}</p>
+                        </div>
+
+                        <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                          {selectedCertificate.description}
+                        </p>
+
+                        <div className="flex flex-wrap gap-1.5 pt-1">
+                          {selectedCertificate.skills?.map((s: string) => (
+                            <span
+                              key={s}
+                              className="px-2.5 py-0.5 rounded-lg bg-zinc-900 text-[11px] font-medium text-zinc-300 border border-zinc-800"
+                            >
+                              {s}
+                            </span>
+                          ))}
+                        </div>
+
+                        <div className="pt-4 border-t border-zinc-900 flex flex-wrap items-center justify-between gap-3">
+                          <div className="flex items-center gap-3">
+                            {selectedCertificate.pdfUrl && (
+                              <a
+                                href={selectedCertificate.pdfUrl}
+                                download="Ar-jay_Tabangin_CV.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 flex items-center gap-1.5"
+                              >
+                                <Download className="w-3.5 h-3.5" />
+                                <span>Download Official PDF</span>
+                              </a>
+                            )}
+                            {selectedCertificate.verifyUrl && (
+                              <a
+                                href={selectedCertificate.verifyUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white text-xs font-bold transition-all flex items-center gap-1.5"
+                              >
+                                <ExternalLink className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                                <span>Online Verification</span>
+                              </a>
+                            )}
+                            <a
+                              href={selectedCertificate.image}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-zinc-400 hover:text-white transition-colors underline flex items-center gap-1"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                              <span>View Full Image</span>
+                            </a>
+                          </div>
+
+                          <button
+                            onClick={() => setSelectedCertificate(null)}
+                            className="px-5 py-2 rounded-xl bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-800 transition-colors cursor-pointer"
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ========================================================================= */}
+                {/* 9. PROJECT DETAILS MODAL                                                 */}
+                {/* ========================================================================= */}
+                {selectedProject && (
+                  <div
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in"
+                    onClick={() => setSelectedProject(null)}
+                  >
+                    <div
+                      className="relative w-full max-w-xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-5"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="relative aspect-video w-full bg-zinc-900">
+                        <Image
+                          src={selectedProject.image}
+                          alt={selectedProject.title}
+                          fill
+                          className="object-cover"
+                        />
+                        <button
+                          onClick={() => setSelectedProject(null)}
+                          className="absolute top-4 right-4 p-2 rounded-full bg-black/60 text-white hover:bg-black"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      <div className="p-6 pt-0 space-y-4">
+                        <div className="space-y-1">
+                          <span className="text-[11px] font-mono font-bold text-[#FF5A5F]">
+                            {selectedProject.type}
+                          </span>
+                          <h4 className="text-2xl font-bold text-white">{selectedProject.title}</h4>
+                        </div>
+
+                        <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                          {selectedProject.description}
+                        </p>
+
+                        <div className="flex flex-wrap gap-1.5 pt-1">
+                          {selectedProject.tags.map((tag: string) => (
+                            <span
+                              key={tag}
+                              className="px-2.5 py-0.5 rounded-lg bg-zinc-900 text-[11px] font-medium text-zinc-300 border border-zinc-800"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+
+                        <div className="pt-4 border-t border-zinc-900 flex items-center justify-between">
+                          <div>
+                            {selectedProject.link && selectedProject.link !== '#' ? (
+                              <a
+                                href={selectedProject.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 inline-flex items-center gap-1.5"
+                              >
+                                <span>Visit Live Platform</span>
+                                <ExternalLink className="w-3.5 h-3.5" />
+                              </a>
+                            ) : (
+                              <span className="text-xs text-zinc-500 font-mono">
+                                Status: {selectedProject.status}
+                              </span>
+                            )}
+                          </div>
+
+                          <button
+                            onClick={() => setSelectedProject(null)}
+                            className="px-5 py-2 rounded-xl bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-800 transition-colors cursor-pointer"
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+              );
 }
