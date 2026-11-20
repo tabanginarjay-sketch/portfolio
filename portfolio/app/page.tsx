@@ -94,10 +94,10 @@ export default function PortfolioPage() {
       title: 'Introduction to Cybersecurity',
       issuer: 'Cisco Networking Academy',
       date: 'October 29, 2026',
-      credentialId: 'CISCO-NETACAD-VERIFIED',
+      credentialId: 'CISCO-COURSE-COMPLETION',
       badge: 'Cisco Verified',
       description:
-        'Official course completion credential covering foundational cybersecurity principles, threat detection, online defense strategies, vulnerability mitigation, and organizational network safety.',
+        'Official student-level course completion credential covering foundational cybersecurity principles, threat detection, online defense strategies, vulnerability mitigation, and organizational network safety.',
       skills: ['Cybersecurity', 'Threat Analysis', 'Network Defense', 'Incident Mitigation'],
       image: '/certificates/cisco_cybersecurity.jpg',
     },
@@ -107,9 +107,9 @@ export default function PortfolioPage() {
       issuer: 'Department of Information and Communications Technology (DICT) Region VIII',
       date: 'October 30, 2026',
       credentialId: 'ILCDB_R8_GKSPATFCFGAM_2026_196',
-      badge: 'DICT Regional Office 8',
+      badge: 'DICT Regional Office 8 (16 Hours)',
       description:
-        'Official 16-hour professional credential awarded by the DICT ICT Academy covering international cybersecurity governance, risk management frameworks, and enterprise IT defense.',
+        'Official 16-hour credential awarded by the DICT ICT Academy covering international cybersecurity governance, risk management frameworks, and enterprise IT defense conducted in Tacloban City.',
       skills: ['Cybersecurity Governance', 'IT Management', 'Security Standards', 'Risk Management'],
       image: '/certificates/dict_cybersecurity.jpg',
     },
@@ -119,7 +119,7 @@ export default function PortfolioPage() {
       issuer: 'AI Dev PH Discord Community',
       date: 'October 29, 2026',
       credentialId: 'MWA-9V75-3SVS',
-      badge: 'All 4 Courses Completed',
+      badge: 'All 4 AI Dev Courses Completed',
       verifyUrl: 'https://course.marwieang.com/verify/MWA-9V75-3SVS',
       description:
         'Comprehensive completion credential for mastering AI-driven development workflows, prompt engineering, AI coding assistants, and modern software paradigms taught by Mar Wie Ang.',
@@ -131,25 +131,12 @@ export default function PortfolioPage() {
       title: 'Career Seminar: Marketing ME Live',
       issuer: 'Jobs180.com & Bestlink College of the Philippines (BCP)',
       date: 'October 7, 2026',
-      credentialId: 'BCP-JOBS180-2026',
-      badge: 'Career Leadership',
+      credentialId: 'BCP-JOBS180-QC',
+      badge: 'Career Seminar Attendance',
       description:
-        'Professional seminar focusing on personal branding, industry career positioning, professional communications, and high-impact digital presence.',
+        'Official Certificate of Attendance for participating in the career seminar Marketing ME Live at Bestlink College of the Philippines, Quezon City, presented by Managing Director Kim Chua.',
       skills: ['Personal Branding', 'Professional Communication', 'Career Positioning', 'Client Relations'],
       image: '/certificates/bcp_marketing_me.jpg',
-    },
-    {
-      id: 'cert-5',
-      title: 'Professional Curriculum Vitae (CV)',
-      issuer: 'Ar-Jay Q. Tabangin',
-      date: '2026',
-      credentialId: 'CV-ARJAY-TABANGIN',
-      badge: 'Official Resume',
-      pdfUrl: '/Ar-jay_Tabangin_CV.pdf',
-      description:
-        'Complete curriculum vitae detailing education at Bestlink College of the Philippines (BSIT), prior customer service roles at Teleperformance and Concentrix, freelance design & editing, and key achievements.',
-      skills: ['UI/UX', 'Full Stack Development', 'Customer Service', 'Photo/Video Editing'],
-      image: '/certificates/arjay_cv_preview.jpg',
     },
   ];
 
@@ -337,21 +324,16 @@ export default function PortfolioPage() {
 
           {/* ----------------- CENTER COLUMN: PORTRAIT IMAGE ----------------- */}
           <div className="lg:col-span-4 flex items-center justify-center order-1 lg:order-2 relative">
-            {/* Ambient Shadow glow to blend with pure black */}
-            <div className="absolute inset-0 bg-radial from-zinc-800/10 via-black/80 to-black pointer-events-none z-10" />
-
             <div className="relative w-72 sm:w-84 md:w-96 lg:w-[420px] aspect-[3/4] max-h-[580px] overflow-hidden">
               <Image
-                src="/images/hero-portrait.jpg"
-                alt="Developer & Designer Portrait"
+                src="/images/arjay-portrait.jpg"
+                alt="Ar-jay Tabangin - Developer & UI/UX Designer"
                 fill
                 priority
-                className="object-cover object-center filter contrast-105"
+                className="object-cover object-top filter brightness-[1.03] contrast-105"
               />
-              {/* Bottom & Edge Fade Mask so dark clothing seamlessly disappears into the black background */}
-              <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black via-black/70 to-transparent z-10" />
-              <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-black to-transparent z-10" />
-              <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black to-transparent z-10" />
+              {/* Soft bottom fade so suit melts into the page seamlessly */}
+              <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none z-10" />
             </div>
           </div>
 
@@ -580,39 +562,50 @@ export default function PortfolioPage() {
           </div>
 
           {/* Certificates Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {certificates.map((cert) => (
               <div
                 key={cert.id}
                 onClick={() => setSelectedCertificate(cert)}
-                className="group relative p-6 rounded-3xl bg-zinc-950/80 hover:bg-zinc-900/90 border border-zinc-850 hover:border-[#FF5A5F]/60 transition-all cursor-pointer shadow-lg hover:shadow-2xl flex flex-col justify-between space-y-5"
+                className="group relative p-5 rounded-3xl bg-zinc-950/80 hover:bg-zinc-900/90 border border-zinc-850 hover:border-[#FF5A5F]/60 transition-all cursor-pointer shadow-lg hover:shadow-2xl flex flex-col justify-between space-y-4"
               >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="p-2.5 rounded-2xl bg-zinc-900 text-[#FF5A5F] border border-zinc-800 group-hover:scale-110 transition-transform">
-                      <Award className="w-5 h-5" />
-                    </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-zinc-900 text-zinc-400 border border-zinc-800">
-                      {cert.date}
-                    </span>
+                <div className="space-y-4">
+                  {/* Certificate Thumbnail Preview */}
+                  <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800">
+                    <Image
+                      src={cert.image}
+                      alt={cert.title}
+                      fill
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-mono font-bold text-[#FF5A5F] border border-zinc-800">
+                      {cert.badge}
+                    </div>
                   </div>
 
-                  <div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-zinc-900 text-zinc-400 border border-zinc-800">
+                        {cert.date}
+                      </span>
+                      <span className="text-[11px] font-mono text-zinc-500">{cert.credentialId}</span>
+                    </div>
+
                     <h3 className="font-bold text-white text-base group-hover:text-[#FF5A5F] transition-colors leading-snug">
                       {cert.title}
                     </h3>
-                    <p className="text-xs text-zinc-400 mt-1 font-medium">{cert.issuer}</p>
-                  </div>
+                    <p className="text-xs text-zinc-400 font-medium">{cert.issuer}</p>
 
-                  <p className="text-xs text-zinc-400 leading-relaxed line-clamp-3">
-                    {cert.description}
-                  </p>
+                    <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
+                      {cert.description}
+                    </p>
+                  </div>
                 </div>
 
                 <div className="pt-3 border-t border-zinc-900/80 flex items-center justify-between text-xs">
-                  <span className="text-[11px] font-mono text-zinc-400">{cert.credentialId}</span>
+                  <span className="text-zinc-500 text-[11px]">Click card to view details</span>
                   <span className="text-[#FF5A5F] font-bold group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-1">
-                    Preview <Eye className="w-3 h-3" />
+                    Preview Certificate <Eye className="w-3.5 h-3.5" />
                   </span>
                 </div>
               </div>
