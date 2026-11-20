@@ -115,21 +115,22 @@ body {
 }
 
 /* ============================================================================
-   HERO ORBITAL LIGHTING HALO SYSTEM (Pure 100% Linear Continuous GPU Orbit)
-   Zero stops, zero pauses, zero deformation — perfect round circular orbits!
+   HERO 3D ORBITAL HALO SYSTEM (Pure Continuous 3D GPU Orbit)
+   Sweeps in FRONT of Ar-jay's suit (z-30) and BEHIND his back (z-10)!
+   Zero distortion — 100% Perfect Round Circular Rings & Dot!
    ============================================================================ */
 
-/* Responsive Orbit Radii via CSS variables (Framing Ar-jay on Desktop & Mobile without hitting text) */
+/* Responsive Orbit Radii via CSS variables (Framing Ar-jay on Desktop & Mobile) */
 :root {
-  --orbit-cyan-r: 88px;
-  --orbit-coral-r: 70px;
-  --orbit-dot-r: 102px;
+  --orbit-cyan-r: 92px;
+  --orbit-coral-r: 72px;
+  --orbit-dot-r: 106px;
 }
 @media (min-width: 640px) {
   :root {
-    --orbit-cyan-r: 110px;
-    --orbit-coral-r: 88px;
-    --orbit-dot-r: 128px;
+    --orbit-cyan-r: 120px;
+    --orbit-coral-r: 95px;
+    --orbit-dot-r: 138px;
   }
 }
 @media (min-width: 768px) {
@@ -142,8 +143,8 @@ body {
 @media (min-width: 1024px) {
   :root {
     --orbit-cyan-r: 165px;
-    --orbit-coral-r: 132px;
-    --orbit-dot-r: 185px;
+    --orbit-coral-r: 135px;
+    --orbit-dot-r: 188px;
   }
 }
 @media (min-width: 1280px) {
@@ -154,47 +155,85 @@ body {
   }
 }
 
-/* 100% Pure Linear Continuous Circular Orbits — Zero Distortion, Exact Circles! */
-@keyframes orbitSpinCyan {
-  from {
+/* 1. Cyan Ring 3D Orbit: 0° to 180° sweeps FRONT (z-30), 180° to 360° sweeps BACK (z-10) */
+@keyframes orbitSpinCyan3D {
+  0% {
     transform: rotate(0deg) translateX(var(--orbit-cyan-r)) rotate(0deg);
+    z-index: 30;
   }
-  to {
+  49.9% {
+    z-index: 30;
+  }
+  50% {
+    transform: rotate(180deg) translateX(var(--orbit-cyan-r)) rotate(-180deg);
+    z-index: 10;
+  }
+  99.9% {
+    z-index: 10;
+  }
+  100% {
     transform: rotate(360deg) translateX(var(--orbit-cyan-r)) rotate(-360deg);
+    z-index: 30;
   }
 }
 
-@keyframes orbitSpinCoral {
-  from {
+/* 2. Coral Ring 3D Orbit: Starts at 180°, sweeps FRONT from left to right (z-30), sweeps BACK (z-10) */
+@keyframes orbitSpinCoral3D {
+  0% {
     transform: rotate(180deg) translateX(var(--orbit-coral-r)) rotate(-180deg);
+    z-index: 30;
   }
-  to {
+  49.9% {
+    z-index: 30;
+  }
+  50% {
+    transform: rotate(360deg) translateX(var(--orbit-coral-r)) rotate(-360deg);
+    z-index: 10;
+  }
+  99.9% {
+    z-index: 10;
+  }
+  100% {
     transform: rotate(540deg) translateX(var(--orbit-coral-r)) rotate(-540deg);
+    z-index: 30;
   }
 }
 
-@keyframes orbitSpinDot {
-  from {
+/* 3. Solid Cyan Dot 3D Orbit: Fast satellite orbit passing FRONT (z-30) and BACK (z-10) */
+@keyframes orbitSpinDot3D {
+  0% {
     transform: rotate(90deg) translateX(var(--orbit-dot-r)) rotate(-90deg);
+    z-index: 30;
   }
-  to {
+  49.9% {
+    z-index: 30;
+  }
+  50% {
+    transform: rotate(270deg) translateX(var(--orbit-dot-r)) rotate(-270deg);
+    z-index: 10;
+  }
+  99.9% {
+    z-index: 10;
+  }
+  100% {
     transform: rotate(450deg) translateX(var(--orbit-dot-r)) rotate(-450deg);
+    z-index: 30;
   }
 }
 
 .anim-orbit-cyan {
-  animation: orbitSpinCyan 12s linear infinite;
-  will-change: transform;
+  animation: orbitSpinCyan3D 11s linear infinite;
+  will-change: transform, z-index;
 }
 
 .anim-orbit-coral {
-  animation: orbitSpinCoral 8.5s linear infinite;
-  will-change: transform;
+  animation: orbitSpinCoral3D 8s linear infinite;
+  will-change: transform, z-index;
 }
 
 .anim-orbit-dot {
-  animation: orbitSpinDot 6s linear infinite;
-  will-change: transform;
+  animation: orbitSpinDot3D 5.5s linear infinite;
+  will-change: transform, z-index;
 }
 
 /* Playful Floating Bobbing Animations when in Display Margin Mode */
