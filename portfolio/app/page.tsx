@@ -44,12 +44,19 @@ export default function PortfolioPage() {
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
 
   // Horizontal Certificates Carousel state & refs
+  const pageRootRef = useRef<HTMLDivElement | null>(null);
   const certSliderRef = useRef<HTMLDivElement | null>(null);
   const certCardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const certScrollRafRef = useRef<number | null>(null);
+  const certHoverTimerRef = useRef<number | null>(null);
   const [activeCertIndex, setActiveCertIndex] = useState(0);
   const [canScrollCertPrev, setCanScrollCertPrev] = useState(false);
   const [canScrollCertNext, setCanScrollCertNext] = useState(true);
+  const [hoveredCert, setHoveredCert] = useState<{
+    cert: any;
+    side: 'left' | 'right';
+    top: number;
+  } | null>(null);
 
   // Contact / Let's Chat form state
   const [contactName, setContactName] = useState('');
@@ -308,12 +315,118 @@ export default function PortfolioPage() {
   }, [certificates.length]);
 
   const handleCertScroll = useCallback(() => {
+    setHoveredCert(null);
     if (certScrollRafRef.current !== null) return;
     certScrollRafRef.current = window.requestAnimationFrame(() => {
       certScrollRafRef.current = null;
       syncCertSliderState();
     });
   }, [syncCertSliderState]);
+
+  const clearCertHover = useCallback(() => {
+    if (certHoverTimerRef.current !== null) {
+      window.clearTimeout(certHoverTimerRef.current);
+      certHoverTimerRef.current = null;
+    }
+    setHoveredCert(null);
+  }, []);
+
+  const handleCertHoverStart = useCallback((cert: any, cardEl: HTMLElement) => {
+    if (typeof window === 'undefined') return;
+    if (
+      window.innerWidth < 1024 ||
+      !window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    ) {
+      return;
+    }
+    if (certHoverTimerRef.current !== null) {
+      window.clearTimeout(certHoverTimerRef.current);
+    }
+
+    const rect = cardEl.getBoundingClientRect();
+    const cardCenterX = rect.left + rect.width / 2;
+    const side: 'left' | 'right' = cardCenterX < window.innerWidth / 2 ? 'right' : 'left';
+    const estimatedHeight = 560;
+    const idealTop = rect.top + rect.height / 2 - estimatedHeight / 2;
+    const maxTop = Math.max(20, window.innerHeight - estimatedHeight - 20);
+    const clampedTop = Math.max(20, Math.min(idealTop, maxTop));
+
+    certHoverTimerRef.current = window.setTimeout(() => {
+      setHoveredCert({ cert, side, top: Math.round(clampedTop) });
+    }, 85);
+  }, []);
+
+  const handleCertHoverEnd = useCallback(() => {
+    if (certHoverTimerRef.current !== null) {
+      window.clearTimeout(certHoverTimerRef.current);
+      certHoverTimerRef.current = null;
+    }
+    certHoverTimerRef.current = window.setTimeout(() => {
+      setHoveredCert(null);
+    }, 55);
+  }, []);
+
+  useEffect(() => {
+    if (!hoveredCert) return;
+    const dismissOnScroll = () => setHoveredCert(null);
+    window.addEventListener('scroll', dismissOnScroll, { passive: true });
+    return () => window.removeEventListener('scroll', dismissOnScroll);
+  }, [hoveredCert]);
+
+  // Smooth zero-lag scroll-reveal observer across all sections & cards
+  useEffect(() => {
+    const root = pageRootRef.current;
+    if (!root) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const targets = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-reveal]:not([data-revealed="true"])')
+    );
+    if (targets.length === 0) return;
+
+    const revealElement = (el: HTMLElement, immediate = false) => {
+      el.setAttribute('data-revealed', 'true');
+      if (immediate) {
+        el.setAttribute('data-reveal-done', 'true');
+        return;
+      }
+      const rawDelay = el.style.getPropertyValue('--reveal-delay').trim();
+      const delayMs = rawDelay.endsWith('ms') ? parseFloat(rawDelay) || 0 : 0;
+      window.setTimeout(() => {
+        el.setAttribute('data-reveal-done', 'true');
+      }, delayMs + 800);
+    };
+
+    const viewportCutoff = window.innerHeight * 0.94;
+    const pending: HTMLElement[] = [];
+
+    targets.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < viewportCutoff && rect.bottom > 0) {
+        revealElement(el, true);
+      } else {
+        pending.push(el);
+      }
+    });
+
+    root.classList.add('js-reveal-active');
+    if (pending.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          revealElement(el, false);
+          observer.unobserve(el);
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -36px 0px' }
+    );
+
+    pending.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [activeTab, activeEditCategory]);
 
   const scrollToCertIndex = useCallback((idx: number) => {
     const slider = certSliderRef.current;
@@ -360,6 +473,9 @@ export default function PortfolioPage() {
       window.removeEventListener('resize', handleResize);
       if (certScrollRafRef.current !== null) {
         window.cancelAnimationFrame(certScrollRafRef.current);
+      }
+      if (certHoverTimerRef.current !== null) {
+        window.clearTimeout(certHoverTimerRef.current);
       }
     };
   }, [syncCertSliderState]);
@@ -520,11 +636,14 @@ export default function PortfolioPage() {
     activeTab === 'ALL' ? projects : projects.filter((p) => p.category === activeTab);
 
   return (
-    <div className="relative min-h-screen bg-[#000000] text-white selection:bg-[#FF5A5F]/30 selection:text-[#FF5A5F]">
+    <div
+      ref={pageRootRef}
+      className="relative min-h-screen overflow-x-clip bg-[#000000] text-white selection:bg-[#FF5A5F]/30 selection:text-[#FF5A5F]"
+    >
       {/* ========================================================================= */}
       {/* 1. TOP HEADER NAVIGATION (Matching the Reference Screenshot)             */}
       {/* ========================================================================= */}
-      <header className="relative z-50 w-full max-w-7xl mx-auto px-5 sm:px-10 lg:px-12 py-4 sm:py-5 lg:py-7 flex items-center justify-between">
+      <header className="hero-anim-down relative z-50 w-full max-w-7xl mx-auto px-5 sm:px-10 lg:px-12 py-4 sm:py-5 lg:py-7 flex items-center justify-between">
         {/* Brand Logo & Email Link */}
         <div className="flex items-center gap-4 sm:gap-6">
           <a
@@ -655,11 +774,17 @@ export default function PortfolioPage() {
           {/* ----------------- LEFT COLUMN: HEADING & CTA ----------------- */}
           <div className="lg:col-span-4 space-y-4 sm:space-y-5 lg:space-y-6 text-left order-2 lg:order-1 pt-0 relative z-30">
             <div className="space-y-1">
-              <h1 className="font-serif text-[42px] sm:text-5xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08] lg:leading-[1.1]">
+              <h1
+                style={{ '--delay': '80ms' } as React.CSSProperties}
+                className="hero-anim-up font-serif text-[42px] sm:text-5xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08] lg:leading-[1.1]"
+              >
                 Hi, <br />
                 I&apos;m <span className="text-[#FF5A5F]">Ar-jay</span>
               </h1>
-              <div className="pt-1.5 lg:pt-2 space-y-0.5 lg:space-y-1">
+              <div
+                style={{ '--delay': '170ms' } as React.CSSProperties}
+                className="hero-anim-up pt-1.5 lg:pt-2 space-y-0.5 lg:space-y-1"
+              >
                 <p className="text-white text-base sm:text-xl font-semibold tracking-wide">
                   Developer &amp; UI/UX Designer
                 </p>
@@ -670,7 +795,10 @@ export default function PortfolioPage() {
             </div>
 
             {/* Hire Me CTA Button matching the reference pill */}
-            <div className="pt-1 lg:pt-2">
+            <div
+              style={{ '--delay': '250ms' } as React.CSSProperties}
+              className="hero-anim-up pt-1 lg:pt-2"
+            >
               <button
                 type="button"
                 onClick={() => setIsChatModalOpen(true)}
@@ -684,7 +812,10 @@ export default function PortfolioPage() {
             </div>
 
             {/* Left Social Links */}
-            <div className="pt-3 sm:pt-5 lg:pt-8 flex flex-col space-y-3 lg:space-y-4">
+            <div
+              style={{ '--delay': '330ms' } as React.CSSProperties}
+              className="hero-anim-up pt-3 sm:pt-5 lg:pt-8 flex flex-col space-y-3 lg:space-y-4"
+            >
               <div className="flex items-center gap-5 text-zinc-400">
                 <a
                   href="https://www.facebook.com/share/1CstVHcQAw/?mibextid=wwXIfr"
@@ -747,14 +878,17 @@ export default function PortfolioPage() {
             </div>
 
             {/* True transparent portrait PNG — compact & balanced on iOS/Android, editorial scale on desktop */}
-            <div className="relative w-[228px] sm:w-[275px] md:w-[330px] lg:w-[430px] aspect-[482/744] max-h-[355px] sm:max-h-[430px] lg:max-h-[640px] -mt-1 -mb-16 sm:-mb-20 lg:mt-0 lg:mb-0 select-none">
+            <div
+              style={{ '--delay': '110ms' } as React.CSSProperties}
+              className="hero-anim-portrait relative w-[228px] sm:w-[275px] md:w-[330px] lg:w-[430px] aspect-[482/744] max-h-[355px] sm:max-h-[430px] lg:max-h-[640px] -mt-1 -mb-16 sm:-mb-20 lg:mt-0 lg:mb-0 select-none"
+            >
               <Image
                 src="/images/arjay-portrait-hero.png?v=6"
                 alt="Ar-jay Tabangin - Developer & UI/UX Designer"
                 fill
                 priority
                 unoptimized
-                className="object-contain object-top"
+                className="object-contain object-top transition-transform duration-700 ease-out hover:scale-[1.02]"
               />
             </div>
           </div>
@@ -764,7 +898,10 @@ export default function PortfolioPage() {
             {/* Dynamic floating geometric shapes with independent multi-directional drift & mouse parallax */}
             <GeometricShapes />
 
-            <div className="space-y-3">
+            <div
+              style={{ '--delay': '210ms' } as React.CSSProperties}
+              className="hero-anim-right space-y-3"
+            >
               <span className="text-[#FF5A5F] text-xs font-bold uppercase tracking-wider block">
                 Expert on
               </span>
@@ -784,7 +921,10 @@ export default function PortfolioPage() {
             </div>
 
             {/* Download CV Link & Quick Preview */}
-            <div className="pt-2 flex items-center gap-5">
+            <div
+              style={{ '--delay': '320ms' } as React.CSSProperties}
+              className="hero-anim-up pt-2 flex items-center gap-5"
+            >
               <a
                 href="/Ar-jay_Tabangin_CV.pdf"
                 download="Ar-jay_Tabangin_CV.pdf"
@@ -822,7 +962,10 @@ export default function PortfolioPage() {
         </div>
 
         {/* Bottom Floating "Let's Chat" Pill (Above SmokeAtmosphere z-10 fade) */}
-        <div className="relative z-30 w-full flex justify-end pt-8 sm:pt-4">
+        <div
+          style={{ '--delay': '400ms' } as React.CSSProperties}
+          className="hero-anim-up relative z-30 w-full flex justify-end pt-8 sm:pt-4"
+        >
           <button
             type="button"
             onClick={() => setIsChatModalOpen(true)}
@@ -845,7 +988,7 @@ export default function PortfolioPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-14">
           {/* Section Header */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-            <div className="space-y-2">
+            <div data-reveal="up" className="space-y-2">
               <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
                 <Briefcase className="w-3.5 h-3.5" />
                 Background &amp; Track Record
@@ -860,6 +1003,8 @@ export default function PortfolioPage() {
             </div>
 
             <a
+              data-reveal="right"
+              style={{ '--reveal-delay': '100ms' } as React.CSSProperties}
               href="/Ar-jay_Tabangin_CV.pdf"
               download="Ar-jay_Tabangin_CV.pdf"
               target="_blank"
@@ -874,7 +1019,7 @@ export default function PortfolioPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             {/* LEFT COLUMN: WORK EXPERIENCE TIMELINE */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="flex items-center gap-3">
+              <div data-reveal="up" className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-rose-500/10 text-[#FF5A5F] flex items-center justify-center border border-rose-500/20">
                   <Briefcase className="w-5 h-5" />
                 </div>
@@ -885,10 +1030,12 @@ export default function PortfolioPage() {
               </div>
 
               <div className="relative pl-6 sm:pl-8 space-y-6 before:content-[''] before:absolute before:left-[7px] before:top-3 before:bottom-3 before:w-px before:bg-gradient-to-b before:from-[#FF5A5F] before:via-zinc-800 before:to-transparent">
-                {workExperience.map((exp) => (
+                {workExperience.map((exp, idx) => (
                   <div
                     key={exp.id}
-                    className="relative group p-6 rounded-3xl bg-zinc-950/85 hover:bg-zinc-900/80 border border-zinc-850 hover:border-[#FF5A5F]/40 transition-all shadow-lg space-y-3.5"
+                    data-reveal="left"
+                    style={{ '--reveal-delay': `${idx * 90}ms` } as React.CSSProperties}
+                    className="relative group p-6 rounded-3xl bg-zinc-950/85 hover:bg-zinc-900/80 border border-zinc-850 hover:border-[#FF5A5F]/40 hover:-translate-y-1 transition-[transform,border-color,background-color] duration-300 shadow-lg space-y-3.5"
                   >
                     {/* Timeline Node Dot */}
                     <span
@@ -938,7 +1085,7 @@ export default function PortfolioPage() {
             <div className="lg:col-span-5 space-y-10">
               {/* EDUCATION */}
               <div className="space-y-5">
-                <div className="flex items-center gap-3">
+                <div data-reveal="up" className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
                     <GraduationCap className="w-5 h-5" />
                   </div>
@@ -949,10 +1096,12 @@ export default function PortfolioPage() {
                 </div>
 
                 <div className="space-y-4">
-                  {educationHistory.map((edu) => (
+                  {educationHistory.map((edu, idx) => (
                     <div
                       key={edu.id}
-                      className="p-5 rounded-3xl bg-zinc-950/85 hover:bg-zinc-900/80 border border-zinc-850 hover:border-cyan-500/35 transition-all space-y-2"
+                      data-reveal="right"
+                      style={{ '--reveal-delay': `${idx * 90}ms` } as React.CSSProperties}
+                      className="p-5 rounded-3xl bg-zinc-950/85 hover:bg-zinc-900/80 border border-zinc-850 hover:border-cyan-500/35 hover:-translate-y-1 transition-[transform,border-color,background-color] duration-300 space-y-2"
                     >
                       <div className="flex items-center justify-between gap-2">
                         <span
@@ -976,7 +1125,7 @@ export default function PortfolioPage() {
 
               {/* ACHIEVEMENTS & RECOGNITION */}
               <div className="space-y-5">
-                <div className="flex items-center gap-3">
+                <div data-reveal="up" className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
                     <Trophy className="w-5 h-5" />
                   </div>
@@ -986,7 +1135,11 @@ export default function PortfolioPage() {
                   </div>
                 </div>
 
-                <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-zinc-950 via-zinc-950 to-amber-950/15 border border-amber-500/20 space-y-4 shadow-xl">
+                <div
+                  data-reveal="zoom"
+                  style={{ '--reveal-delay': '80ms' } as React.CSSProperties}
+                  className="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-zinc-950 via-zinc-950 to-amber-950/15 border border-amber-500/20 space-y-4 shadow-xl"
+                >
                   {achievements.map((ach, idx) => (
                     <div
                       key={ach.id}
@@ -1021,7 +1174,7 @@ export default function PortfolioPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-7 sm:space-y-10">
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="space-y-2">
+            <div data-reveal="up" className="space-y-2">
               <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
                 <Award className="w-3.5 h-3.5" />
                 Verified Credentials
@@ -1036,7 +1189,11 @@ export default function PortfolioPage() {
             </div>
 
             {/* Compact Slide Counter & Swipe Cue */}
-            <div className="inline-flex items-center gap-3 self-start md:self-auto px-3.5 py-2 rounded-full bg-zinc-950 border border-zinc-800/90 text-xs">
+            <div
+              data-reveal="right"
+              style={{ '--reveal-delay': '100ms' } as React.CSSProperties}
+              className="inline-flex items-center gap-3 self-start md:self-auto px-3.5 py-2 rounded-full bg-zinc-950 border border-zinc-800/90 text-xs"
+            >
               <span className="font-mono font-bold text-white tabular-nums">
                 {String(activeCertIndex + 1).padStart(2, '0')}
                 <span className="text-zinc-600 font-normal">
@@ -1053,12 +1210,16 @@ export default function PortfolioPage() {
           </div>
 
           {/* Horizontal Swipeable / Slideable Certificates Track */}
-          <div className="space-y-5">
+          <div
+            data-reveal="zoom"
+            style={{ '--reveal-delay': '120ms' } as React.CSSProperties}
+            className="space-y-5"
+          >
             <div
               ref={certSliderRef}
               onScroll={handleCertScroll}
               aria-label="Certificates carousel"
-              className="relative flex items-stretch gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar -mx-6 px-6 scroll-pl-6 sm:-mx-10 sm:px-10 sm:scroll-pl-10 lg:mx-0 lg:px-0 lg:scroll-pl-0 pb-2"
+              className="relative flex items-stretch gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar -mx-6 px-6 scroll-pl-6 sm:-mx-10 sm:px-10 sm:scroll-pl-10 lg:mx-0 lg:px-0 lg:scroll-pl-0 pt-2 pb-3"
             >
               {certificates.map((cert, idx) => (
                 <div
@@ -1066,8 +1227,13 @@ export default function PortfolioPage() {
                   ref={(el) => {
                     certCardRefs.current[idx] = el;
                   }}
-                  onClick={() => setSelectedCertificate(cert)}
-                  className="group relative snap-start shrink-0 w-[80vw] max-w-[360px] sm:w-[70vw] sm:max-w-[440px] md:w-[calc(50%-0.75rem)] lg:w-[calc(44%-0.75rem)] p-4 sm:p-5 rounded-3xl bg-zinc-950/80 hover:bg-zinc-900/90 border border-zinc-850 hover:border-[#FF5A5F]/60 transition-colors cursor-pointer shadow-lg hover:shadow-2xl flex flex-col justify-between space-y-4"
+                  onMouseEnter={(e) => handleCertHoverStart(cert, e.currentTarget)}
+                  onMouseLeave={handleCertHoverEnd}
+                  onClick={() => {
+                    clearCertHover();
+                    setSelectedCertificate(cert);
+                  }}
+                  className="group relative snap-start shrink-0 w-[80vw] max-w-[360px] sm:w-[70vw] sm:max-w-[440px] md:w-[calc(50%-0.75rem)] lg:w-[calc(44%-0.75rem)] p-4 sm:p-5 rounded-3xl bg-zinc-950/80 hover:bg-zinc-900/90 border border-zinc-850 hover:border-[#FF5A5F]/75 hover:-translate-y-1.5 transition-[transform,border-color,background-color,box-shadow] duration-300 ease-out cursor-pointer shadow-lg hover:shadow-[0_20px_50px_-18px_rgba(255,90,95,0.28)] flex flex-col justify-between space-y-4"
                 >
                   <div className="space-y-4">
                     {/* Certificate Thumbnail Preview */}
@@ -1081,10 +1247,14 @@ export default function PortfolioPage() {
                         fill
                         unoptimized
                         draggable={false}
-                        className="object-cover object-top group-hover:scale-105 transition-transform duration-300 pointer-events-none"
+                        className="object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out pointer-events-none"
                       />
                       <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/90 text-[10px] font-mono font-bold text-[#FF5A5F] border border-zinc-800">
                         {cert.badge}
+                      </div>
+                      <div className="hidden lg:inline-flex items-center gap-1.5 absolute bottom-3 right-3 px-2.5 py-1 rounded-full bg-black/85 border border-[#FF5A5F]/50 text-[10px] font-semibold text-white opacity-0 translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 transition-[opacity,transform] duration-200 pointer-events-none">
+                        <Eye className="w-3 h-3 text-[#FF5A5F]" />
+                        <span>Live Preview</span>
                       </div>
                     </div>
 
@@ -1182,9 +1352,12 @@ export default function PortfolioPage() {
           </div>
 
           {/* Certificate Credential Note */}
-          <div className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center">
+          <div
+            data-reveal="up"
+            className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center"
+          >
             <p className="text-xs text-zinc-400">
-              📜 <strong>Verified Credentials:</strong> All 7 credentials above are officially awarded by Cisco Networking Academy, DICT Region VIII, AI Dev PH, Bestlink College of the Philippines, Jobs180, and Concentrix / Anthem. Swipe or use the arrows to browse, and click any card to preview the protected certificate.
+              📜 <strong>Verified Credentials:</strong> All 7 credentials above are officially awarded by Cisco Networking Academy, DICT Region VIII, AI Dev PH, Bestlink College of the Philippines, Jobs180, and Concentrix / Anthem. Hover over any card on desktop for an instant full preview, swipe or use the arrows to browse, and click to inspect or download PDF.
             </p>
           </div>
         </div>
@@ -1197,7 +1370,7 @@ export default function PortfolioPage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
           {/* Section Header */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-            <div className="space-y-2">
+            <div data-reveal="up" className="space-y-2">
               <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
                 <Sparkles className="w-3.5 h-3.5" />
                 Featured Portfolio
@@ -1212,7 +1385,11 @@ export default function PortfolioPage() {
             </div>
 
             {/* Category Filter Tabs */}
-            <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-zinc-900/90 border border-zinc-800 self-start sm:self-auto overflow-x-auto">
+            <div
+              data-reveal="right"
+              style={{ '--reveal-delay': '100ms' } as React.CSSProperties}
+              className="flex items-center gap-1.5 p-1 rounded-2xl bg-zinc-900/90 border border-zinc-800 self-start sm:self-auto overflow-x-auto"
+            >
               {(['ALL', 'WEB', 'PWA', 'UIUX'] as const).map((tab) => (
                 <button
                   key={tab}
@@ -1236,10 +1413,12 @@ export default function PortfolioPage() {
 
           {/* Projects Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, idx) => (
               <div
                 key={project.id}
-                className="group relative rounded-3xl bg-zinc-950/70 border border-zinc-850 hover:border-[#FF5A5F]/60 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-rose-950/20 flex flex-col"
+                data-reveal="zoom"
+                style={{ '--reveal-delay': `${(idx % 2) * 100}ms` } as React.CSSProperties}
+                className="group relative rounded-3xl bg-zinc-950/70 border border-zinc-850 hover:border-[#FF5A5F]/60 hover:-translate-y-1.5 overflow-hidden transition-[transform,border-color,box-shadow] duration-300 hover:shadow-2xl hover:shadow-rose-950/20 flex flex-col"
               >
                 {/* Project Screenshot / Thumbnail */}
                 <div className="relative aspect-video w-full overflow-hidden bg-zinc-900">
@@ -1301,7 +1480,10 @@ export default function PortfolioPage() {
           </div>
 
           {/* Featured Projects Note */}
-          <div className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center">
+          <div
+            data-reveal="up"
+            className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center"
+          >
             <p className="text-xs text-zinc-400">
               💡 <strong>Featured Work:</strong> Featuring Ar-jay&apos;s real platforms and systems, including the live <strong>EduScholar Scholarship System</strong> on Railway, <strong>Kusina Ordering App</strong>, <strong>Campus Navigator</strong>, and <strong>Sole Surgeon Atelier</strong>.
             </p>
@@ -1322,7 +1504,7 @@ export default function PortfolioPage() {
         <div className="relative max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
           {/* Section Header */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <div className="space-y-2">
+            <div data-reveal="up" className="space-y-2">
               <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
                 <SlidersHorizontal className="w-3.5 h-3.5" />
                 Photo Editing &amp; Retouching Showcase
@@ -1339,7 +1521,11 @@ export default function PortfolioPage() {
             </div>
 
             {/* Category Filter Pills */}
-            <div className="flex flex-wrap lg:flex-nowrap items-center gap-1 p-1.5 rounded-2xl bg-zinc-900/90 border border-zinc-800 self-start lg:self-auto lg:shrink-0">
+            <div
+              data-reveal="right"
+              style={{ '--reveal-delay': '100ms' } as React.CSSProperties}
+              className="flex flex-wrap lg:flex-nowrap items-center gap-1 p-1.5 rounded-2xl bg-zinc-900/90 border border-zinc-800 self-start lg:self-auto lg:shrink-0"
+            >
               {editCategories.map((cat) => (
                 <button
                   key={cat}
@@ -1364,6 +1550,8 @@ export default function PortfolioPage() {
               return (
                 <div
                   key={sample.id}
+                  data-reveal="zoom"
+                  style={{ '--reveal-delay': `${(idx % 2) * 100}ms` } as React.CSSProperties}
                   className={
                     isOddLastCard
                       ? 'md:col-span-2 md:max-w-[calc(50%-0.875rem)] md:mx-auto md:w-full'
@@ -1393,7 +1581,7 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       <section id="skills" className="relative z-20 py-24 border-t border-zinc-900 bg-[#050505]">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
+          <div data-reveal="up" className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F]">
               Core Capabilities
             </span>
@@ -1408,7 +1596,11 @@ export default function PortfolioPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Frontend & Web Development */}
-            <div className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 transition-colors">
+            <div
+              data-reveal="up"
+              style={{ '--reveal-delay': '0ms' } as React.CSSProperties}
+              className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 hover:-translate-y-1.5 transition-[transform,border-color] duration-300"
+            >
               <div className="w-12 h-12 rounded-2xl bg-rose-500/10 text-[#FF5A5F] flex items-center justify-center border border-rose-500/20">
                 <Code2 className="w-6 h-6" />
               </div>
@@ -1431,7 +1623,11 @@ export default function PortfolioPage() {
             </div>
 
             {/* UI/UX Design */}
-            <div className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 transition-colors">
+            <div
+              data-reveal="up"
+              style={{ '--reveal-delay': '90ms' } as React.CSSProperties}
+              className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 hover:-translate-y-1.5 transition-[transform,border-color] duration-300"
+            >
               <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
                 <Palette className="w-6 h-6" />
               </div>
@@ -1459,7 +1655,11 @@ export default function PortfolioPage() {
             </div>
 
             {/* Photo & Video Editing */}
-            <div className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 transition-colors">
+            <div
+              data-reveal="up"
+              style={{ '--reveal-delay': '180ms' } as React.CSSProperties}
+              className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 hover:-translate-y-1.5 transition-[transform,border-color] duration-300"
+            >
               <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/20">
                 <Video className="w-6 h-6" />
               </div>
@@ -1487,7 +1687,11 @@ export default function PortfolioPage() {
             </div>
 
             {/* Certified Customer Service */}
-            <div className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 transition-colors">
+            <div
+              data-reveal="up"
+              style={{ '--reveal-delay': '270ms' } as React.CSSProperties}
+              className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 hover:-translate-y-1.5 transition-[transform,border-color] duration-300"
+            >
               <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
                 <Headphones className="w-6 h-6" />
               </div>
@@ -1521,7 +1725,10 @@ export default function PortfolioPage() {
       {/* 6. CALL TO ACTION & FOOTER                                                */}
       {/* ========================================================================= */}
       <footer className="relative z-20 py-16 border-t border-zinc-900 bg-black">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+        <div
+          data-reveal="up"
+          className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left"
+        >
           <div className="space-y-1">
             <div className="flex items-center justify-center sm:justify-start gap-2.5 text-lg font-bold text-white">
               <span className="w-8 h-8 rounded-lg bg-zinc-950 border border-white/15 flex items-center justify-center p-1">
@@ -1958,6 +2165,89 @@ export default function PortfolioPage() {
                 >
                   Close
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 10. FLOATING HOVER CERTIFICATE SPOTLIGHT (DESKTOP QUICK-INSPECT PREVIEW)  */}
+      {/* ========================================================================= */}
+      {hoveredCert && !selectedCertificate && (
+        <div
+          key={hoveredCert.cert.id}
+          aria-hidden="true"
+          style={{ top: `${hoveredCert.top}px` }}
+          className={`cert-spotlight-enter hidden lg:block fixed z-40 w-[410px] xl:w-[445px] max-h-[calc(100vh-40px)] pointer-events-none ${
+            hoveredCert.side === 'right' ? 'right-6 xl:right-10' : 'left-6 xl:left-10'
+          }`}
+        >
+          <div className="rounded-3xl bg-zinc-950/95 border border-[#FF5A5F]/45 shadow-[0_30px_90px_-15px_rgba(0,0,0,0.95),0_0_40px_-12px_rgba(255,90,95,0.28)] overflow-hidden">
+            {/* Top Status Strip */}
+            <div className="px-4 py-2 bg-black/80 border-b border-zinc-800/90 flex items-center justify-between gap-3">
+              <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-white">
+                <span className="w-2 h-2 rounded-full bg-[#FF5A5F]" />
+                Certificate Quick Preview
+              </span>
+              <span className="text-[10px] font-mono text-zinc-400 truncate max-w-[200px]">
+                {hoveredCert.cert.credentialId}
+              </span>
+            </div>
+
+            {/* Full Uncropped Watermarked Certificate Image */}
+            <div className="relative aspect-[16/10] w-full bg-zinc-900/95 p-2.5 select-none">
+              <Image
+                src={hoveredCert.cert.image}
+                alt={hoveredCert.cert.title}
+                fill
+                unoptimized
+                draggable={false}
+                className="object-contain p-1.5 pointer-events-none"
+              />
+            </div>
+
+            {/* Complete Untruncated Certificate Info */}
+            <div className="p-4 space-y-2.5 border-t border-zinc-900 bg-zinc-950">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[10px] font-mono font-bold text-[#FF5A5F] px-2.5 py-0.5 rounded-full bg-rose-500/10 border border-rose-500/25">
+                  {hoveredCert.cert.badge}
+                </span>
+                <span className="text-[11px] font-mono text-zinc-400 shrink-0">
+                  {hoveredCert.cert.date}
+                </span>
+              </div>
+
+              <div className="space-y-1">
+                <h4 className="text-base font-bold text-white leading-snug">
+                  {hoveredCert.cert.title}
+                </h4>
+                <p className="text-xs font-medium text-zinc-400">{hoveredCert.cert.issuer}</p>
+              </div>
+
+              <p className="text-xs text-zinc-300 leading-relaxed">
+                {hoveredCert.cert.description}
+              </p>
+
+              <div className="flex flex-wrap gap-1.5 pt-0.5">
+                {hoveredCert.cert.skills?.map((skill: string) => (
+                  <span
+                    key={skill}
+                    className="px-2.5 py-0.5 rounded-lg bg-zinc-900 text-[10px] font-medium text-zinc-200 border border-zinc-800"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+
+              <div className="pt-2.5 border-t border-zinc-900 flex items-center justify-between text-[11px] text-zinc-400">
+                <span className="inline-flex items-center gap-1.5">
+                  <Award className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                  <span>Verified &amp; Protected</span>
+                </span>
+                <span className="text-[#FF5A5F] font-semibold">
+                  Click card for full modal {hoveredCert.cert.pdfUrl ? '& PDF' : ''}
+                </span>
               </div>
             </div>
           </div>

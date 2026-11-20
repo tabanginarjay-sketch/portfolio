@@ -117,3 +117,119 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* ============================================================================
+   AESTHETIC GPU-COMPOSITED MOTION SYSTEM (transform & opacity only — zero lag)
+   ============================================================================ */
+@keyframes heroSlideDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes heroRiseIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes heroPortraitReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes heroSlideRight {
+  from {
+    opacity: 0;
+    transform: translate3d(24px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes certSpotlightIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.hero-anim-down {
+  animation: heroSlideDown 0.65s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms) both;
+}
+
+.hero-anim-up {
+  animation: heroRiseIn 0.78s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms) both;
+}
+
+.hero-anim-portrait {
+  animation: heroPortraitReveal 0.95s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms) both;
+}
+
+.hero-anim-right {
+  animation: heroSlideRight 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms) both;
+}
+
+.cert-spotlight-enter {
+  animation: certSpotlightIn 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Scroll-triggered reveals (no specificity clash with hover transforms after reveal!) */
+.js-reveal-active [data-reveal]:not([data-reveal-done="true"]) {
+  transition:
+    opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 0.72s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+
+.js-reveal-active [data-reveal]:not([data-revealed="true"]) {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+}
+
+.js-reveal-active [data-reveal="left"]:not([data-revealed="true"]) {
+  transform: translate3d(-26px, 0, 0);
+}
+
+.js-reveal-active [data-reveal="right"]:not([data-revealed="true"]) {
+  transform: translate3d(26px, 0, 0);
+}
+
+.js-reveal-active [data-reveal="zoom"]:not([data-revealed="true"]) {
+  transform: translate3d(0, 20px, 0) scale(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim-down,
+  .hero-anim-up,
+  .hero-anim-portrait,
+  .hero-anim-right,
+  .cert-spotlight-enter {
+    animation: none !important;
+  }
+  .js-reveal-active [data-reveal]:not([data-revealed="true"]) {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
