@@ -108,3 +108,12 @@ body {
   animation: floatCyanDot 4.6s ease-in-out infinite, softGlowPulse 3s ease-in-out infinite;
   will-change: transform, opacity;
 }
+
+/* Hide scrollbars cleanly for horizontal swipe carousels */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

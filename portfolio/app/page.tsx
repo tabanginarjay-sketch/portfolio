@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import {
   ArrowRight,
+  ChevronLeft,
+  ChevronRight,
   Download,
   MessageSquare,
   Menu,
@@ -40,6 +42,14 @@ export default function PortfolioPage() {
   const [activeEditCategory, setActiveEditCategory] = useState<string>('All');
   const [selectedCertificate, setSelectedCertificate] = useState<any | null>(null);
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
+
+  // Horizontal Certificates Carousel state & refs
+  const certSliderRef = useRef<HTMLDivElement | null>(null);
+  const certCardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const certScrollRafRef = useRef<number | null>(null);
+  const [activeCertIndex, setActiveCertIndex] = useState(0);
+  const [canScrollCertPrev, setCanScrollCertPrev] = useState(false);
+  const [canScrollCertNext, setCanScrollCertNext] = useState(true);
 
   // Contact / Let's Chat form state
   const [contactName, setContactName] = useState('');
@@ -258,6 +268,95 @@ export default function PortfolioPage() {
       image: '/certificates/concentrix_anthem_cct.jpg?v=wm2',
     },
   ];
+
+  const syncCertSliderState = useCallback(() => {
+    const slider = certSliderRef.current;
+    if (!slider) return;
+
+    const maxScroll = Math.max(0, slider.scrollWidth - slider.clientWidth);
+    const currentLeft = slider.scrollLeft;
+
+    setCanScrollCertPrev(currentLeft > 6);
+    setCanScrollCertNext(currentLeft < maxScroll - 6);
+
+    if (maxScroll > 0 && currentLeft >= maxScroll - 8) {
+      setActiveCertIndex(certificates.length - 1);
+      return;
+    }
+
+    const padLeft = parseFloat(window.getComputedStyle(slider).paddingLeft) || 0;
+    let closestIdx = 0;
+    let minDiff = Infinity;
+
+    certCardRefs.current.forEach((card, idx) => {
+      if (!card) return;
+      const targetLeft = Math.max(0, card.offsetLeft - padLeft);
+      const diff = Math.abs(targetLeft - currentLeft);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closestIdx = idx;
+      }
+    });
+
+    setActiveCertIndex(closestIdx);
+  }, [certificates.length]);
+
+  const handleCertScroll = useCallback(() => {
+    if (certScrollRafRef.current !== null) return;
+    certScrollRafRef.current = window.requestAnimationFrame(() => {
+      certScrollRafRef.current = null;
+      syncCertSliderState();
+    });
+  }, [syncCertSliderState]);
+
+  const scrollToCertIndex = useCallback((idx: number) => {
+    const slider = certSliderRef.current;
+    const card = certCardRefs.current[idx];
+    if (!slider || !card) return;
+
+    const padLeft = parseFloat(window.getComputedStyle(slider).paddingLeft) || 0;
+    const maxScroll = Math.max(0, slider.scrollWidth - slider.clientWidth);
+    const targetLeft = Math.min(Math.max(0, card.offsetLeft - padLeft), maxScroll);
+
+    slider.scrollTo({ left: targetLeft, behavior: 'smooth' });
+    setActiveCertIndex(idx);
+  }, []);
+
+  const scrollCertBy = useCallback((direction: -1 | 1) => {
+    const slider = certSliderRef.current;
+    if (!slider) return;
+
+    const padLeft = parseFloat(window.getComputedStyle(slider).paddingLeft) || 0;
+    const maxScroll = Math.max(0, slider.scrollWidth - slider.clientWidth);
+    const currentLeft = slider.scrollLeft;
+
+    const positions = certCardRefs.current
+      .map((card) => (card ? Math.max(0, Math.round(card.offsetLeft - padLeft)) : null))
+      .filter((pos): pos is number => pos !== null);
+
+    if (direction === 1) {
+      const nextPos = positions.find((pos) => pos > currentLeft + 16);
+      const target = nextPos !== undefined ? Math.min(nextPos, maxScroll) : maxScroll;
+      slider.scrollTo({ left: target, behavior: 'smooth' });
+    } else {
+      const prevCandidates = positions.filter((pos) => pos < currentLeft - 16);
+      const target =
+        prevCandidates.length > 0 ? prevCandidates[prevCandidates.length - 1] : 0;
+      slider.scrollTo({ left: target, behavior: 'smooth' });
+    }
+  }, []);
+
+  useEffect(() => {
+    syncCertSliderState();
+    const handleResize = () => syncCertSliderState();
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (certScrollRafRef.current !== null) {
+        window.cancelAnimationFrame(certScrollRafRef.current);
+      }
+    };
+  }, [syncCertSliderState]);
 
   const workExperience = [
     {
@@ -908,37 +1007,57 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 4. CERTIFICATES & CREDENTIALS SECTION                                     */}
       {/* ========================================================================= */}
-      <section id="certificates" className="relative z-20 py-24 border-t border-zinc-900 bg-black">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
+      <section id="certificates" className="relative z-20 py-16 sm:py-24 border-t border-zinc-900 bg-black">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-7 sm:space-y-10">
           {/* Section Header */}
-          <div className="space-y-2">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
-              <Award className="w-3.5 h-3.5" />
-              Verified Credentials
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-              Certificates & Accreditations
-            </h2>
-            <p className="text-sm text-zinc-400 max-w-xl">
-              Official certifications, coursework achievements, and verified credentials in
-              Cybersecurity, AI-Driven Development, and Professional Career Leadership.
-            </p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
+                <Award className="w-3.5 h-3.5" />
+                Verified Credentials
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+                Certificates & Accreditations
+              </h2>
+              <p className="text-sm text-zinc-400 max-w-xl">
+                Official certifications, coursework achievements, and verified credentials in
+                Cybersecurity, AI-Driven Development, and Professional Career Leadership.
+              </p>
+            </div>
+
+            {/* Compact Slide Counter & Swipe Cue */}
+            <div className="inline-flex items-center gap-3 self-start md:self-auto px-3.5 py-2 rounded-full bg-zinc-950 border border-zinc-800/90 text-xs">
+              <span className="font-mono font-bold text-white tabular-nums">
+                {String(activeCertIndex + 1).padStart(2, '0')}
+                <span className="text-zinc-600 font-normal">
+                  {' '}
+                  / {String(certificates.length).padStart(2, '0')}
+                </span>
+              </span>
+              <span className="h-3.5 w-px bg-zinc-800" />
+              <span className="text-zinc-400 font-medium inline-flex items-center gap-1">
+                Swipe or slide
+                <ArrowRight className="w-3 h-3 text-[#FF5A5F]" />
+              </span>
+            </div>
           </div>
 
-          {/* Certificates Grid - All 7 official certifications */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {certificates.map((cert, idx) => {
-              const isOddLastCard =
-                certificates.length % 2 === 1 && idx === certificates.length - 1;
-              return (
+          {/* Horizontal Swipeable / Slideable Certificates Track */}
+          <div className="space-y-5">
+            <div
+              ref={certSliderRef}
+              onScroll={handleCertScroll}
+              aria-label="Certificates carousel"
+              className="relative flex items-stretch gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar -mx-6 px-6 scroll-pl-6 sm:-mx-10 sm:px-10 sm:scroll-pl-10 lg:mx-0 lg:px-0 lg:scroll-pl-0 pb-2"
+            >
+              {certificates.map((cert, idx) => (
                 <div
                   key={cert.id}
+                  ref={(el) => {
+                    certCardRefs.current[idx] = el;
+                  }}
                   onClick={() => setSelectedCertificate(cert)}
-                  className={`group relative p-5 rounded-3xl bg-zinc-950/80 hover:bg-zinc-900/90 border border-zinc-850 hover:border-[#FF5A5F]/60 transition-colors cursor-pointer shadow-lg hover:shadow-2xl flex flex-col justify-between space-y-4 ${
-                    isOddLastCard
-                      ? 'md:col-span-2 md:max-w-[calc(50%-0.75rem)] md:mx-auto md:w-full'
-                      : ''
-                  }`}
+                  className="group relative snap-start shrink-0 w-[80vw] max-w-[360px] sm:w-[70vw] sm:max-w-[440px] md:w-[calc(50%-0.75rem)] lg:w-[calc(44%-0.75rem)] p-4 sm:p-5 rounded-3xl bg-zinc-950/80 hover:bg-zinc-900/90 border border-zinc-850 hover:border-[#FF5A5F]/60 transition-colors cursor-pointer shadow-lg hover:shadow-2xl flex flex-col justify-between space-y-4"
                 >
                   <div className="space-y-4">
                     {/* Certificate Thumbnail Preview */}
@@ -951,6 +1070,7 @@ export default function PortfolioPage() {
                         alt={cert.title}
                         fill
                         unoptimized
+                        draggable={false}
                         className="object-cover object-top group-hover:scale-105 transition-transform duration-300 pointer-events-none"
                       />
                       <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/90 text-[10px] font-mono font-bold text-[#FF5A5F] border border-zinc-800">
@@ -1002,14 +1122,59 @@ export default function PortfolioPage() {
                     </span>
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+
+            {/* Carousel Pagination Dots & Prev/Next Controls */}
+            <div className="flex items-center justify-between gap-4 pt-1">
+              <div className="flex items-center gap-2" role="tablist" aria-label="Certificate slides">
+                {certificates.map((cert, idx) => {
+                  const isActive = idx === activeCertIndex;
+                  return (
+                    <button
+                      key={cert.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={isActive}
+                      aria-label={`View certificate ${idx + 1}: ${cert.title}`}
+                      onClick={() => scrollToCertIndex(idx)}
+                      className={`h-2 rounded-full transition-[width,background-color] duration-200 cursor-pointer ${
+                        isActive
+                          ? 'w-7 bg-[#FF5A5F]'
+                          : 'w-2 bg-zinc-800 hover:bg-zinc-600'
+                      }`}
+                    />
+                  );
+                })}
+              </div>
+
+              <div className="flex items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => scrollCertBy(-1)}
+                  disabled={!canScrollCertPrev}
+                  aria-label="Previous certificate"
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-zinc-950 border border-zinc-800 text-white hover:border-[#FF5A5F]/70 hover:text-[#FF5A5F] active:scale-95 disabled:opacity-30 disabled:hover:border-zinc-800 disabled:hover:text-white disabled:cursor-not-allowed transition-colors flex items-center justify-center cursor-pointer"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollCertBy(1)}
+                  disabled={!canScrollCertNext}
+                  aria-label="Next certificate"
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-zinc-950 border border-zinc-800 text-white hover:border-[#FF5A5F]/70 hover:text-[#FF5A5F] active:scale-95 disabled:opacity-30 disabled:hover:border-zinc-800 disabled:hover:text-white disabled:cursor-not-allowed transition-colors flex items-center justify-center cursor-pointer"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Certificate Credential Note */}
           <div className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center">
             <p className="text-xs text-zinc-400">
-              📜 <strong>Verified Credentials:</strong> All 7 credentials above are officially awarded by Cisco Networking Academy, DICT Region VIII, AI Dev PH, Bestlink College of the Philippines, Jobs180, and Concentrix / Anthem. Click any card to preview the protected certificate.
+              📜 <strong>Verified Credentials:</strong> All 7 credentials above are officially awarded by Cisco Networking Academy, DICT Region VIII, AI Dev PH, Bestlink College of the Philippines, Jobs180, and Concentrix / Anthem. Swipe or use the arrows to browse, and click any card to preview the protected certificate.
             </p>
           </div>
         </div>
