@@ -101,7 +101,7 @@ export default function PortfolioPage() {
       description:
         'Official student-level course completion credential covering foundational cybersecurity principles, threat detection, online defense strategies, vulnerability mitigation, and organizational network safety.',
       skills: ['Cybersecurity', 'Threat Analysis', 'Network Defense', 'Incident Mitigation'],
-      image: '/certificates/cisco_cybersecurity.jpg?v=2',
+      image: '/certificates/cisco_cybersecurity.jpg?v=watermarked',
     },
     {
       id: 'cert-2',
@@ -114,7 +114,7 @@ export default function PortfolioPage() {
       description:
         'Official 16-hour credential awarded by the DICT ICT Academy covering international cybersecurity governance, risk management frameworks, and enterprise IT defense conducted in Tacloban City.',
       skills: ['Cybersecurity Governance', 'IT Management', 'Security Standards', 'Risk Management'],
-      image: '/certificates/dict_cybersecurity.jpg?v=2',
+      image: '/certificates/dict_cybersecurity.jpg?v=watermarked',
     },
     {
       id: 'cert-3',
@@ -128,7 +128,7 @@ export default function PortfolioPage() {
       description:
         'Comprehensive completion credential for mastering AI-driven development workflows, prompt engineering, AI coding assistants, and modern software paradigms taught by Mar Wie Ang.',
       skills: ['AI-Driven Development', 'Prompt Engineering', 'Full Stack AI', 'Modern Workflows'],
-      image: '/certificates/aidev_fundamentals.jpg?v=2',
+      image: '/certificates/aidev_fundamentals.jpg?v=watermarked',
     },
     {
       id: 'cert-4',
@@ -141,7 +141,7 @@ export default function PortfolioPage() {
       description:
         'Official Certificate of Attendance for participating in the career seminar Marketing ME Live at Bestlink College of the Philippines, Quezon City, presented by Managing Director Kim Chua.',
       skills: ['Personal Branding', 'Professional Communication', 'Career Positioning', 'Client Relations'],
-      image: '/certificates/bcp_marketing_me.jpg?v=2',
+      image: '/certificates/bcp_marketing_me.jpg?v=watermarked',
     },
   ];
 
@@ -572,13 +572,16 @@ export default function PortfolioPage() {
               >
                 <div className="space-y-4">
                   {/* Certificate Thumbnail Preview */}
-                  <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800">
+                  <div 
+                    onContextMenu={(e) => e.preventDefault()}
+                    className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 select-none"
+                  >
                     <Image
                       src={cert.image}
                       alt={cert.title}
                       fill
                       unoptimized
-                      className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-300 pointer-events-none"
                     />
                     <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-mono font-bold text-[#FF5A5F] border border-zinc-800">
                       {cert.badge}
@@ -939,13 +942,16 @@ export default function PortfolioPage() {
                       className="relative w-full max-w-3xl rounded-3xl bg-zinc-950 border border-zinc-800 overflow-hidden shadow-2xl space-y-5 my-auto max-h-[92vh] flex flex-col"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <div className="relative aspect-[4/3] sm:aspect-[16/10] max-h-[58vh] w-full bg-zinc-900/90 flex items-center justify-center p-3">
+                      <div 
+                        onContextMenu={(e) => e.preventDefault()}
+                        className="relative aspect-[4/3] sm:aspect-[16/10] max-h-[58vh] w-full bg-zinc-900/90 flex items-center justify-center p-3 select-none"
+                      >
                         <Image
                           src={selectedCertificate.image}
                           alt={selectedCertificate.title}
                           fill
                           unoptimized
-                          className="object-contain p-2"
+                          className="object-contain p-2 pointer-events-none"
                         />
                         <button
                           onClick={() => setSelectedCertificate(null)}
