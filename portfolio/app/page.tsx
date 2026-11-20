@@ -408,10 +408,26 @@ export default function PortfolioPage() {
       <header className="relative z-50 w-full max-w-7xl mx-auto px-5 sm:px-10 lg:px-12 py-4 sm:py-5 lg:py-7 flex items-center justify-between">
         {/* Brand Logo & Email Link */}
         <div className="flex items-center gap-6 sm:gap-10">
-          <a href="#" className="group flex items-center gap-1.5 text-xl sm:text-2xl font-bold tracking-tight text-white">
-            <span>Ar-jay</span>
-            {/* Playful accent dot/graphic matching reference */}
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F] group-hover:scale-150 transition-transform" />
+          <a
+            href="#"
+            className="group flex items-center gap-2.5 sm:gap-3 text-xl sm:text-2xl font-bold tracking-tight text-white"
+            aria-label="Ar-jay Home"
+          >
+            <span className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-zinc-950 border border-white/15 group-hover:border-[#FF5A5F]/60 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(255,90,95,0.12)] group-hover:shadow-[0_0_24px_rgba(255,90,95,0.3)] transition-all duration-300">
+              <Image
+                src="/images/arjay-logo.png"
+                alt="Ar-jay AJ Monogram Logo"
+                width={32}
+                height={32}
+                priority
+                unoptimized
+                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+              />
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="tracking-tight">Ar-jay</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F] group-hover:scale-150 transition-transform" />
+            </span>
           </a>
 
           <a
@@ -1309,7 +1325,17 @@ export default function PortfolioPage() {
                 <footer className="relative z-20 py-16 border-t border-zinc-900 bg-black">
                   <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
                     <div className="space-y-1">
-                      <div className="flex items-center justify-center sm:justify-start gap-2 text-lg font-bold text-white">
+                      <div className="flex items-center justify-center sm:justify-start gap-2.5 text-lg font-bold text-white">
+                        <span className="w-8 h-8 rounded-lg bg-zinc-950 border border-white/15 flex items-center justify-center p-1">
+                          <Image
+                            src="/images/arjay-logo.png"
+                            alt="Ar-jay AJ Monogram Logo"
+                            width={24}
+                            height={24}
+                            unoptimized
+                            className="w-full h-full object-contain"
+                          />
+                        </span>
                         <span>Ar-jay Tabangin</span>
                         <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F]" />
                       </div>
