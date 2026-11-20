@@ -1657,11 +1657,11 @@ export default function PortfolioPage() {
                     src={project.image}
                     alt={project.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/30 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-zinc-950/80 via-zinc-950/20 to-transparent pointer-events-none" />
                   <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-black/90 text-emerald-400 border border-emerald-500/30">
+                    <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-black/90 text-emerald-400 border border-emerald-500/30 backdrop-blur-xs">
                       {project.status}
                     </span>
                   </div>
