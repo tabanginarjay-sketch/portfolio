@@ -29,12 +29,27 @@ export default function BeforeAfterEditCard({
 }: BeforeAfterEditCardProps) {
   const [sliderPos, setSliderPos] = useState<number>(50);
   const [isDragging, setIsDragging] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [userInteracted, setUserInteracted] = useState(false);
+  const cardRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const startXRef = useRef<number>(0);
   const startYRef = useRef<number>(0);
   const userInteractedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Only run auto-sweep animation when this card is actually on screen!
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        setIsVisible(entries[0]?.isIntersecting ?? false);
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Pause auto-sweep while user interacts, then smoothly resume after 6 seconds of inactivity
   const handleUserInteraction = useCallback(() => {
@@ -55,11 +70,10 @@ export default function BeforeAfterEditCard({
     };
   }, []);
 
-  // Reused Exact Sole Surgeon Smooth Auto-Sweep Transition:
+  // Smooth GPU Auto-Sweep Transition (only runs while visible in viewport):
   // Glides Left to 4% (full After) -> Center 50% (1s rest) -> Glides Right to 96% (full Before) -> Center 50% (1s rest)
-  // 1600ms cubic-bezier(0.4, 0, 0.2, 1) fluid glide
   useEffect(() => {
-    if (userInteracted || isDragging) {
+    if (!isVisible || userInteracted || isDragging) {
       return;
     }
 
@@ -83,13 +97,13 @@ export default function BeforeAfterEditCard({
       timer = setTimeout(runNextStep, step.delay);
     };
 
-    timer = setTimeout(runNextStep, 1000 + delayOffsetMs);
+    timer = setTimeout(runNextStep, 600 + delayOffsetMs);
 
     return () => {
       isMounted = false;
       clearTimeout(timer);
     };
-  }, [userInteracted, isDragging, delayOffsetMs]);
+  }, [isVisible, userInteracted, isDragging, delayOffsetMs]);
 
   const updateSliderFromClientX = useCallback(
     (clientX: number) => {
@@ -159,7 +173,10 @@ export default function BeforeAfterEditCard({
   };
 
   return (
-    <div className="group h-full rounded-3xl overflow-hidden flex flex-col transition-all duration-500 bg-zinc-950/90 backdrop-blur-xl text-white border border-zinc-800 hover:border-[#FF5A5F]/50 shadow-[0_16px_40px_-20px_rgba(0,0,0,0.75)] hover:shadow-2xl hover:shadow-rose-950/20">
+    <div
+      ref={cardRef}
+      className="group h-full rounded-3xl overflow-hidden flex flex-col transition-colors duration-300 bg-zinc-950 text-white border border-zinc-800 hover:border-[#FF5A5F]/50 shadow-[0_16px_40px_-20px_rgba(0,0,0,0.75)]"
+    >
       {/* Interactive Before & After Split Viewport */}
       <div
         ref={containerRef}
@@ -175,38 +192,34 @@ export default function BeforeAfterEditCard({
           src={afterImage}
           alt={`${title} - After Edit`}
           fill
-          unoptimized
           sizes="(max-width: 768px) 100vw, 50vw"
-          onLoad={() => setImageLoaded(true)}
-          className={`object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02] pointer-events-none ${
-            imageLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
+          className="object-cover pointer-events-none"
           priority={priority}
         />
 
-        {/* Top Clipped Layer: BEFORE Image */}
+        {/* Top Clipped Layer: BEFORE Image (GPU-promoted clip-path) */}
         <div
-          className={`absolute inset-0 overflow-hidden pointer-events-none ${
+          className={`absolute inset-0 overflow-hidden pointer-events-none will-change-[clip-path] ${
             isDragging
               ? ''
               : 'transition-[clip-path] duration-[1600ms] ease-[cubic-bezier(0.4,0,0.2,1)]'
           }`}
           style={{
             clipPath: `inset(0 ${100 - sliderPos}% 0 0)`,
+            transform: 'translateZ(0)',
           }}
         >
           <Image
             src={beforeImage}
             alt={`${title} - Before Edit`}
             fill
-            unoptimized
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02] pointer-events-none"
+            className="object-cover pointer-events-none"
             priority={priority}
           />
         </div>
 
-        {/* Interactive Split Divider Line & Frosted Glass Handle */}
+        {/* GPU-Composited Split Divider Line & Handle (uses translate3d instead of layout-thrashing left!) */}
         <div
           role="slider"
           tabIndex={0}
@@ -215,32 +228,34 @@ export default function BeforeAfterEditCard({
           aria-valuemax={100}
           aria-valuenow={Math.round(sliderPos)}
           onKeyDown={handleKeyDown}
-          className={`absolute inset-y-0 z-10 w-[2px] bg-white shadow-[0_0_16px_rgba(255,255,255,0.85)] ${
+          className={`absolute inset-0 z-10 pointer-events-none will-change-transform ${
             isDragging
               ? ''
-              : 'transition-all duration-[1600ms] ease-[cubic-bezier(0.4,0,0.2,1)]'
+              : 'transition-transform duration-[1600ms] ease-[cubic-bezier(0.4,0,0.2,1)]'
           }`}
-          style={{ left: `${sliderPos}%` }}
+          style={{ transform: `translate3d(${sliderPos}%, 0, 0)` }}
         >
-          <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-white/95 backdrop-blur-md border border-black/15 text-zinc-900 shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110">
-            <svg
-              className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-900"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2.4}
-                d="M8 9l-3 3 3 3m8-6l3 3-3 3"
-              />
-            </svg>
+          <div className="absolute inset-y-0 left-0 w-[2px] -translate-x-1/2 bg-white shadow-[0_0_14px_rgba(255,255,255,0.8)]">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-white/95 border border-black/15 text-zinc-900 shadow-[0_4px_16px_rgba(0,0,0,0.4)]">
+              <svg
+                className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-900"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.4}
+                  d="M8 9l-3 3 3 3m8-6l3 3-3 3"
+                />
+              </svg>
+            </div>
           </div>
         </div>
 
         {/* Animated Sliding Toggle Pill: BEFORE <-> AFTER */}
-        <div className="absolute top-2.5 sm:top-3.5 left-2.5 sm:left-3.5 z-20 flex items-center p-0.5 sm:p-1 rounded-full bg-black/80 backdrop-blur-md border border-white/20 shadow-md select-none">
+        <div className="absolute top-2.5 sm:top-3.5 left-2.5 sm:left-3.5 z-20 flex items-center p-0.5 sm:p-1 rounded-full bg-black/85 border border-white/20 shadow-md select-none">
           <div className="relative flex items-center">
             <div
               className={`absolute top-0 bottom-0 left-0 w-13 sm:w-16 rounded-full bg-white shadow-xs transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] pointer-events-none ${
@@ -277,7 +292,7 @@ export default function BeforeAfterEditCard({
         </div>
 
         {/* Category Badge */}
-        <span className="absolute top-2.5 sm:top-3.5 right-2.5 sm:right-3.5 z-20 rounded-full bg-black/80 backdrop-blur-md border border-zinc-700/80 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-[#FF5A5F] shadow-xs">
+        <span className="absolute top-2.5 sm:top-3.5 right-2.5 sm:right-3.5 z-20 rounded-full bg-black/85 border border-zinc-700/80 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-[#FF5A5F] shadow-xs">
           {category}
         </span>
       </div>

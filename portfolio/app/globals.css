@@ -32,3 +32,79 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;
 }
+
+/* Pure GPU-composited animations for Hero GeometricShapes (transform & opacity only — zero repaint!) */
+@keyframes floatCyanRing {
+  0%, 100% {
+    transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
+  }
+  20% {
+    transform: translate3d(-16px, 10px, 0px) rotate(-8deg) scale(1.04);
+  }
+  45% {
+    transform: translate3d(14px, -12px, 0px) rotate(6deg) scale(0.96);
+  }
+  70% {
+    transform: translate3d(-10px, -14px, 0px) rotate(-5deg) scale(1.02);
+  }
+  88% {
+    transform: translate3d(10px, 6px, 0px) rotate(4deg) scale(0.98);
+  }
+}
+
+@keyframes floatCoralRing {
+  0%, 100% {
+    transform: translate3d(0px, 0px, 0px) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(18px, -14px, 0px) scale(1.12) rotate(14deg);
+  }
+  50% {
+    transform: translate3d(-14px, 14px, 0px) scale(0.9) rotate(-10deg);
+  }
+  75% {
+    transform: translate3d(12px, 8px, 0px) scale(1.06) rotate(8deg);
+  }
+}
+
+@keyframes floatCyanDot {
+  0%, 100% {
+    transform: translate3d(0px, 0px, 0px) scale(1);
+  }
+  18% {
+    transform: translate3d(-20px, -18px, 0px) scale(1.22);
+  }
+  42% {
+    transform: translate3d(18px, -12px, 0px) scale(0.86);
+  }
+  65% {
+    transform: translate3d(-12px, 18px, 0px) scale(1.16);
+  }
+  82% {
+    transform: translate3d(16px, 10px, 0px) scale(0.92);
+  }
+}
+
+@keyframes softGlowPulse {
+  0%, 100% {
+    opacity: 0.72;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.anim-cyan-ring {
+  animation: floatCyanRing 7.5s ease-in-out infinite, softGlowPulse 4.2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.anim-coral-ring {
+  animation: floatCoralRing 5.8s ease-in-out infinite, softGlowPulse 3.8s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.anim-cyan-dot {
+  animation: floatCyanDot 4.6s ease-in-out infinite, softGlowPulse 3s ease-in-out infinite;
+  will-change: transform, opacity;
+}

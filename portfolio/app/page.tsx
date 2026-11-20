@@ -593,16 +593,12 @@ export default function PortfolioPage() {
 
           {/* ----------------- CENTER COLUMN: PORTRAIT IMAGE ----------------- */}
           <div className="lg:col-span-4 flex items-center justify-center order-1 lg:order-2 relative">
-            {/* Soft, layered studio backlight halo (purely transparent radial — ZERO hard box!) */}
+            {/* Zero-cost radial studio backlight halo (pure gradients, zero heavy CSS blur filters!) */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute -inset-8 lg:-inset-12 flex items-center justify-center"
             >
-              {/* Neutral warm studio rim behind head & shoulders for crisp separation */}
-              <div className="w-[240px] h-[280px] sm:w-[300px] sm:h-[360px] lg:w-[360px] lg:h-[440px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,244,234,0.085)_0%,rgba(255,244,234,0.025)_42%,transparent_72%)] blur-2xl -translate-y-6 lg:-translate-y-8" />
-              {/* Whisper-soft left coral & right cyan rim reflection matching hero accents */}
-              <div className="absolute w-44 h-44 lg:w-64 lg:h-64 rounded-full bg-[#FF5A5F]/[0.07] blur-[70px] lg:blur-[90px] -translate-x-12 lg:-translate-x-20 -translate-y-4 lg:-translate-y-6" />
-              <div className="absolute w-44 h-44 lg:w-64 lg:h-64 rounded-full bg-cyan-400/[0.06] blur-[70px] lg:blur-[90px] translate-x-12 lg:translate-x-20 -translate-y-10 lg:-translate-y-16" />
+              <div className="w-[280px] h-[340px] sm:w-[340px] sm:h-[420px] lg:w-[440px] lg:h-[520px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,244,234,0.08)_0%,rgba(255,90,95,0.04)_36%,rgba(34,211,238,0.025)_56%,transparent_72%)] -translate-y-6 lg:-translate-y-8" />
             </div>
 
             {/* True transparent portrait PNG — compact & balanced on iOS/Android, editorial scale on desktop */}
@@ -613,7 +609,7 @@ export default function PortfolioPage() {
                 fill
                 priority
                 unoptimized
-                className="object-contain object-top drop-shadow-[0_24px_48px_rgba(0,0,0,0.85)]"
+                className="object-contain object-top"
               />
             </div>
           </div>
@@ -917,7 +913,7 @@ export default function PortfolioPage() {
                       unoptimized
                       className="object-cover object-top group-hover:scale-105 transition-transform duration-300 pointer-events-none"
                     />
-                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-mono font-bold text-[#FF5A5F] border border-zinc-800">
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/90 text-[10px] font-mono font-bold text-[#FF5A5F] border border-zinc-800">
                       {cert.badge}
                     </div>
                   </div>
@@ -1030,7 +1026,7 @@ export default function PortfolioPage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/30 to-transparent" />
                   <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-black/80 backdrop-blur-md text-emerald-400 border border-emerald-500/30">
+                    <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-black/90 text-emerald-400 border border-emerald-500/30">
                       {project.status}
                     </span>
                   </div>
@@ -1092,10 +1088,10 @@ export default function PortfolioPage() {
       {/* 6. PHOTO EDITING & BEFORE/AFTER RETOUCHING SAMPLES                        */}
       {/* ========================================================================= */}
       <section id="edits" className="relative z-20 py-24 border-t border-zinc-900 bg-black overflow-hidden">
-        {/* Subtle studio radial ambient */}
+        {/* Subtle studio radial ambient (zero blur filter cost) */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute top-24 left-1/2 -translate-x-1/2 w-[720px] h-[340px] rounded-full bg-[#FF5A5F]/[0.04] blur-[140px]"
+          className="pointer-events-none absolute top-12 left-1/2 -translate-x-1/2 w-[820px] h-[420px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,90,95,0.06)_0%,transparent_70%)]"
         />
 
         <div className="relative max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">

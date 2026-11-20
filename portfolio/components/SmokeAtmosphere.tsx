@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 
 interface SmokeRibbon {
-  imgIndex: number; // 0 for tendril-1, 1 for tendril-2
+  imgIndex: number;
   x: number;
   y: number;
   vx: number;
@@ -13,184 +13,39 @@ interface SmokeRibbon {
   waveSpeed: number;
   waveAmp: number;
   phase: number;
-  tint?: string;
   mouseSens: number;
 }
 
 export default function SmokeAtmosphere() {
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
+    const wrapper = wrapperRef.current;
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!wrapper || !canvas) return;
 
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
-    let animationFrameId: number;
-    let width = (canvas.width = canvas.parentElement?.clientWidth || window.innerWidth || 1200);
-    let height = (canvas.height = canvas.parentElement?.clientHeight || window.innerHeight || 800);
+    // Render soft smoke at 0.5x internal resolution (4x less GPU/CPU fill-rate, identical silky look!)
+    const SCALE = 0.5;
+    let width = 640;
+    let height = 400;
+    let clearGrad: CanvasGradient | null = null;
+    let clearX = 320;
+    let clearY = 140;
+    let clearRadius = 160;
 
-    const updateDimensions = () => {
-      if (!canvas || !canvas.parentElement) return;
-      const rect = canvas.parentElement.getBoundingClientRect();
-      const newW = Math.max(rect.width, window.innerWidth || 800);
-      const newH = Math.max(rect.height, 600);
-      if (canvas.width !== newW || canvas.height !== newH) {
-        width = canvas.width = newW;
-        height = canvas.height = newH;
-      }
-    };
+    const rebuildMaskGradient = () => {
+      const isMobile = (wrapper.clientWidth || window.innerWidth) < 1024;
+      clearX = width * 0.5;
+      clearY = isMobile ? Math.min(height * 0.16, 175 * SCALE) : height * 0.34;
+      clearRadius = isMobile
+        ? Math.min(width * 0.48, 200 * SCALE)
+        : Math.min(width * 0.3, 340 * SCALE);
 
-    updateDimensions();
-
-    // Mouse coordinates for dynamic smoke reaction
-    let mouseX = width / 2;
-    let mouseY = height / 2;
-    let targetMouseX = mouseX;
-    let targetMouseY = mouseY;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!canvas) return;
-      const rect = canvas.getBoundingClientRect();
-      targetMouseX = e.clientX - rect.left;
-      targetMouseY = e.clientY - rect.top;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    window.addEventListener('resize', updateDimensions);
-
-    // Preload both authentic smoke plumes
-    const img1 = new Image();
-    const img2 = new Image();
-    img1.src = '/images/smoke-tendril-1.png';
-    img2.src = '/images/smoke-tendril-2.png';
-
-    const images = [img1, img2];
-
-    // Configure 5 multi-layered, curling ribbon smoke plumes
-    const ribbons: SmokeRibbon[] = [
-      {
-        imgIndex: 0,
-        x: width * 0.12,
-        y: height * 0.45,
-        vx: 0.25,
-        width: 1050,
-        height: 600,
-        alpha: 0.18,
-        waveSpeed: 0.007,
-        waveAmp: 25,
-        phase: 0,
-        mouseSens: 0.02,
-      },
-      {
-        imgIndex: 1,
-        x: width * 0.88,
-        y: height * 0.38,
-        vx: -0.22,
-        width: 1100,
-        height: 620,
-        alpha: 0.16,
-        waveSpeed: 0.006,
-        waveAmp: 30,
-        phase: Math.PI * 0.7,
-        mouseSens: -0.025,
-      },
-      {
-        imgIndex: 0,
-        x: width * 0.2,
-        y: height * 0.65,
-        vx: 0.18,
-        width: 950,
-        height: 520,
-        alpha: 0.14,
-        waveSpeed: 0.005,
-        waveAmp: 20,
-        phase: Math.PI * 1.3,
-        mouseSens: 0.015,
-      },
-      {
-        imgIndex: 1,
-        x: width * 0.82,
-        y: height * 0.7,
-        vx: -0.2,
-        width: 980,
-        height: 540,
-        alpha: 0.15,
-        waveSpeed: 0.008,
-        waveAmp: 22,
-        phase: Math.PI * 0.4,
-        mouseSens: -0.02,
-      },
-    ];
-
-    let time = 0;
-
-    const render = () => {
-      time += 0.01;
-
-      // Smooth mouse easing
-      mouseX += (targetMouseX - mouseX) * 0.05;
-      mouseY += (targetMouseY - mouseY) * 0.05;
-
-      ctx.clearRect(0, 0, width, height);
-
-      // Use screen blend mode so the smoke ribbons glow softly like ethereal light
-      ctx.globalCompositeOperation = 'screen';
-
-      for (let i = 0; i < ribbons.length; i++) {
-        const r = ribbons[i];
-        const img = images[r.imgIndex];
-
-        if (!img.complete) continue;
-
-        // Advance horizontal drift and sinusoidal wave motion
-        r.x += r.vx;
-        r.phase += r.waveSpeed;
-
-        // Wrap around seamlessly
-        const halfW = r.width * 0.6;
-        if (r.vx > 0 && r.x > width + halfW) {
-          r.x = -halfW;
-        } else if (r.vx < 0 && r.x < -halfW) {
-          r.x = width + halfW;
-        }
-
-        // Sinusoidal curling undulation
-        const waveY = Math.sin(r.phase) * r.waveAmp;
-        const waveX = Math.cos(r.phase * 0.7) * (r.waveAmp * 0.5);
-
-        // Mouse displacement
-        const dx = (mouseX - width / 2) * r.mouseSens;
-        const dy = (mouseY - height / 2) * r.mouseSens;
-
-        const posX = r.x + waveX + dx;
-        const posY = r.y + waveY + dy;
-
-        // Breathing alpha pulse
-        const pulseAlpha = r.alpha * (0.85 + 0.15 * Math.sin(time * 1.5 + r.phase));
-
-        ctx.save();
-        ctx.globalAlpha = Math.max(0, Math.min(1, pulseAlpha));
-        ctx.translate(posX, posY);
-
-        // Subtle organic rotation
-        const rot = Math.sin(r.phase * 0.5) * 0.05;
-        ctx.rotate(rot);
-
-        ctx.drawImage(img, -r.width / 2, -r.height / 2, r.width, r.height);
-        ctx.restore();
-      }
-
-      // Gently soften smoke right behind Ar-jay's head/face so details stay crisp,
-      // while allowing silky ribbons to drift seamlessly behind shoulders & lower mist (ZERO hard box!)
-      const isMobile = width < 1024;
-      const clearX = width * 0.5;
-      const clearY = isMobile ? Math.min(height * 0.16, 175) : height * 0.34;
-      const clearRadius = isMobile ? Math.min(width * 0.48, 200) : Math.min(width * 0.30, 340);
-
-      ctx.globalCompositeOperation = 'destination-out';
-      const clearGrad = ctx.createRadialGradient(
+      clearGrad = ctx.createRadialGradient(
         clearX,
         clearY,
         clearRadius * 0.12,
@@ -201,30 +56,235 @@ export default function SmokeAtmosphere() {
       clearGrad.addColorStop(0, 'rgba(0, 0, 0, 0.68)');
       clearGrad.addColorStop(0.55, 'rgba(0, 0, 0, 0.35)');
       clearGrad.addColorStop(1, 'rgba(0, 0, 0, 0.0)');
-
-      ctx.fillStyle = clearGrad;
-      ctx.beginPath();
-      ctx.arc(clearX, clearY, clearRadius, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.globalCompositeOperation = 'source-over';
-      animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    const updateDimensions = () => {
+      const cssW = Math.max(wrapper.clientWidth || window.innerWidth || 800, 320);
+      const cssH = Math.max(wrapper.clientHeight || 600, 480);
+      const newW = Math.round(cssW * SCALE);
+      const newH = Math.round(cssH * SCALE);
+      if (canvas.width !== newW || canvas.height !== newH) {
+        width = canvas.width = newW;
+        height = canvas.height = newH;
+        rebuildMaskGradient();
+      }
+    };
+
+    updateDimensions();
+
+    // Normalized mouse coordinates (-1..1) — ZERO getBoundingClientRect() layout thrashing on mousemove!
+    let normMouseX = 0;
+    let normMouseY = 0;
+    let targetNormX = 0;
+    let targetNormY = 0;
+    let isVisible = true;
+    let isPageHidden = document.hidden;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isVisible || isPageHidden) return;
+      targetNormX = (e.clientX / window.innerWidth - 0.5) * 2;
+      targetNormY = (e.clientY / window.innerHeight - 0.5) * 2;
+    };
+
+    const img1 = new Image();
+    const img2 = new Image();
+    img1.decoding = 'async';
+    img2.decoding = 'async';
+    img1.src = '/images/smoke-tendril-1.png';
+    img2.src = '/images/smoke-tendril-2.png';
+    const images = [img1, img2];
+
+    const ribbons: SmokeRibbon[] = [
+      {
+        imgIndex: 0,
+        x: width * 0.12,
+        y: height * 0.45,
+        vx: 0.14,
+        width: 525,
+        height: 300,
+        alpha: 0.18,
+        waveSpeed: 0.007,
+        waveAmp: 12,
+        phase: 0,
+        mouseSens: 12,
+      },
+      {
+        imgIndex: 1,
+        x: width * 0.88,
+        y: height * 0.38,
+        vx: -0.12,
+        width: 550,
+        height: 310,
+        alpha: 0.16,
+        waveSpeed: 0.006,
+        waveAmp: 15,
+        phase: Math.PI * 0.7,
+        mouseSens: -15,
+      },
+      {
+        imgIndex: 0,
+        x: width * 0.2,
+        y: height * 0.65,
+        vx: 0.1,
+        width: 475,
+        height: 260,
+        alpha: 0.14,
+        waveSpeed: 0.005,
+        waveAmp: 10,
+        phase: Math.PI * 1.3,
+        mouseSens: 9,
+      },
+      {
+        imgIndex: 1,
+        x: width * 0.82,
+        y: height * 0.7,
+        vx: -0.11,
+        width: 490,
+        height: 270,
+        alpha: 0.15,
+        waveSpeed: 0.008,
+        waveAmp: 11,
+        phase: Math.PI * 0.4,
+        mouseSens: -12,
+      },
+    ];
+
+    let animationFrameId: number | null = null;
+    let time = 0;
+    let lastFrameTime = 0;
+    const TARGET_FRAME_MS = 30; // ~33fps silky ambient smoke — frees 50%+ GPU during scroll & hover
+
+    const render = (now: number) => {
+      if (!isVisible || isPageHidden) {
+        animationFrameId = null;
+        return;
+      }
+
+      animationFrameId = requestAnimationFrame(render);
+
+      const elapsed = now - lastFrameTime;
+      if (lastFrameTime !== 0 && elapsed < TARGET_FRAME_MS) {
+        return;
+      }
+      const stepScale = lastFrameTime === 0 ? 1 : Math.min(elapsed / 16.67, 3);
+      lastFrameTime = now;
+
+      time += 0.01 * stepScale;
+
+      // Smooth mouse easing
+      const ease = Math.min(1, 0.06 * stepScale);
+      normMouseX += (targetNormX - normMouseX) * ease;
+      normMouseY += (targetNormY - normMouseY) * ease;
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.globalCompositeOperation = 'screen';
+
+      for (let i = 0; i < ribbons.length; i++) {
+        const r = ribbons[i];
+        const img = images[r.imgIndex];
+        if (!img.complete || img.naturalWidth === 0) continue;
+
+        r.x += r.vx * stepScale;
+        r.phase += r.waveSpeed * stepScale;
+
+        const halfW = r.width * 0.6;
+        if (r.vx > 0 && r.x > width + halfW) {
+          r.x = -halfW;
+        } else if (r.vx < 0 && r.x < -halfW) {
+          r.x = width + halfW;
+        }
+
+        const waveY = Math.sin(r.phase) * r.waveAmp;
+        const waveX = Math.cos(r.phase * 0.7) * (r.waveAmp * 0.5);
+        const posX = r.x + waveX + normMouseX * r.mouseSens;
+        const posY = r.y + waveY + normMouseY * r.mouseSens;
+        const pulseAlpha = r.alpha * (0.85 + 0.15 * Math.sin(time * 1.5 + r.phase));
+
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, Math.min(1, pulseAlpha));
+        ctx.translate(posX, posY);
+        ctx.rotate(Math.sin(r.phase * 0.5) * 0.05);
+        ctx.drawImage(img, -r.width / 2, -r.height / 2, r.width, r.height);
+        ctx.restore();
+      }
+
+      if (clearGrad) {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.fillStyle = clearGrad;
+        ctx.beginPath();
+        ctx.arc(clearX, clearY, clearRadius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.globalCompositeOperation = 'source-over';
+    };
+
+    const startLoop = () => {
+      if (isVisible && !isPageHidden && animationFrameId === null) {
+        lastFrameTime = 0;
+        animationFrameId = requestAnimationFrame(render);
+      }
+    };
+
+    const stopLoop = () => {
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    };
+
+    // Pause smoke loop completely when Hero scrolls out of view (0% CPU/GPU while scrolling down!)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        isVisible = entries[0]?.isIntersecting ?? false;
+        if (isVisible) startLoop();
+        else stopLoop();
+      },
+      { threshold: 0 }
+    );
+    observer.observe(wrapper);
+
+    const handleVisibilityChange = () => {
+      isPageHidden = document.hidden;
+      if (isPageHidden) stopLoop();
+      else startLoop();
+    };
+
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(updateDimensions, 150);
+    };
+
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    if (!isCoarsePointer) {
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    }
+    window.addEventListener('resize', handleResize, { passive: true });
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    startLoop();
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', updateDimensions);
+      stopLoop();
+      observer.disconnect();
+      clearTimeout(resizeTimer);
+      if (!isCoarsePointer) {
+        window.removeEventListener('mousemove', handleMouseMove);
+      }
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-10 select-none">
+    <div
+      ref={wrapperRef}
+      className="absolute inset-0 overflow-hidden pointer-events-none z-10 select-none"
+    >
       <canvas
         ref={canvasRef}
-        className="w-full h-full block opacity-90 transition-opacity duration-700"
+        className="w-full h-full block opacity-90"
       />
       {/* Seamless 4-edge vignette fade into pure black canvas */}
       <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black to-transparent pointer-events-none" />
