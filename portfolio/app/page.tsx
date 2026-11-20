@@ -346,16 +346,15 @@ export default function PortfolioPage() {
 
           {/* ----------------- CENTER COLUMN: PORTRAIT IMAGE ----------------- */}
           <div className="lg:col-span-4 flex items-center justify-center order-1 lg:order-2 relative">
-            <div className="relative w-72 sm:w-84 md:w-96 lg:w-[420px] aspect-[3/4] max-h-[580px]">
+            <div className="relative w-72 sm:w-84 md:w-96 lg:w-[420px] aspect-[3/4] max-h-[580px] [mask-image:linear-gradient(to_bottom,black_60%,transparent_98%)] [-webkit-mask-image:linear-gradient(to_bottom,black_60%,transparent_98%)]">
               <Image
-                src="/images/arjay-portrait-transparent.png"
+                src="/images/arjay-portrait-transparent.png?v=4"
                 alt="Ar-jay Tabangin - Developer & UI/UX Designer"
                 fill
                 priority
+                unoptimized
                 className="object-contain object-top drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)] filter brightness-[1.02] contrast-[1.02]"
               />
-              {/* Soft bottom fade so suit melts into the page seamlessly */}
-              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none z-10" />
             </div>
           </div>
 

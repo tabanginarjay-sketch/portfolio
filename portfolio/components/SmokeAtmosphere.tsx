@@ -2,22 +2,19 @@
 
 import React, { useEffect, useRef } from 'react';
 
-interface SmokePuff {
+interface SmokeRibbon {
+  imgIndex: number; // 0 for tendril-1, 1 for tendril-2
   x: number;
   y: number;
   vx: number;
-  vy: number;
-  baseRadius: number;
-  radius: number;
+  width: number;
+  height: number;
   alpha: number;
-  maxAlpha: number;
-  life: number;
-  maxLife: number;
-  rotation: number;
-  rotationSpeed: number;
-  swirlSpeed: number;
-  seed: number;
-  color: { r: number; g: number; b: number };
+  waveSpeed: number;
+  waveAmp: number;
+  phase: number;
+  tint?: string;
+  mouseSens: number;
 }
 
 export default function SmokeAtmosphere() {
@@ -47,146 +44,158 @@ export default function SmokeAtmosphere() {
 
     updateDimensions();
 
-    // Mouse coordinates for interactive smoke disturbance
+    // Mouse coordinates for dynamic smoke reaction
     let mouseX = width / 2;
     let mouseY = height / 2;
-    let isMouseActive = false;
+    let targetMouseX = mouseX;
+    let targetMouseY = mouseY;
 
     const handleMouseMove = (e: MouseEvent) => {
       if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
-      isMouseActive = true;
-    };
-
-    const handleMouseLeave = () => {
-      isMouseActive = false;
+      targetMouseX = e.clientX - rect.left;
+      targetMouseY = e.clientY - rect.top;
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    document.addEventListener('mouseleave', handleMouseLeave);
     window.addEventListener('resize', updateDimensions);
 
-    // 44 dynamic smoke puffs for dense, silky, billowing atmosphere
-    const PUFF_COUNT = 44;
-    const puffs: SmokePuff[] = [];
+    // Preload both authentic smoke plumes
+    const img1 = new Image();
+    const img2 = new Image();
+    img1.src = '/images/smoke-tendril-1.png';
+    img2.src = '/images/smoke-tendril-2.png';
 
-    const createPuff = (spawnY?: number): SmokePuff => {
-      const randColor = Math.random();
-      // Silky silvery slate smoke by default, with occasional ambient coral and cyan mist
-      let color = { r: 190, g: 205, b: 225 }; // Bright visible silver smoke
-      let maxAlpha = 0.20 + Math.random() * 0.16; // 20% to 36% opacity (clearly visible!)
+    const images = [img1, img2];
 
-      if (randColor > 0.82) {
-        // Soft glowing coral mist matching #FF5A5F
-        color = { r: 255, g: 90, b: 95 };
-        maxAlpha = 0.16 + Math.random() * 0.12;
-      } else if (randColor > 0.68) {
-        // Soft glowing cyan mist matching #22D3EE
-        color = { r: 34, g: 211, b: 238 };
-        maxAlpha = 0.15 + Math.random() * 0.12;
-      }
-
-      const baseRadius = 180 + Math.random() * 240; // 180px - 420px wide puffs
-
-      return {
-        x: Math.random() * width,
-        y: spawnY !== undefined ? spawnY : Math.random() * (height + 120),
-        vx: (Math.random() - 0.5) * 0.6, // lateral drift
-        vy: -0.65 - Math.random() * 0.75, // clear, steady upward billowing
-        baseRadius,
-        radius: baseRadius,
-        alpha: 0,
-        maxAlpha,
-        life: 0,
-        maxLife: 320 + Math.random() * 380,
-        rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.005,
-        swirlSpeed: 0.6 + Math.random() * 0.8,
-        seed: Math.random() * 100,
-        color,
-      };
-    };
-
-    // Pre-populate particles across the hero height with staggered life
-    for (let i = 0; i < PUFF_COUNT; i++) {
-      const p = createPuff(Math.random() * height);
-      p.life = Math.random() * p.maxLife * 0.85;
-      puffs.push(p);
-    }
+    // Configure 5 multi-layered, curling ribbon smoke plumes
+    const ribbons: SmokeRibbon[] = [
+      {
+        imgIndex: 0,
+        x: width * 0.1,
+        y: height * 0.42,
+        vx: 0.35, // slow, graceful left-to-right drift
+        width: 1150,
+        height: 640,
+        alpha: 0.32,
+        waveSpeed: 0.008,
+        waveAmp: 30,
+        phase: 0,
+        mouseSens: 0.03,
+      },
+      {
+        imgIndex: 1,
+        x: width * 0.85,
+        y: height * 0.35,
+        vx: -0.28, // counter-drift right-to-left
+        width: 1250,
+        height: 680,
+        alpha: 0.28,
+        waveSpeed: 0.007,
+        waveAmp: 35,
+        phase: Math.PI * 0.7,
+        mouseSens: -0.04,
+      },
+      {
+        imgIndex: 0,
+        x: width * 0.45,
+        y: height * 0.58,
+        vx: 0.22,
+        width: 1350,
+        height: 720,
+        alpha: 0.25,
+        waveSpeed: 0.006,
+        waveAmp: 25,
+        phase: Math.PI * 1.3,
+        mouseSens: 0.025,
+      },
+      {
+        imgIndex: 1,
+        x: width * 0.25,
+        y: height * 0.22,
+        vx: -0.42,
+        width: 950,
+        height: 520,
+        alpha: 0.22,
+        waveSpeed: 0.011,
+        waveAmp: 40,
+        phase: Math.PI * 0.4,
+        mouseSens: -0.05,
+      },
+      {
+        imgIndex: 0,
+        x: width * 0.7,
+        y: height * 0.65,
+        vx: 0.3,
+        width: 1050,
+        height: 580,
+        alpha: 0.24,
+        waveSpeed: 0.009,
+        waveAmp: 32,
+        phase: Math.PI * 1.8,
+        mouseSens: 0.035,
+      },
+    ];
 
     let time = 0;
 
     const render = () => {
-      time += 0.012;
+      time += 0.01;
+
+      // Smooth mouse easing
+      mouseX += (targetMouseX - mouseX) * 0.05;
+      mouseY += (targetMouseY - mouseY) * 0.05;
+
       ctx.clearRect(0, 0, width, height);
 
-      // Use screen blend mode so overlapping puffs create dense, velvety volumetric clouds
+      // Use screen blend mode so the smoke ribbons glow softly like ethereal light
       ctx.globalCompositeOperation = 'screen';
 
-      for (let i = 0; i < puffs.length; i++) {
-        const p = puffs[i];
-        p.life++;
+      for (let i = 0; i < ribbons.length; i++) {
+        const r = ribbons[i];
+        const img = images[r.imgIndex];
 
-        // Life cycle: billows up softly, sustains, and gracefully diffuses
-        const progress = p.life / p.maxLife;
-        if (progress < 0.22) {
-          p.alpha = (progress / 0.22) * p.maxAlpha;
-        } else if (progress > 0.60) {
-          p.alpha = (1 - (progress - 0.60) / 0.40) * p.maxAlpha;
-        } else {
-          p.alpha = p.maxAlpha;
+        if (!img.complete) continue;
+
+        // Advance horizontal drift and sinusoidal wave motion
+        r.x += r.vx;
+        r.phase += r.waveSpeed;
+
+        // Wrap around seamlessly
+        const halfW = r.width * 0.6;
+        if (r.vx > 0 && r.x > width + halfW) {
+          r.x = -halfW;
+        } else if (r.vx < 0 && r.x < -halfW) {
+          r.x = width + halfW;
         }
 
-        // Natural swirling fluid harmonic motion
-        const waveX = Math.sin(time * p.swirlSpeed + p.seed) * 1.1 + Math.cos(time * 0.6 + p.seed * 2) * 0.6;
-        const waveY = Math.cos(time * p.swirlSpeed * 0.8 + p.seed) * 0.4;
+        // Sinusoidal curling undulation
+        const waveY = Math.sin(r.phase) * r.waveAmp;
+        const waveX = Math.cos(r.phase * 0.7) * (r.waveAmp * 0.5);
 
-        p.x += p.vx + waveX;
-        p.y += p.vy + waveY;
-        p.rotation += p.rotationSpeed;
+        // Mouse displacement
+        const dx = (mouseX - width / 2) * r.mouseSens;
+        const dy = (mouseY - height / 2) * r.mouseSens;
 
-        // Smoke billows and expands as it rises
-        p.radius = p.baseRadius * (1 + progress * 0.8);
+        const posX = r.x + waveX + dx;
+        const posY = r.y + waveY + dy;
 
-        // Interactive mouse curl
-        if (isMouseActive) {
-          const dx = p.x - mouseX;
-          const dy = p.y - mouseY;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          const maxDist = 380;
-          if (dist < maxDist && dist > 1) {
-            const force = (1 - dist / maxDist) * 1.1;
-            p.x += (dx / dist) * force * 1.8 - (dy / dist) * force * 0.9;
-            p.y += (dy / dist) * force * 1.8 + (dx / dist) * force * 0.9;
-          }
-        }
+        // Breathing alpha pulse
+        const pulseAlpha = r.alpha * (0.85 + 0.15 * Math.sin(time * 1.5 + r.phase));
 
-        // Respawn when puffed off-screen or life expired
-        if (p.life >= p.maxLife || p.y < -p.radius * 1.3 || p.x < -p.radius * 1.3 || p.x > width + p.radius * 1.3) {
-          puffs[i] = createPuff(height + p.radius * 0.4);
-          continue;
-        }
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, Math.min(1, pulseAlpha));
+        ctx.translate(posX, posY);
 
-        // Multi-stop soft radial puff
-        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius);
-        const { r, g, b } = p.color;
+        // Subtle organic rotation
+        const rot = Math.sin(r.phase * 0.5) * 0.05;
+        ctx.rotate(rot);
 
-        grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${p.alpha * 0.95})`);
-        grad.addColorStop(0.25, `rgba(${r}, ${g}, ${b}, ${p.alpha * 0.65})`);
-        grad.addColorStop(0.55, `rgba(${r}, ${g}, ${b}, ${p.alpha * 0.28})`);
-        grad.addColorStop(0.80, `rgba(${r}, ${g}, ${b}, ${p.alpha * 0.08})`);
-        grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.drawImage(img, -r.width / 2, -r.height / 2, r.width, r.height);
+        ctx.restore();
       }
 
       ctx.globalCompositeOperation = 'source-over';
-
       animationFrameId = requestAnimationFrame(render);
     };
 
@@ -195,7 +204,6 @@ export default function SmokeAtmosphere() {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('resize', updateDimensions);
     };
   }, []);
@@ -204,11 +212,11 @@ export default function SmokeAtmosphere() {
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-10 select-none">
       <canvas
         ref={canvasRef}
-        className="w-full h-full block opacity-100 transition-opacity duration-700"
+        className="w-full h-full block opacity-95 transition-opacity duration-700"
       />
-      {/* Top & bottom soft edge blend into solid page black */}
-      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black to-transparent pointer-events-none" />
-      <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+      {/* Top and bottom subtle fade into pure black canvas */}
+      <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none" />
     </div>
   );
 }
