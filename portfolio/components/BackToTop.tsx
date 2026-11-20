@@ -39,10 +39,17 @@ export default function BackToTop() {
   }, [handleScroll]);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    if (typeof window !== 'undefined' && (window as any).__lenis) {
+      (window as any).__lenis.scrollTo(0, {
+        duration: 1.4,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
   };
 
   // Circular progress calculations for SVG ring
