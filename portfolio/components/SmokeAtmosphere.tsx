@@ -2,19 +2,22 @@
 
 import React, { useEffect, useRef } from 'react';
 
-interface Particle {
+interface SmokePuff {
   x: number;
   y: number;
   vx: number;
   vy: number;
-  radius: number;
   baseRadius: number;
+  radius: number;
   alpha: number;
-  targetAlpha: number;
+  maxAlpha: number;
   life: number;
   maxLife: number;
-  colorType: 'smoke' | 'coral' | 'cyan';
-  swirlOffset: number;
+  rotation: number;
+  rotationSpeed: number;
+  swirlSpeed: number;
+  seed: number;
+  color: { r: number; g: number; b: number };
 }
 
 export default function SmokeAtmosphere() {
@@ -28,131 +31,152 @@ export default function SmokeAtmosphere() {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let width = (canvas.width = canvas.parentElement?.clientWidth || window.innerWidth);
-    let height = (canvas.height = canvas.parentElement?.clientHeight || window.innerHeight);
+    let width = (canvas.width = canvas.parentElement?.clientWidth || window.innerWidth || 1200);
+    let height = (canvas.height = canvas.parentElement?.clientHeight || window.innerHeight || 800);
 
-    // Mouse coordinates for gentle interaction
+    const updateDimensions = () => {
+      if (!canvas || !canvas.parentElement) return;
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const newW = Math.max(rect.width, window.innerWidth || 800);
+      const newH = Math.max(rect.height, 600);
+      if (canvas.width !== newW || canvas.height !== newH) {
+        width = canvas.width = newW;
+        height = canvas.height = newH;
+      }
+    };
+
+    updateDimensions();
+
+    // Mouse coordinates for interactive smoke disturbance
     let mouseX = width / 2;
     let mouseY = height / 2;
-    let hasMouseMoved = false;
+    let isMouseActive = false;
 
     const handleMouseMove = (e: MouseEvent) => {
+      if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
       mouseX = e.clientX - rect.left;
       mouseY = e.clientY - rect.top;
-      hasMouseMoved = true;
+      isMouseActive = true;
+    };
+
+    const handleMouseLeave = () => {
+      isMouseActive = false;
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    document.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('resize', updateDimensions);
 
-    // Handle resize
-    const handleResize = () => {
-      if (!canvas || !canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight;
-    };
+    // 44 dynamic smoke puffs for dense, silky, billowing atmosphere
+    const PUFF_COUNT = 44;
+    const puffs: SmokePuff[] = [];
 
-    window.addEventListener('resize', handleResize);
+    const createPuff = (spawnY?: number): SmokePuff => {
+      const randColor = Math.random();
+      // Silky silvery slate smoke by default, with occasional ambient coral and cyan mist
+      let color = { r: 190, g: 205, b: 225 }; // Bright visible silver smoke
+      let maxAlpha = 0.20 + Math.random() * 0.16; // 20% to 36% opacity (clearly visible!)
 
-    // Generate balanced smoke particles
-    const PARTICLE_COUNT = 24;
-    const particles: Particle[] = [];
+      if (randColor > 0.82) {
+        // Soft glowing coral mist matching #FF5A5F
+        color = { r: 255, g: 90, b: 95 };
+        maxAlpha = 0.16 + Math.random() * 0.12;
+      } else if (randColor > 0.68) {
+        // Soft glowing cyan mist matching #22D3EE
+        color = { r: 34, g: 211, b: 238 };
+        maxAlpha = 0.15 + Math.random() * 0.12;
+      }
 
-    const createParticle = (spawnY?: number): Particle => {
-      const colorRand = Math.random();
-      let colorType: 'smoke' | 'coral' | 'cyan' = 'smoke';
-      if (colorRand > 0.82) colorType = 'coral';
-      else if (colorRand > 0.70) colorType = 'cyan';
-
-      const maxAlpha =
-        colorType === 'coral'
-          ? 0.05 + Math.random() * 0.04
-          : colorType === 'cyan'
-          ? 0.04 + Math.random() * 0.03
-          : 0.06 + Math.random() * 0.05;
-
-      const baseRadius = 140 + Math.random() * 220;
+      const baseRadius = 180 + Math.random() * 240; // 180px - 420px wide puffs
 
       return {
         x: Math.random() * width,
-        y: spawnY !== undefined ? spawnY : Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.35,
-        vy: -0.2 - Math.random() * 0.35, // slow upward drift
-        radius: baseRadius,
+        y: spawnY !== undefined ? spawnY : Math.random() * (height + 120),
+        vx: (Math.random() - 0.5) * 0.6, // lateral drift
+        vy: -0.65 - Math.random() * 0.75, // clear, steady upward billowing
         baseRadius,
+        radius: baseRadius,
         alpha: 0,
-        targetAlpha: maxAlpha,
+        maxAlpha,
         life: 0,
-        maxLife: 350 + Math.random() * 450,
-        colorType,
-        swirlOffset: Math.random() * Math.PI * 2,
+        maxLife: 320 + Math.random() * 380,
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.005,
+        swirlSpeed: 0.6 + Math.random() * 0.8,
+        seed: Math.random() * 100,
+        color,
       };
     };
 
-    // Initial distribution across height
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      particles.push(createParticle(Math.random() * height));
+    // Pre-populate particles across the hero height with staggered life
+    for (let i = 0; i < PUFF_COUNT; i++) {
+      const p = createPuff(Math.random() * height);
+      p.life = Math.random() * p.maxLife * 0.85;
+      puffs.push(p);
     }
 
     let time = 0;
 
     const render = () => {
-      time += 0.008;
+      time += 0.012;
       ctx.clearRect(0, 0, width, height);
 
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
+      // Use screen blend mode so overlapping puffs create dense, velvety volumetric clouds
+      ctx.globalCompositeOperation = 'screen';
+
+      for (let i = 0; i < puffs.length; i++) {
+        const p = puffs[i];
         p.life++;
 
-        // Life cycle alpha fade in and fade out
+        // Life cycle: billows up softly, sustains, and gracefully diffuses
         const progress = p.life / p.maxLife;
-        if (progress < 0.25) {
-          p.alpha = (progress / 0.25) * p.targetAlpha;
-        } else if (progress > 0.7) {
-          p.alpha = (1 - (progress - 0.7) / 0.3) * p.targetAlpha;
+        if (progress < 0.22) {
+          p.alpha = (progress / 0.22) * p.maxAlpha;
+        } else if (progress > 0.60) {
+          p.alpha = (1 - (progress - 0.60) / 0.40) * p.maxAlpha;
         } else {
-          p.alpha = p.targetAlpha;
+          p.alpha = p.maxAlpha;
         }
 
-        // Gentle sin wave wisp motion
-        const wave = Math.sin(time + p.swirlOffset) * 0.4;
-        p.x += p.vx + wave;
-        p.y += p.vy;
+        // Natural swirling fluid harmonic motion
+        const waveX = Math.sin(time * p.swirlSpeed + p.seed) * 1.1 + Math.cos(time * 0.6 + p.seed * 2) * 0.6;
+        const waveY = Math.cos(time * p.swirlSpeed * 0.8 + p.seed) * 0.4;
 
-        // Subtle expansion as smoke rises
-        p.radius = p.baseRadius * (1 + progress * 0.4);
+        p.x += p.vx + waveX;
+        p.y += p.vy + waveY;
+        p.rotation += p.rotationSpeed;
 
-        // Gentle interactive mouse influence
-        if (hasMouseMoved) {
+        // Smoke billows and expands as it rises
+        p.radius = p.baseRadius * (1 + progress * 0.8);
+
+        // Interactive mouse curl
+        if (isMouseActive) {
           const dx = p.x - mouseX;
           const dy = p.y - mouseY;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 320 && dist > 1) {
-            const force = (1 - dist / 320) * 0.4;
-            p.x += (dx / dist) * force;
-            p.y += (dy / dist) * force;
+          const maxDist = 380;
+          if (dist < maxDist && dist > 1) {
+            const force = (1 - dist / maxDist) * 1.1;
+            p.x += (dx / dist) * force * 1.8 - (dy / dist) * force * 0.9;
+            p.y += (dy / dist) * force * 1.8 + (dx / dist) * force * 0.9;
           }
         }
 
-        // Respawn when life expires or floats off top/sides
-        if (p.life >= p.maxLife || p.y < -p.radius || p.x < -p.radius || p.x > width + p.radius) {
-          particles[i] = createParticle(height + p.radius * 0.5);
+        // Respawn when puffed off-screen or life expired
+        if (p.life >= p.maxLife || p.y < -p.radius * 1.3 || p.x < -p.radius * 1.3 || p.x > width + p.radius * 1.3) {
+          puffs[i] = createPuff(height + p.radius * 0.4);
           continue;
         }
 
-        // Color definitions
-        let r = 26, g = 28, b = 34; // deep charcoal smoke
-        if (p.colorType === 'coral') {
-          r = 255; g = 90; b = 95; // #FF5A5F
-        } else if (p.colorType === 'cyan') {
-          r = 0; g = 229; b = 255; // #00E5FF
-        }
-
-        // Draw soft radial volumetric smoke puff
+        // Multi-stop soft radial puff
         const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius);
-        grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${p.alpha})`);
-        grad.addColorStop(0.4, `rgba(${r}, ${g}, ${b}, ${p.alpha * 0.6})`);
-        grad.addColorStop(0.8, `rgba(${r}, ${g}, ${b}, ${p.alpha * 0.2})`);
+        const { r, g, b } = p.color;
+
+        grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${p.alpha * 0.95})`);
+        grad.addColorStop(0.25, `rgba(${r}, ${g}, ${b}, ${p.alpha * 0.65})`);
+        grad.addColorStop(0.55, `rgba(${r}, ${g}, ${b}, ${p.alpha * 0.28})`);
+        grad.addColorStop(0.80, `rgba(${r}, ${g}, ${b}, ${p.alpha * 0.08})`);
         grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
 
         ctx.fillStyle = grad;
@@ -160,6 +184,8 @@ export default function SmokeAtmosphere() {
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fill();
       }
+
+      ctx.globalCompositeOperation = 'source-over';
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -169,7 +195,8 @@ export default function SmokeAtmosphere() {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('resize', updateDimensions);
     };
   }, []);
 
@@ -177,10 +204,11 @@ export default function SmokeAtmosphere() {
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-10 select-none">
       <canvas
         ref={canvasRef}
-        className="w-full h-full block opacity-90 transition-opacity duration-1000"
+        className="w-full h-full block opacity-100 transition-opacity duration-700"
       />
-      {/* Central vignette mask to guarantee face and core typography remain crisp and unclouded */}
-      <div className="absolute inset-0 bg-radial from-transparent via-transparent to-black/60 pointer-events-none" />
+      {/* Top & bottom soft edge blend into solid page black */}
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black to-transparent pointer-events-none" />
     </div>
   );
 }
