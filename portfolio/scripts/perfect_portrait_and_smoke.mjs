@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { createCanvas, loadImage } from '@napi-rs/canvas';
 
-// 1. PROCESS SMOKE REFERENCE INTO TRANSPARENT PLUMES
+// 1. PROCESS SMOKE REFERENCE INTO FULLY FEATHERED TRANSPARENT PLUMES (ZERO STRAIGHT EDGES)
 async function processSmoke() {
   const smokePath = 'C:/Users/jherald ramos/.gemini/antigravity/brain/f21a097d-0e10-43fb-a02b-1e1b189d73bb/.user_uploaded/media_1795155361831_e0915099.jpg';
   const outDir = 'c:/Users/jherald ramos/portfolio/portfolio/public/images';
@@ -24,22 +24,44 @@ async function processSmoke() {
     const g = d[i + 1];
     const b = d[i + 2];
 
-    // Perceived luminance
     const lum = 0.299 * r + 0.587 * g + 0.114 * b;
 
-    // Threshold noise & watermark in black background
-    if (lum < 16) {
+    if (lum < 18) {
       d[i + 3] = 0;
     } else {
-      // Smooth sigmoid curve for silky ethereal transparency
-      const norm = (lum - 16) / (255 - 16);
-      const alpha = Math.min(255, Math.round(Math.pow(norm, 1.1) * 255));
+      const norm = (lum - 18) / (255 - 18);
+      const alpha = Math.min(255, Math.round(Math.pow(norm, 1.15) * 255));
       d[i + 3] = alpha;
 
-      // Make the smoke color a soft luminous silver-white
-      d[i] = 230;
-      d[i + 1] = 240;
+      d[i] = 235;
+      d[i + 1] = 242;
       d[i + 2] = 255;
+    }
+  }
+
+  // 4-edge feathering to eliminate ALL straight rectangular border cut-offs
+  const featherX = 75;
+  const featherY = 65;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const idx = (y * w + x) * 4;
+      if (d[idx + 3] === 0) continue;
+
+      let factorX = 1.0;
+      let factorY = 1.0;
+
+      if (x < featherX) factorX = x / featherX;
+      else if (x > w - featherX) factorX = (w - x) / featherX;
+
+      if (y < featherY) factorY = y / featherY;
+      else if (y > h - featherY) factorY = (h - y) / featherY;
+
+      // Smoothstep curve: 3*t^2 - 2*t^3
+      factorX = factorX * factorX * (3 - 2 * factorX);
+      factorY = factorY * factorY * (3 - 2 * factorY);
+
+      const totalFactor = Math.max(0, Math.min(1, factorX * factorY));
+      d[idx + 3] = Math.round(d[idx + 3] * totalFactor);
     }
   }
 
@@ -48,7 +70,7 @@ async function processSmoke() {
   // Save standard plume
   const buf1 = canvas.toBuffer('image/png');
   fs.writeFileSync(outDir + '/smoke-tendril-1.png', buf1);
-  console.log('Saved smoke-tendril-1.png:', buf1.length);
+  console.log('Saved feathered smoke-tendril-1.png:', buf1.length);
 
   // Save horizontal flipped plume for variety
   const canvas2 = createCanvas(w, h);
@@ -58,7 +80,7 @@ async function processSmoke() {
   ctx2.drawImage(canvas, 0, 0);
   const buf2 = canvas2.toBuffer('image/png');
   fs.writeFileSync(outDir + '/smoke-tendril-2.png', buf2);
-  console.log('Saved smoke-tendril-2.png:', buf2.length);
+  console.log('Saved feathered smoke-tendril-2.png:', buf2.length);
 }
 
 // 2. PROCESS PORTRAIT WITH ADVANCED DEFRINGE & ZERO WHITE EDGE
@@ -84,9 +106,8 @@ async function processPortrait() {
   let qTail = 0;
 
   function isWhitePixel(r, g, b) {
-    // White or near white background
     const maxDiff = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(r - b));
-    return (r > 190 && g > 190 && b > 190 && maxDiff < 30) || (r > 210 && g > 210 && b > 210);
+    return (r > 185 && g > 185 && b > 185 && maxDiff < 32) || (r > 205 && g > 205 && b > 205);
   }
 
   function push(x, y) {
@@ -149,21 +170,18 @@ async function processPortrait() {
     }
   }
 
-  // Erode the foreground mask by 1.5 pixels into the black suit/silhouette
-  // to completely shave off the white anti-aliased edge fringe!
+  // Erode mask by 1.5 pixels
   const erodedFg = new Uint8Array(srcW * srcH);
   for (let y = 1; y < srcH - 1; y++) {
     for (let x = 1; x < srcW - 1; x++) {
       const idx = y * srcW + x;
       if (isBg[idx]) continue;
 
-      // Protected shirt
       if (x >= 475 && x <= 580 && y >= 270 && y <= 430) {
         erodedFg[idx] = 1;
         continue;
       }
 
-      // Check 3x3 neighborhood: if any neighbor is background, erode
       let hasBg = false;
       for (let dy = -1; dy <= 1; dy++) {
         for (let dx = -1; dx <= 1; dx++) {
@@ -181,7 +199,7 @@ async function processPortrait() {
     }
   }
 
-  // Erode once more along edges for pixels with high luminance (white spill)
+  // Shave off bright edge residue
   const finalAlpha = new Float32Array(srcW * srcH);
   for (let y = 2; y < srcH - 2; y++) {
     for (let x = 2; x < srcW - 2; x++) {
@@ -195,7 +213,6 @@ async function processPortrait() {
       const r = d[p], g = d[p + 1], b = d[p + 2];
       const lum = 0.299 * r + 0.587 * g + 0.114 * b;
 
-      // If near background boundary and still bright (white fringe residue), shave off
       if (!(x >= 475 && x <= 580 && y >= 270 && y <= 430)) {
         let nearEdge = false;
         for (let dy = -1; dy <= 1; dy++) {
@@ -208,7 +225,7 @@ async function processPortrait() {
           if (nearEdge) break;
         }
 
-        if (nearEdge && lum > 140) {
+        if (nearEdge && lum > 135) {
           finalAlpha[idx] = 0;
           continue;
         }
@@ -218,7 +235,7 @@ async function processPortrait() {
     }
   }
 
-  // Smooth feathering of alpha (1px radius Gaussian-like blur)
+  // Smooth feathering
   const smoothedAlpha = new Float32Array(srcW * srcH);
   for (let y = 1; y < srcH - 1; y++) {
     for (let x = 1; x < srcW - 1; x++) {
@@ -237,8 +254,7 @@ async function processPortrait() {
     }
   }
 
-  // Color Decontamination on boundary pixels:
-  // Any semi-transparent pixel on the suit/hair is clamped to dark black/shadow
+  // Color decontamination
   for (let i = 0; i < srcW * srcH; i++) {
     const p = i * 4;
     const a = smoothedAlpha[i];
@@ -250,13 +266,11 @@ async function processPortrait() {
     } else {
       d[p + 3] = Math.round(a * 255);
 
-      // Decontaminate edge: if not the shirt, remove any lingering white light spill
       if (!(x >= 475 && x <= 580 && y >= 270 && y <= 430)) {
         if (a < 0.98) {
-          // Multiply RGB by alpha to suppress white fringe completely
-          d[p] = Math.round(d[p] * a * 0.7);
-          d[p + 1] = Math.round(d[p + 1] * a * 0.7);
-          d[p + 2] = Math.round(d[p + 2] * a * 0.7);
+          d[p] = Math.round(d[p] * a * 0.65);
+          d[p + 1] = Math.round(d[p + 1] * a * 0.65);
+          d[p + 2] = Math.round(d[p + 2] * a * 0.65);
         }
       }
     }
@@ -264,7 +278,7 @@ async function processPortrait() {
 
   ctx.putImageData(imgData, 0, 0);
 
-  // Crop & Center onto output canvas (600 x 800)
+  // Output Canvas (600 x 800)
   const destW = 600;
   const destH = 800;
   const outCanvas = createCanvas(destW, destH);
@@ -280,16 +294,15 @@ async function processPortrait() {
 
   outCtx.drawImage(canvas, drawX, drawY, drawW, drawH);
 
-  // Soft natural bottom fade on ALPHA ONLY (destination-out) so the bottom melts cleanly
-  // starting at y=520 down to y=780
+  // Soft natural bottom fade on ALPHA ONLY
   outCtx.globalCompositeOperation = 'destination-out';
-  const bottomGrad = outCtx.createLinearGradient(0, 500, 0, 780);
+  const bottomGrad = outCtx.createLinearGradient(0, 480, 0, 770);
   bottomGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
-  bottomGrad.addColorStop(0.3, 'rgba(0, 0, 0, 0.15)');
-  bottomGrad.addColorStop(0.65, 'rgba(0, 0, 0, 0.65)');
-  bottomGrad.addColorStop(1, 'rgba(0, 0, 0, 1)'); // 100% transparent at bottom!
+  bottomGrad.addColorStop(0.3, 'rgba(0, 0, 0, 0.2)');
+  bottomGrad.addColorStop(0.65, 'rgba(0, 0, 0, 0.7)');
+  bottomGrad.addColorStop(1, 'rgba(0, 0, 0, 1)');
   outCtx.fillStyle = bottomGrad;
-  outCtx.fillRect(0, 500, destW, destH - 500);
+  outCtx.fillRect(0, 480, destW, destH - 480);
 
   outCtx.globalCompositeOperation = 'source-over';
 
@@ -301,7 +314,7 @@ async function processPortrait() {
 async function main() {
   await processSmoke();
   await processPortrait();
-  console.log('Done processing smoke and portrait!');
+  console.log('Done processing smoke and portrait with 4-edge smooth feathering!');
 }
 
 main().catch(console.error);
