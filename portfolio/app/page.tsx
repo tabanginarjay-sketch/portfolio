@@ -27,14 +27,17 @@ import {
   GraduationCap,
   Trophy,
   Calendar,
+  SlidersHorizontal,
 } from 'lucide-react';
 import SmokeAtmosphere from '../components/SmokeAtmosphere';
 import GeometricShapes from '../components/GeometricShapes';
+import BeforeAfterEditCard from '../components/BeforeAfterEditCard';
 
 export default function PortfolioPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'ALL' | 'WEB' | 'PWA' | 'UIUX'>('ALL');
+  const [activeEditCategory, setActiveEditCategory] = useState<string>('All');
   const [selectedCertificate, setSelectedCertificate] = useState<any | null>(null);
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
 
@@ -307,6 +310,93 @@ export default function PortfolioPage() {
     },
   ];
 
+  const editCategories = ['All', 'Sneaker Cleaning', 'Sneaker Restoration', 'Shoe Repair', 'Leather Care'];
+
+  const editSamples = [
+    {
+      id: 'edit-1',
+      title: 'Canvas Deep Clean & Mud Extraction',
+      subject: "Canvas Low-Top 'Natural Tan'",
+      category: 'Sneaker Cleaning',
+      beforeImage: '/images/edits/clean-before.jpg',
+      afterImage: '/images/edits/clean-after.jpg',
+      editNotes:
+        'Dried mud splatters and dark stains across the canvas upper, grimy laces, and soiled rubber sole restored to studio-fresh clarity with clean white foxing and bright highlights.',
+      techniques: ['Stain Cleanup', 'Color Balance', 'White Brightening'],
+    },
+    {
+      id: 'edit-2',
+      title: 'Complete Canvas Fiber Revival & Sole Brightening',
+      subject: "Heritage Canvas Low-Top 'Tonal Tan'",
+      category: 'Sneaker Restoration',
+      beforeImage: '/images/edits/restore-before.jpg',
+      afterImage: '/images/edits/restore-after.jpg',
+      editNotes:
+        'Deep ground-in dirt, heavy road soil splatters across the canvas weave, stained laces, and scuffed foxing revived to a crisp factory-clean finish.',
+      techniques: ['Texture Revival', 'Tone Matching', 'Edge Cleanup'],
+    },
+    {
+      id: 'edit-3',
+      title: 'Precision Outsole Delamination Rebonding',
+      subject: "Court Heritage High-Top 'Triple White'",
+      category: 'Shoe Repair',
+      beforeImage: '/images/edits/repair-before.jpg',
+      afterImage: '/images/edits/repair-after.jpg',
+      editNotes:
+        'Severe outsole separation along the forefoot and toe box with yellowed adhesive residue and scuffed leather seamlessly reconstructed and brightened.',
+      techniques: ['Structural Retouch', 'De-Yellowing', 'Surface Polish'],
+    },
+    {
+      id: 'edit-4',
+      title: 'Artisan Hand-Buffed Wax Polish & Scuff Buffing',
+      subject: 'Handcrafted Calfskin Leather Oxford Cap-Toes',
+      category: 'Leather Care',
+      beforeImage: '/images/edits/leather-before.jpg',
+      afterImage: '/images/edits/leather-after.jpg',
+      editNotes:
+        'Dry, parched calfskin leather with abrasive toe-cap scratches transformed with rich tonal conditioning, pigment blending, and specular mirror shine.',
+      techniques: ['Leather Retouch', 'Scuff Removal', 'Specular Gloss'],
+    },
+    {
+      id: 'edit-5',
+      title: 'Inner Heel Collar & Structural Stitching Re-lining',
+      subject: "Retro Court High-Top 'White & Grey'",
+      category: 'Shoe Repair',
+      beforeImage: '/images/edits/heel-repair-before.jpg',
+      afterImage: '/images/edits/heel-repair-after.jpg',
+      editNotes:
+        'Shredded inner heel collar fabric and exposed yellowed foam reconstructed with clean charcoal microfiber lining and crisp double-stitching detail.',
+      techniques: ['Fabric Reconstruction', 'Detail Cloning', 'Lighting Match'],
+    },
+    {
+      id: 'edit-6',
+      title: 'Intensive Outsole Grooving & Gravel De-Pebbling',
+      subject: 'All-Terrain Rubber Tread Trainer',
+      category: 'Sneaker Cleaning',
+      beforeImage: '/images/edits/sole-tread-before.jpg',
+      afterImage: '/images/edits/sole-tread-after.jpg',
+      editNotes:
+        'Heavily caked dried mud and gravel pebbles lodged across the rubber traction grooves cleanly removed while restoring natural gum-sole depth and sharpness.',
+      techniques: ['Macro Cleanup', 'Contrast Clarity', 'Color Restore'],
+    },
+    {
+      id: 'edit-7',
+      title: 'Express Sidewall Brightening & Scuff Reduction',
+      subject: 'Minimalist Low-Top Calfskin Court',
+      category: 'Sneaker Cleaning',
+      beforeImage: '/images/edits/essential-clean-before.jpg',
+      afterImage: '/images/edits/essential-clean-after.jpg',
+      editNotes:
+        'Daily street scuff streaks along the white rubber foxing and dusty leather upper cleaned into a crisp, e-commerce-ready commercial showcase shot.',
+      techniques: ['Product Retouch', 'Scuff Removal', 'Studio Grade'],
+    },
+  ];
+
+  const filteredEdits =
+    activeEditCategory === 'All'
+      ? editSamples
+      : editSamples.filter((e) => e.category === activeEditCategory);
+
   const filteredProjects =
     activeTab === 'ALL' ? projects : projects.filter((p) => p.category === activeTab);
 
@@ -373,6 +463,13 @@ export default function PortfolioPage() {
               className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
             >
               Featured Websites
+            </a>
+            <a
+              href="#edits"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
+            >
+              Photo Edit Samples
             </a>
             <a
               href="#experience"
@@ -726,9 +823,89 @@ export default function PortfolioPage() {
       </section>
 
       {/* ========================================================================= */}
+      {/* 3.2 PHOTO EDITING & BEFORE/AFTER RETOUCHING SAMPLES                       */}
+      {/* ========================================================================= */}
+      <section id="edits" className="relative z-20 py-24 border-t border-zinc-900 bg-black overflow-hidden">
+        {/* Subtle studio radial ambient */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-24 left-1/2 -translate-x-1/2 w-[720px] h-[340px] rounded-full bg-[#FF5A5F]/[0.04] blur-[140px]"
+        />
+
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
+          {/* Section Header */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div className="space-y-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+                Photo Editing &amp; Retouching Showcase
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+                Before &amp; After Edit Samples
+              </h2>
+              <p className="text-sm text-zinc-400 max-w-xl">
+                Interactive product retouching &amp; restoration comparisons from the{' '}
+                <strong className="text-zinc-200">Sole Surgeon Atelier</strong> archive. Watch the smooth
+                auto-sweep transition, drag the divider, or toggle <strong className="text-zinc-200">Before / After</strong>{' '}
+                to inspect every pixel.
+              </p>
+            </div>
+
+            {/* Category Filter Pills */}
+            <div className="flex flex-wrap lg:flex-nowrap items-center gap-1 p-1.5 rounded-2xl bg-zinc-900/90 border border-zinc-800 self-start lg:self-auto lg:shrink-0">
+              {editCategories.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setActiveEditCategory(cat)}
+                  className={`px-3 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
+                    activeEditCategory === cat
+                      ? 'bg-[#FF5A5F] text-white shadow-xs'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  {cat === 'All' ? `All (${editSamples.length})` : cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* All 7 Interactive Before & After Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+            {filteredEdits.map((sample, idx) => {
+              const isOddLastCard =
+                filteredEdits.length % 2 === 1 && idx === filteredEdits.length - 1;
+              return (
+                <div
+                  key={sample.id}
+                  className={
+                    isOddLastCard
+                      ? 'md:col-span-2 md:max-w-[calc(50%-0.875rem)] md:mx-auto md:w-full'
+                      : ''
+                  }
+                >
+                  <BeforeAfterEditCard
+                    title={sample.title}
+                    subject={sample.subject}
+                    category={sample.category}
+                    beforeImage={sample.beforeImage}
+                    afterImage={sample.afterImage}
+                    editNotes={sample.editNotes}
+                    techniques={sample.techniques}
+                    delayOffsetMs={(idx % 4) * 450}
+                    priority={idx < 2}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
       {/* 3.5 EXPERIENCE, EDUCATION & ACHIEVEMENTS SECTION                          */}
       {/* ========================================================================= */}
-      <section id="experience" className="relative z-20 py-24 border-t border-zinc-900 bg-black">
+      <section id="experience" className="relative z-20 py-24 border-t border-zinc-900 bg-[#050505]">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-14">
           {/* Section Header */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
@@ -907,7 +1084,7 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 4. CERTIFICATES & CREDENTIALS SECTION                                     */}
       {/* ========================================================================= */}
-      <section id="certificates" className="relative z-20 py-24 border-t border-zinc-900 bg-[#050505]">
+      <section id="certificates" className="relative z-20 py-24 border-t border-zinc-900 bg-black">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
           {/* Section Header */}
           <div className="space-y-2">
@@ -1000,7 +1177,7 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 5. SKILLS & TECHNICAL ARSENAL                                             */}
       {/* ========================================================================= */}
-      <section id="skills" className="relative z-20 py-24 border-t border-zinc-900 bg-black">
+      <section id="skills" className="relative z-20 py-24 border-t border-zinc-900 bg-[#050505]">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F]">
