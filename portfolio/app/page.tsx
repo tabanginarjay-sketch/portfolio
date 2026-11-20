@@ -72,6 +72,7 @@ export default function PortfolioPage() {
       try {
         localStorage.setItem('arjay-portfolio-theme', nextTheme);
       } catch {}
+      document.documentElement.classList.add('theme-transitioning');
       if (nextTheme === 'light') {
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
@@ -79,6 +80,9 @@ export default function PortfolioPage() {
         document.documentElement.classList.remove('light');
         document.documentElement.classList.add('dark');
       }
+      window.setTimeout(() => {
+        document.documentElement.classList.remove('theme-transitioning');
+      }, 480);
       return nextTheme;
     });
   }, []);

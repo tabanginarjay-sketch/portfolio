@@ -459,11 +459,12 @@ body {
   animation: certSpotlightIn 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Scroll-triggered reveals (no specificity clash with hover transforms after reveal!) */
+/* Scroll-triggered reveals (snappy 0.44s with hardware acceleration) */
 .js-reveal-active [data-reveal]:not([data-reveal-done="true"]) {
   transition:
-    opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
-    transform 0.72s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+    opacity 0.44s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 0.44s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms);
+  will-change: transform, opacity;
 }
 
 .js-reveal-active [data-reveal]:not([data-revealed="true"]) {
@@ -533,33 +534,33 @@ body {
 }
 
 /* ========================================================================= */
-/* SILKY SMOOTH THEME TRANSITION SYSTEM (450ms fluid color morphing)         */
+/* SCOPED THEME TRANSITION (Active ONLY during 450ms theme switch, 0 lag on scroll!) */
 /* ========================================================================= */
-html,
-body,
-header,
-section,
-footer,
-nav,
-main,
-div:not([class*="anim-"]):not(.smoke-canvas):not([class*="smoke-"]):not([style*="clip-path"]),
-span:not([class*="anim-"]),
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-a,
-button,
-input,
-textarea,
-select,
-svg {
-  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
-  transition-duration: 450ms;
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+html.theme-transitioning,
+html.theme-transitioning body,
+html.theme-transitioning header,
+html.theme-transitioning section,
+html.theme-transitioning footer,
+html.theme-transitioning nav,
+html.theme-transitioning main,
+html.theme-transitioning div:not([class*="anim-"]):not(.smoke-canvas):not([class*="smoke-"]):not([style*="clip-path"]),
+html.theme-transitioning span:not([class*="anim-"]),
+html.theme-transitioning h1,
+html.theme-transitioning h2,
+html.theme-transitioning h3,
+html.theme-transitioning h4,
+html.theme-transitioning h5,
+html.theme-transitioning h6,
+html.theme-transitioning p,
+html.theme-transitioning a,
+html.theme-transitioning button,
+html.theme-transitioning input,
+html.theme-transitioning textarea,
+html.theme-transitioning select,
+html.theme-transitioning svg {
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow !important;
+  transition-duration: 450ms !important;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 /* ========================================================================= */
@@ -778,16 +779,16 @@ html.light .bg-zinc-950\/95,
   background-color: #ffffff !important;
 }
 
-/* Smoke Atmosphere in Light Mode */
+/* Smoke Atmosphere in Light Mode (Rich, distinct graphite tendrils with vibrant neon tint) */
 html.light .smoke-canvas,
 .light-theme .smoke-canvas {
-  filter: invert(0.9) contrast(1.1) opacity(0.32);
+  filter: invert(1) contrast(1.45) brightness(0.85) opacity(0.92);
   mix-blend-mode: multiply;
 }
 
 html.light .smoke-tint,
 .light-theme .smoke-tint {
-  opacity: 0.12;
+  opacity: 0.45;
   mix-blend-mode: multiply;
 }
 
