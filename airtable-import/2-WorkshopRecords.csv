@@ -1,0 +1,6 @@
+recordId,customerName,customerPhone,shoeModel,serviceType,status,priority,price,dateReceived,notes
+"SS-1001","Marcus Vance","+1 (555) 234-5678","Air Jordan 1 Retro High 'Chicago'","Sole Reglue & Restoration","In Progress","Rush",140,"2026-11-10","Midsole separated on right toe box; requires heat rebonding."
+"SS-1002","Elena Rostova","+1 (555) 876-5432","Nike Dunk Low 'Panda'","Deep Clean & Deodorize","Completed","Standard",65,"2026-11-08","Heavy mud stains removed and interior sanitized."
+"SS-1003","Jordan Hayes","+1 (555) 345-6789","Yeezy Boost 350 V2 'Zebra'","Sole Whitening / Un-yellowing","Quality Check","Standard",95,"2026-11-11","Oxidized yellow soles treated with 3 sessions UV de-yellowing."
+"SS-1004","Sophia Chen","+1 (555) 456-7890","New Balance 990v5 'Grey'","Heel & Insole Replacement","Received","Standard",80,"2026-11-14","Worn heel collar fabric and collapsed EVA insole replacement."
+"SS-1005","Devon Miller","+1 (555) 567-8901","Air Jordan 4 'Bred'","Custom Colorway / Repaint","In Progress","Rush",185,"2026-11-12","Chipped midsole repainted and sealed with matte acrylic finisher."

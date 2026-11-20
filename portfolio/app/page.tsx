@@ -441,7 +441,7 @@ export default function PortfolioPage() {
   // Anti-Screenshot & Screen-Capture Blackout Shield (certificates stay visible normally, black out immediately on capture triggers)
   useEffect(() => {
     const isProtectingCerts = () =>
-      Boolean(selectedCertificate || hoveredCert || isCertInViewRef.current);
+      Boolean(selectedCertificate || hoveredCert);
 
     const triggerCaptureShield = (durationMs = 2800) => {
       setHoveredCert(null);
@@ -813,9 +813,9 @@ export default function PortfolioPage() {
             className="group flex items-center"
             aria-label="Ar-jay Home"
           >
-            <span className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-zinc-950 border border-white/15 group-hover:border-[#FF5A5F]/60 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(255,90,95,0.12)] group-hover:shadow-[0_0_24px_rgba(255,90,95,0.3)] transition-all duration-300">
+            <span className="header-logo-badge relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-zinc-950 border border-white/15 group-hover:border-[#FF5A5F]/60 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(255,90,95,0.12)] group-hover:shadow-[0_0_24px_rgba(255,90,95,0.3)] transition-all duration-300">
               <Image
-                src="/images/arjay-logo.png"
+                src={theme === 'light' ? '/images/arjay-logo-dark.png' : '/images/arjay-logo.png'}
                 alt="Ar-jay AJ Monogram Logo"
                 width={36}
                 height={36}
@@ -903,8 +903,15 @@ export default function PortfolioPage() {
           {/* Drawer Header: Monogram + Close Button */}
           <div className="flex items-center justify-between pb-5 border-b border-zinc-900">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center font-bold text-xs tracking-wider text-white">
-                AJ
+              <div className="drawer-logo-badge w-8 h-8 rounded-xl bg-zinc-900 border border-white/20 flex items-center justify-center p-1 overflow-hidden font-bold text-xs tracking-wider text-white">
+                <Image
+                  src={theme === 'light' ? '/images/arjay-logo-dark.png' : '/images/arjay-logo.png'}
+                  alt="Ar-jay Monogram"
+                  width={24}
+                  height={24}
+                  unoptimized
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div>
                 <span className="text-xs font-bold text-white block">Ar-jay Tabangin</span>
@@ -1139,10 +1146,10 @@ export default function PortfolioPage() {
               {/* True transparent portrait PNG — right-aligned beside Heading on mobile, centered on md+ */}
               <div
                 style={{ '--delay': '110ms' } as React.CSSProperties}
-                className="hero-anim-portrait relative w-[152px] min-[390px]:w-[168px] sm:w-[230px] md:w-[235px] lg:w-[320px] xl:w-[415px] aspect-[482/744] max-h-[245px] min-[390px]:max-h-[270px] sm:max-h-[360px] md:max-h-[365px] lg:max-h-[505px] xl:max-h-[630px] -mr-2 sm:mr-0 -mb-6 sm:-mb-8 md:my-0 select-none shrink-0"
+                className="hero-anim-portrait hero-portrait-container relative w-[152px] min-[390px]:w-[168px] sm:w-[230px] md:w-[235px] lg:w-[320px] xl:w-[415px] aspect-[482/744] max-h-[245px] min-[390px]:max-h-[270px] sm:max-h-[360px] md:max-h-[365px] lg:max-h-[505px] xl:max-h-[630px] -mr-2 sm:mr-0 -mb-6 sm:-mb-8 md:my-0 select-none shrink-0"
               >
                 <Image
-                  src="/images/arjay-portrait-hero.png?v=6"
+                  src={theme === 'light' ? '/images/arjay-portrait-hero-light.png' : '/images/arjay-portrait-hero.png?v=6'}
                   alt="Ar-jay Tabangin - Developer & UI/UX Designer"
                   fill
                   priority
@@ -1422,7 +1429,7 @@ export default function PortfolioPage() {
                 <div
                   data-reveal="zoom"
                   style={{ '--reveal-delay': '80ms' } as React.CSSProperties}
-                  className="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-zinc-950 via-zinc-950 to-amber-950/15 border border-amber-500/20 space-y-4 shadow-xl"
+                  className="achievements-card p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-zinc-950 via-zinc-950 to-amber-950/15 border border-amber-500/20 space-y-4 shadow-xl"
                 >
                   {achievements.map((ach, idx) => (
                     <div
@@ -1519,7 +1526,7 @@ export default function PortfolioPage() {
             {isCertShielded && (
               <div
                 role="alert"
-                className="absolute inset-0 z-30 rounded-3xl bg-black border border-[#FF5A5F]/40 flex flex-col items-center justify-center p-6 text-center space-y-3"
+                className="cert-privacy-shield absolute inset-0 z-30 rounded-3xl bg-zinc-950/95 border border-[#FF5A5F]/50 shadow-2xl backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center space-y-3"
               >
                 <div className="w-12 h-12 rounded-2xl bg-rose-500/15 border border-rose-500/35 flex items-center justify-center text-[#FF5A5F]">
                   <Lock className="w-6 h-6" />
@@ -1761,7 +1768,7 @@ export default function PortfolioPage() {
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-zinc-950/80 via-zinc-950/20 to-transparent pointer-events-none" />
+                  <div className="project-thumb-gradient absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-zinc-950/80 via-zinc-950/20 to-transparent pointer-events-none" />
                   <div className="absolute top-4 left-4">
                     <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-black/90 text-emerald-400 border border-emerald-500/30 backdrop-blur-xs">
                       {project.status}
@@ -2077,9 +2084,9 @@ export default function PortfolioPage() {
         >
           <div className="space-y-1">
             <div className="flex items-center justify-center sm:justify-start gap-2.5 text-lg font-bold text-white">
-              <span className="w-8 h-8 rounded-lg bg-zinc-950 border border-white/15 flex items-center justify-center p-1">
+              <span className="footer-logo-badge w-8 h-8 rounded-lg bg-zinc-950 border border-white/15 flex items-center justify-center p-1">
                 <Image
-                  src="/images/arjay-logo.png"
+                  src={theme === 'light' ? '/images/arjay-logo-dark.png' : '/images/arjay-logo.png'}
                   alt="Ar-jay AJ Monogram Logo"
                   width={24}
                   height={24}

@@ -255,7 +255,7 @@ export default function BeforeAfterEditCard({
         </div>
 
         {/* Animated Sliding Toggle Pill: BEFORE <-> AFTER */}
-        <div className="absolute top-2.5 sm:top-3.5 left-2.5 sm:left-3.5 z-20 flex items-center p-0.5 sm:p-1 rounded-full bg-black/85 border border-white/20 shadow-md select-none">
+        <div className="before-after-pill absolute top-2.5 sm:top-3.5 left-2.5 sm:left-3.5 z-20 flex items-center p-0.5 sm:p-1 rounded-full bg-black/85 border border-white/20 shadow-md select-none">
           <div className="relative flex items-center">
             <div
               className={`absolute top-0 bottom-0 left-0 w-13 sm:w-16 rounded-full bg-white shadow-xs transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] pointer-events-none ${

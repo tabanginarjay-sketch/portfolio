@@ -1,0 +1,3 @@
+requestId,name,contact,topic,message,source,status,createdAt,transcriptJson
+"SS-HELP-1001","Marcus Vance","marcus.vance@example.com","Custom Quote / Restoration Evaluation","Hi, I have a pair of vintage Jordan 1s with crumbling midsoles. Can I send photos for a full sole swap quote?","Chatbot Handoff","Open","2026-11-15T10:30:00Z","[""User: How much is sole regluing?"",""SoleBot: Sole Regluing & Reconstruction starts at $120 (4–6 Business Days)."",""User: Clicked Chat with live agent""]"
+"SS-HELP-1002","Elena Rostova","elena.r@example.com","Existing Booking Status (SS-REQ-...)","Checking if my courier tracking number has been generated for SS-REQ-1002.","Contact Ticket","Resolved","2026-11-14T15:45:00Z","[]"

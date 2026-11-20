@@ -533,6 +533,36 @@ body {
 }
 
 /* ========================================================================= */
+/* SILKY SMOOTH THEME TRANSITION SYSTEM (450ms fluid color morphing)         */
+/* ========================================================================= */
+html,
+body,
+header,
+section,
+footer,
+nav,
+main,
+div:not([class*="anim-"]):not(.smoke-canvas):not([class*="smoke-"]):not([style*="clip-path"]),
+span:not([class*="anim-"]),
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+button,
+input,
+textarea,
+select,
+svg {
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+  transition-duration: 450ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ========================================================================= */
 /* LIGHT MODE THEME SYSTEM (Editorial High-Contrast Clean Luxury Look)       */
 /* ========================================================================= */
 html.light,
@@ -825,4 +855,98 @@ html.light .back-to-top-btn:hover,
 html.light .back-to-top-btn circle.stroke-white\/10,
 .light-theme .back-to-top-btn circle.stroke-white\/10 {
   stroke: rgba(15, 23, 42, 0.12) !important;
+}
+
+/* ========================================================================= */
+/* POLISHED COMPONENT FIXES FOR LIGHT MODE                                   */
+/* ========================================================================= */
+
+/* 1. Logo Badges (Header, Drawer & Footer) */
+html.light .header-logo-badge,
+.light-theme .header-logo-badge,
+html.light .footer-logo-badge,
+.light-theme .footer-logo-badge,
+html.light .drawer-logo-badge,
+.light-theme .drawer-logo-badge {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* 2. Hero Portrait Container & Bottom Blend */
+.hero-portrait-container {
+  position: relative;
+  overflow: hidden;
+}
+.hero-portrait-container::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 60px;
+  background: linear-gradient(to top, #000000 12%, rgba(0, 0, 0, 0.7) 45%, transparent 100%);
+  pointer-events: none;
+  z-index: 25;
+}
+html.light .hero-portrait-container::after,
+.light-theme .hero-portrait-container::after {
+  background: linear-gradient(to top, #f8fafc 20%, rgba(248, 250, 252, 0.8) 60%, transparent 100%) !important;
+}
+
+/* 3. Achievements & Awards Card in Light Mode */
+html.light .achievements-card,
+.light-theme .achievements-card {
+  background: #ffffff !important;
+  background-image: linear-gradient(to bottom, #ffffff 0%, #fffdf8 100%) !important;
+  border-color: #fde68a !important;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 0 15px rgba(245, 158, 11, 0.08) !important;
+}
+html.light .achievements-card h4,
+.light-theme .achievements-card h4 {
+  color: #0f172a !important;
+}
+html.light .achievements-card p,
+.light-theme .achievements-card p {
+  color: #475569 !important;
+}
+html.light .achievements-card span[class*="text-amber-300"],
+.light-theme .achievements-card span[class*="text-amber-300"] {
+  color: #b45309 !important;
+  background-color: #fef3c7 !important;
+  border-color: #fde68a !important;
+}
+
+/* 4. Project Thumbnails Bottom Blend in Light Mode */
+html.light .project-thumb-gradient,
+.light-theme .project-thumb-gradient {
+  background-image: linear-gradient(to top, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.35) 50%, transparent 100%) !important;
+}
+
+/* 5. Certificate Privacy Shield Overlay (High-End Frosted Security Alert) */
+.cert-privacy-shield {
+  background-color: rgba(9, 9, 11, 0.96) !important;
+  border-color: rgba(255, 90, 95, 0.5) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+.cert-privacy-shield h3 {
+  color: #ffffff !important;
+}
+.cert-privacy-shield p {
+  color: #cbd5e1 !important;
+}
+.cert-privacy-shield button {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border-color: #475569 !important;
+}
+.cert-privacy-shield button:hover {
+  background-color: #334155 !important;
+}
+
+/* 6. Before / After Floating Toggle Pill */
+html.light .before-after-pill,
+.light-theme .before-after-pill {
+  background-color: rgba(0, 0, 0, 0.88) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
 }
