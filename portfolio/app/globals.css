@@ -27,73 +27,96 @@ body {
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: #09090b;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #27272a;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;
 }
 
 /* Pure GPU-composited animations for Hero GeometricShapes (transform & opacity only — zero repaint!) */
 @keyframes floatCyanRing {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate3d(0px, 0px, 0px) rotate(0deg) scale(1);
   }
+
   20% {
     transform: translate3d(-16px, 10px, 0px) rotate(-8deg) scale(1.04);
   }
+
   45% {
     transform: translate3d(14px, -12px, 0px) rotate(6deg) scale(0.96);
   }
+
   70% {
     transform: translate3d(-10px, -14px, 0px) rotate(-5deg) scale(1.02);
   }
+
   88% {
     transform: translate3d(10px, 6px, 0px) rotate(4deg) scale(0.98);
   }
 }
 
 @keyframes floatCoralRing {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate3d(0px, 0px, 0px) scale(1) rotate(0deg);
   }
+
   25% {
     transform: translate3d(18px, -14px, 0px) scale(1.12) rotate(14deg);
   }
+
   50% {
     transform: translate3d(-14px, 14px, 0px) scale(0.9) rotate(-10deg);
   }
+
   75% {
     transform: translate3d(12px, 8px, 0px) scale(1.06) rotate(8deg);
   }
 }
 
 @keyframes floatCyanDot {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate3d(0px, 0px, 0px) scale(1);
   }
+
   18% {
     transform: translate3d(-20px, -18px, 0px) scale(1.22);
   }
+
   42% {
     transform: translate3d(18px, -12px, 0px) scale(0.86);
   }
+
   65% {
     transform: translate3d(-12px, 18px, 0px) scale(1.16);
   }
+
   82% {
     transform: translate3d(16px, 10px, 0px) scale(0.92);
   }
 }
 
 @keyframes softGlowPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.72;
   }
+
   50% {
     opacity: 1;
   }
@@ -126,6 +149,7 @@ body {
   --orbit-coral-r: 72px;
   --orbit-dot-r: 106px;
 }
+
 @media (min-width: 640px) {
   :root {
     --orbit-cyan-r: 120px;
@@ -133,6 +157,7 @@ body {
     --orbit-dot-r: 138px;
   }
 }
+
 @media (min-width: 768px) {
   :root {
     --orbit-cyan-r: 145px;
@@ -140,6 +165,7 @@ body {
     --orbit-dot-r: 168px;
   }
 }
+
 @media (min-width: 1024px) {
   :root {
     --orbit-cyan-r: 165px;
@@ -147,6 +173,7 @@ body {
     --orbit-dot-r: 188px;
   }
 }
+
 @media (min-width: 1280px) {
   :root {
     --orbit-cyan-r: 205px;
@@ -161,16 +188,20 @@ body {
     transform: rotate(0deg) translateX(var(--orbit-cyan-r)) rotate(0deg);
     z-index: 30;
   }
+
   49.9% {
     z-index: 30;
   }
+
   50% {
     transform: rotate(180deg) translateX(var(--orbit-cyan-r)) rotate(-180deg);
     z-index: 10;
   }
+
   99.9% {
     z-index: 10;
   }
+
   100% {
     transform: rotate(360deg) translateX(var(--orbit-cyan-r)) rotate(-360deg);
     z-index: 30;
@@ -183,16 +214,20 @@ body {
     transform: rotate(180deg) translateX(var(--orbit-coral-r)) rotate(-180deg);
     z-index: 30;
   }
+
   49.9% {
     z-index: 30;
   }
+
   50% {
     transform: rotate(360deg) translateX(var(--orbit-coral-r)) rotate(-360deg);
     z-index: 10;
   }
+
   99.9% {
     z-index: 10;
   }
+
   100% {
     transform: rotate(540deg) translateX(var(--orbit-coral-r)) rotate(-540deg);
     z-index: 30;
@@ -205,16 +240,20 @@ body {
     transform: rotate(90deg) translateX(var(--orbit-dot-r)) rotate(-90deg);
     z-index: 30;
   }
+
   49.9% {
     z-index: 30;
   }
+
   50% {
     transform: rotate(270deg) translateX(var(--orbit-dot-r)) rotate(-270deg);
     z-index: 10;
   }
+
   99.9% {
     z-index: 10;
   }
+
   100% {
     transform: rotate(450deg) translateX(var(--orbit-dot-r)) rotate(-450deg);
     z-index: 30;
@@ -238,33 +277,44 @@ body {
 
 /* Playful Floating Bobbing Animations when in Display Margin Mode */
 @keyframes playfulBob1 {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate3d(0, 0, 0) rotate(0deg);
   }
+
   33% {
     transform: translate3d(6px, -12px, 0) rotate(8deg);
   }
+
   66% {
     transform: translate3d(-5px, 8px, 0) rotate(-6deg);
   }
 }
 
 @keyframes playfulBob2 {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate3d(0, 0, 0) rotate(0deg);
   }
+
   33% {
     transform: translate3d(-8px, 10px, 0) rotate(-10deg);
   }
+
   66% {
     transform: translate3d(7px, -8px, 0) rotate(7deg);
   }
 }
 
 @keyframes playfulBob3 {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate3d(0, 0, 0) scale(1);
   }
+
   50% {
     transform: translate3d(5px, -10px, 0) scale(1.15);
   }
@@ -290,6 +340,7 @@ body {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -300,6 +351,7 @@ body {
     opacity: 0;
     transform: scale(0.94) translate3d(0, 10px, 0);
   }
+
   100% {
     opacity: 1;
     transform: scale(1) translate3d(0, 0, 0);
@@ -319,6 +371,7 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -331,6 +384,7 @@ body {
     opacity: 0;
     transform: translate3d(0, -14px, 0);
   }
+
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
@@ -342,6 +396,7 @@ body {
     opacity: 0;
     transform: translate3d(0, 26px, 0);
   }
+
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
@@ -353,6 +408,7 @@ body {
     opacity: 0;
     transform: translate3d(0, 22px, 0) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
@@ -364,6 +420,7 @@ body {
     opacity: 0;
     transform: translate3d(24px, 0, 0);
   }
+
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
@@ -375,6 +432,7 @@ body {
     opacity: 0;
     transform: translate3d(0, 14px, 0) scale(0.96);
   }
+
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
@@ -426,6 +484,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .hero-anim-down,
   .hero-anim-up,
   .hero-anim-portrait,
@@ -433,6 +492,7 @@ body {
   .cert-spotlight-enter {
     animation: none !important;
   }
+
   .js-reveal-active [data-reveal]:not([data-revealed="true"]) {
     opacity: 1 !important;
     transform: none !important;
@@ -457,6 +517,7 @@ body {
     visibility: hidden !important;
     opacity: 0 !important;
   }
+
   .cert-print-notice {
     display: flex !important;
     align-items: center;
@@ -495,10 +556,12 @@ html.light ::-webkit-scrollbar-track,
 .light-theme ::-webkit-scrollbar-track {
   background: #f1f5f9;
 }
+
 html.light ::-webkit-scrollbar-thumb,
 .light-theme ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
 }
+
 html.light ::-webkit-scrollbar-thumb:hover,
 .light-theme ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
@@ -661,6 +724,7 @@ html.light select,
   color: #0f172a !important;
   border-color: #cbd5e1 !important;
 }
+
 html.light input::placeholder,
 html.light textarea::placeholder,
 .light-theme input::placeholder,
@@ -690,23 +754,28 @@ html.light .smoke-canvas,
   filter: invert(0.9) contrast(1.1) opacity(0.32);
   mix-blend-mode: multiply;
 }
+
 html.light .smoke-tint,
 .light-theme .smoke-tint {
   opacity: 0.12;
   mix-blend-mode: multiply;
 }
+
 html.light .smoke-vignette-top,
 .light-theme .smoke-vignette-top {
   background: linear-gradient(to bottom, #f8fafc, transparent) !important;
 }
+
 html.light .smoke-vignette-bottom,
 .light-theme .smoke-vignette-bottom {
   background: linear-gradient(to top, #f8fafc, rgba(248, 250, 252, 0.7), transparent) !important;
 }
+
 html.light .smoke-vignette-left,
 .light-theme .smoke-vignette-left {
   background: linear-gradient(to right, #f8fafc, transparent) !important;
 }
+
 html.light .smoke-vignette-right,
 .light-theme .smoke-vignette-right {
   background: linear-gradient(to left, #f8fafc, transparent) !important;
@@ -717,6 +786,7 @@ html.light .bg-gradient-to-t.from-black,
 .light-theme .bg-gradient-to-t.from-black {
   background-image: linear-gradient(to top, #f8fafc, transparent) !important;
 }
+
 html.light .bg-gradient-to-b.from-black,
 .light-theme .bg-gradient-to-b.from-black {
   background-image: linear-gradient(to bottom, #f8fafc, transparent) !important;
@@ -727,10 +797,32 @@ html.light .text-emerald-400,
 .light-theme .text-emerald-400 {
   color: #059669 !important;
 }
+
 html.light .bg-emerald-500\/10,
 html.light .bg-emerald-500\/15,
 .light-theme .bg-emerald-500\/10,
 .light-theme .bg-emerald-500\/15 {
   background-color: rgba(16, 185, 129, 0.12) !important;
   border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Back to Top Button in Light Mode */
+html.light .back-to-top-btn,
+.light-theme .back-to-top-btn {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 25px -3px rgba(15, 23, 42, 0.12), 0 4px 6px -2px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light .back-to-top-btn:hover,
+.light-theme .back-to-top-btn:hover {
+  border-color: #FF5A5F !important;
+  color: #FF5A5F !important;
+  box-shadow: 0 12px 30px -3px rgba(255, 90, 95, 0.25) !important;
+}
+
+html.light .back-to-top-btn circle.stroke-white\/10,
+.light-theme .back-to-top-btn circle.stroke-white\/10 {
+  stroke: rgba(15, 23, 42, 0.12) !important;
 }

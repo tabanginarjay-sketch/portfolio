@@ -38,6 +38,7 @@ import {
 import SmokeAtmosphere from '../components/SmokeAtmosphere';
 import GeometricShapes from '../components/GeometricShapes';
 import BeforeAfterEditCard from '../components/BeforeAfterEditCard';
+import BackToTop from '../components/BackToTop';
 
 export default function PortfolioPage() {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
@@ -2641,6 +2642,9 @@ export default function PortfolioPage() {
           </div>
         </div>
       )}
+
+      {/* Floating Circular Back-to-Top Button with Scroll Progress Ring */}
+      <BackToTop />
     </div>
   );
 }
