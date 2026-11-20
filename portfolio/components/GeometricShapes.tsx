@@ -10,6 +10,7 @@ interface GeometricShapesProps {
 
 export default function GeometricShapes({ children, className = '' }: GeometricShapesProps) {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isFastScrolled, setIsFastScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -22,8 +23,11 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          // Trigger transition as soon as user scrolls past top header (~55px)
-          setIsScrolled(window.scrollY > 55);
+          const y = window.scrollY;
+          // Trigger breakaway immediately as soon as user scrolls past header (~40px)
+          setIsScrolled(y > 40);
+          // If user scrolled deeply past hero (> 240px), skip transition lag
+          setIsFastScrolled(y > 240);
           ticking = false;
         });
         ticking = true;
@@ -43,20 +47,20 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
   // When wrapping Ar-jay's portrait:
   if (children) {
     // Starting coordinates corresponding to Ar-jay's portrait position
-    const startLeft = isMobile ? '74%' : '50%';
-    const startTop = isMobile ? '26%' : '44%';
+    const startLeft = isMobile ? '72%' : '50%';
+    const startTop = isMobile ? '24%' : '44%';
 
     return (
       <div className={`relative flex items-center justify-center select-none ${className}`}>
         {/* 1. Hero 3D Continuous Orbital Halo System (Shapes pass in FRONT at z-30 across suit and BEHIND at z-10) */}
         <div className="absolute top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 pointer-events-none">
-          {/* A. Hero Cyan Glowing Ring — Staggered peel-off at delay 0ms */}
+          {/* A. Hero Cyan Glowing Ring — Rapid 220ms breakaway dissolve */}
           <div
-            className={`absolute w-0 h-0 anim-orbit-cyan pointer-events-none transition-all duration-500 ease-out ${
-              isScrolled ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'
+            className={`absolute w-0 h-0 anim-orbit-cyan pointer-events-none transition-all duration-220 ease-out ${
+              isScrolled ? 'opacity-0 scale-115 pointer-events-none' : 'opacity-100 scale-100'
             }`}
             style={{
-              transitionDelay: isScrolled ? '0ms' : '280ms',
+              transitionDelay: isScrolled ? '0ms' : '80ms',
             }}
           >
             <div
@@ -70,13 +74,13 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
             </div>
           </div>
 
-          {/* B. Hero Coral Glowing Ring — Staggered peel-off at delay 180ms */}
+          {/* B. Hero Coral Glowing Ring — Rapid breakaway dissolve at 50ms delay */}
           <div
-            className={`absolute w-0 h-0 anim-orbit-coral pointer-events-none transition-all duration-500 ease-out ${
-              isScrolled ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'
+            className={`absolute w-0 h-0 anim-orbit-coral pointer-events-none transition-all duration-220 ease-out ${
+              isScrolled ? 'opacity-0 scale-115 pointer-events-none' : 'opacity-100 scale-100'
             }`}
             style={{
-              transitionDelay: isScrolled ? '180ms' : '140ms',
+              transitionDelay: isScrolled ? '50ms' : '40ms',
             }}
           >
             <div
@@ -90,13 +94,13 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
             </div>
           </div>
 
-          {/* C. Hero Solid Vibrant Cyan Dot — Staggered peel-off at delay 360ms */}
+          {/* C. Hero Solid Vibrant Cyan Dot — Rapid breakaway dissolve at 100ms delay */}
           <div
-            className={`absolute w-0 h-0 anim-orbit-dot pointer-events-none transition-all duration-500 ease-out ${
-              isScrolled ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'
+            className={`absolute w-0 h-0 anim-orbit-dot pointer-events-none transition-all duration-220 ease-out ${
+              isScrolled ? 'opacity-0 scale-115 pointer-events-none' : 'opacity-100 scale-100'
             }`}
             style={{
-              transitionDelay: isScrolled ? '360ms' : '0ms',
+              transitionDelay: isScrolled ? '100ms' : '0ms',
             }}
           >
             <div
@@ -124,9 +128,12 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
             >
               {/* Ball 1: Perfect Cyan Circular Ring — Leaves first (0ms delay) to Left Margin */}
               <div
-                className="absolute transition-all duration-900 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto cursor-pointer group"
+                className="absolute pointer-events-auto cursor-pointer group"
                 style={{
-                  transitionDelay: isScrolled ? '0ms' : '280ms',
+                  transition: isFastScrolled
+                    ? 'opacity 180ms ease-out'
+                    : 'all 320ms cubic-bezier(0.16, 1, 0.3, 1)',
+                  transitionDelay: isScrolled ? '0ms' : '80ms',
                   ...(isScrolled
                     ? {
                         left: isMobile ? '12px' : 'clamp(16px, 3.5vw, 48px)',
@@ -137,7 +144,7 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
                     : {
                         left: startLeft,
                         top: startTop,
-                        transform: 'translate(-50%, -50%) scale(0.3)',
+                        transform: 'translate(-50%, -50%) scale(0.6)',
                         opacity: 0,
                         pointerEvents: 'none',
                       }),
@@ -157,11 +164,14 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
                 </div>
               </div>
 
-              {/* Ball 2: Perfect Coral Circular Ring — Leaves second (180ms delay) to Right Margin */}
+              {/* Ball 2: Perfect Coral Circular Ring — Leaves second (50ms delay) to Right Margin */}
               <div
-                className="absolute transition-all duration-900 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto cursor-pointer group"
+                className="absolute pointer-events-auto cursor-pointer group"
                 style={{
-                  transitionDelay: isScrolled ? '180ms' : '140ms',
+                  transition: isFastScrolled
+                    ? 'opacity 180ms ease-out'
+                    : 'all 320ms cubic-bezier(0.16, 1, 0.3, 1)',
+                  transitionDelay: isScrolled ? '50ms' : '40ms',
                   ...(isScrolled
                     ? {
                         right: isMobile ? '12px' : 'clamp(16px, 3.5vw, 48px)',
@@ -170,9 +180,9 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
                         opacity: 0.95,
                       }
                     : {
-                        right: isMobile ? 'calc(100% - 74%)' : '50%',
+                        right: isMobile ? 'calc(100% - 72%)' : '50%',
                         top: startTop,
-                        transform: 'translate(50%, -50%) scale(0.3)',
+                        transform: 'translate(50%, -50%) scale(0.6)',
                         opacity: 0,
                         pointerEvents: 'none',
                       }),
@@ -192,22 +202,25 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
                 </div>
               </div>
 
-              {/* Ball 3: Perfect Cyan Circular Dot — Leaves third (360ms delay) to Upper-Right Margin */}
+              {/* Ball 3: Perfect Cyan Circular Dot — Leaves third (100ms delay) to Upper-Right Margin */}
               <div
-                className="absolute transition-all duration-900 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto cursor-pointer group"
+                className="absolute pointer-events-auto cursor-pointer group"
                 style={{
-                  transitionDelay: isScrolled ? '360ms' : '0ms',
+                  transition: isFastScrolled
+                    ? 'opacity 180ms ease-out'
+                    : 'all 320ms cubic-bezier(0.16, 1, 0.3, 1)',
+                  transitionDelay: isScrolled ? '100ms' : '0ms',
                   ...(isScrolled
                     ? {
                         right: isMobile ? '14px' : 'clamp(20px, 4.5vw, 64px)',
-                        top: isMobile ? '20%' : '20%',
+                        top: isMobile ? '18%' : '20%',
                         transform: 'translate(0, -50%) scale(1)',
                         opacity: 1,
                       }
                     : {
-                        right: isMobile ? 'calc(100% - 74%)' : '50%',
+                        right: isMobile ? 'calc(100% - 72%)' : '50%',
                         top: startTop,
-                        transform: 'translate(50%, -50%) scale(0.3)',
+                        transform: 'translate(50%, -50%) scale(0.6)',
                         opacity: 0,
                         pointerEvents: 'none',
                       }),
