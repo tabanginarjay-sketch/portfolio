@@ -42,19 +42,20 @@ export default function SmokeAtmosphere() {
       clearX = width * 0.5;
       clearY = isMobile ? Math.min(height * 0.16, 175 * SCALE) : height * 0.34;
       clearRadius = isMobile
-        ? Math.min(width * 0.48, 200 * SCALE)
-        : Math.min(width * 0.3, 340 * SCALE);
+        ? Math.min(width * 0.45, 180 * SCALE)
+        : Math.min(width * 0.28, 300 * SCALE);
 
+      // Very gentle, subtle attenuation so smoke continuously wraps around portrait with zero harsh voids
       clearGrad = ctx.createRadialGradient(
         clearX,
         clearY,
-        clearRadius * 0.12,
+        clearRadius * 0.1,
         clearX,
         clearY,
         clearRadius
       );
-      clearGrad.addColorStop(0, 'rgba(0, 0, 0, 0.68)');
-      clearGrad.addColorStop(0.55, 'rgba(0, 0, 0, 0.35)');
+      clearGrad.addColorStop(0, 'rgba(0, 0, 0, 0.25)');
+      clearGrad.addColorStop(0.6, 'rgba(0, 0, 0, 0.10)');
       clearGrad.addColorStop(1, 'rgba(0, 0, 0, 0.0)');
     };
 
@@ -94,58 +95,138 @@ export default function SmokeAtmosphere() {
     img2.src = '/images/smoke-tendril-2.png';
     const images = [img1, img2];
 
+    // 10 staggered, multi-layered ribbons distributed across the entire canvas
+    // Perfectly continuous: Zero blank intervals, zero disappearing phases, continuous silky flow
     const ribbons: SmokeRibbon[] = [
       {
         imgIndex: 0,
-        x: width * 0.12,
-        y: height * 0.45,
-        vx: 0.14,
-        width: 525,
-        height: 300,
-        alpha: 0.18,
+        x: width * 0.05,
+        y: height * 0.35,
+        vx: 0.18,
+        width: 580,
+        height: 320,
+        alpha: 0.22,
         waveSpeed: 0.007,
-        waveAmp: 12,
-        phase: 0,
+        waveAmp: 14,
+        phase: 0.0,
         mouseSens: 12,
       },
       {
         imgIndex: 1,
-        x: width * 0.88,
-        y: height * 0.38,
-        vx: -0.12,
-        width: 550,
-        height: 310,
-        alpha: 0.16,
+        x: width * 0.30,
+        y: height * 0.42,
+        vx: -0.16,
+        width: 620,
+        height: 340,
+        alpha: 0.20,
         waveSpeed: 0.006,
-        waveAmp: 15,
-        phase: Math.PI * 0.7,
+        waveAmp: 16,
+        phase: 1.1,
+        mouseSens: -14,
+      },
+      {
+        imgIndex: 0,
+        x: width * 0.55,
+        y: height * 0.50,
+        vx: 0.15,
+        width: 600,
+        height: 330,
+        alpha: 0.24,
+        waveSpeed: 0.008,
+        waveAmp: 12,
+        phase: 2.3,
+        mouseSens: 10,
+      },
+      {
+        imgIndex: 1,
+        x: width * 0.80,
+        y: height * 0.38,
+        vx: -0.17,
+        width: 640,
+        height: 350,
+        alpha: 0.22,
+        waveSpeed: 0.005,
+        waveAmp: 18,
+        phase: 3.5,
         mouseSens: -15,
       },
       {
         imgIndex: 0,
-        x: width * 0.2,
+        x: width * 0.15,
         y: height * 0.65,
-        vx: 0.1,
-        width: 475,
-        height: 260,
-        alpha: 0.14,
-        waveSpeed: 0.005,
-        waveAmp: 10,
-        phase: Math.PI * 1.3,
-        mouseSens: 9,
+        vx: -0.14,
+        width: 560,
+        height: 310,
+        alpha: 0.20,
+        waveSpeed: 0.007,
+        waveAmp: 15,
+        phase: 4.2,
+        mouseSens: -11,
       },
       {
         imgIndex: 1,
-        x: width * 0.82,
-        y: height * 0.7,
-        vx: -0.11,
-        width: 490,
-        height: 270,
-        alpha: 0.15,
+        x: width * 0.40,
+        y: height * 0.68,
+        vx: 0.16,
+        width: 610,
+        height: 330,
+        alpha: 0.22,
+        waveSpeed: 0.006,
+        waveAmp: 13,
+        phase: 5.1,
+        mouseSens: 11,
+      },
+      {
+        imgIndex: 0,
+        x: width * 0.70,
+        y: height * 0.72,
+        vx: -0.15,
+        width: 590,
+        height: 320,
+        alpha: 0.21,
         waveSpeed: 0.008,
-        waveAmp: 11,
-        phase: Math.PI * 0.4,
-        mouseSens: -12,
+        waveAmp: 17,
+        phase: 0.8,
+        mouseSens: -13,
+      },
+      {
+        imgIndex: 1,
+        x: width * 0.95,
+        y: height * 0.58,
+        vx: 0.13,
+        width: 630,
+        height: 340,
+        alpha: 0.23,
+        waveSpeed: 0.005,
+        waveAmp: 14,
+        phase: 2.9,
+        mouseSens: 9,
+      },
+      {
+        imgIndex: 0,
+        x: width * 0.50,
+        y: height * 0.28,
+        vx: 0.12,
+        width: 680,
+        height: 360,
+        alpha: 0.19,
+        waveSpeed: 0.006,
+        waveAmp: 15,
+        phase: 1.8,
+        mouseSens: 8,
+      },
+      {
+        imgIndex: 1,
+        x: width * 0.25,
+        y: height * 0.55,
+        vx: -0.13,
+        width: 650,
+        height: 350,
+        alpha: 0.21,
+        waveSpeed: 0.007,
+        waveAmp: 16,
+        phase: 4.7,
+        mouseSens: -10,
       },
     ];
 
@@ -187,18 +268,19 @@ export default function SmokeAtmosphere() {
         r.x += r.vx * stepScale;
         r.phase += r.waveSpeed * stepScale;
 
-        const halfW = r.width * 0.6;
-        if (r.vx > 0 && r.x > width + halfW) {
-          r.x = -halfW;
-        } else if (r.vx < 0 && r.x < -halfW) {
-          r.x = width + halfW;
+        // Seamless zero-deadzone toroidal wrapping: continuous flow without vanishing intervals
+        const span = width + r.width;
+        if (r.vx > 0 && r.x > width + r.width * 0.5) {
+          r.x -= span;
+        } else if (r.vx < 0 && r.x < -r.width * 0.5) {
+          r.x += span;
         }
 
         const waveY = Math.sin(r.phase) * r.waveAmp;
         const waveX = Math.cos(r.phase * 0.7) * (r.waveAmp * 0.5);
         const posX = r.x + waveX + normMouseX * r.mouseSens;
         const posY = r.y + waveY + normMouseY * r.mouseSens;
-        const pulseAlpha = r.alpha * (0.85 + 0.15 * Math.sin(time * 1.5 + r.phase));
+        const pulseAlpha = r.alpha * (0.90 + 0.10 * Math.sin(time * 1.2 + r.phase));
 
         ctx.save();
         ctx.globalAlpha = Math.max(0, Math.min(1, pulseAlpha));

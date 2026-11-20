@@ -150,8 +150,8 @@ export default function PortfolioPage() {
       description:
         'A comprehensive cloud scholarship application, document verification, grant tracking, and automated qualification evaluation portal deployed live on Railway for Bestlink College of the Philippines.',
       tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Railway Deployment', 'Auth'],
-      image: '/images/thumb_photo-1513350027966-f016e1adcecd.jpg',
-      link: 'https://eduscholar-production.up.railway.app/',
+      image: '/images/projects/eduscholar.png',
+      link: 'https://eduscholar.up.railway.app',
       github: '#',
       status: 'Live on Railway',
     },
@@ -189,8 +189,8 @@ export default function PortfolioPage() {
       description:
         'A precision footwear restoration atelier e-commerce booking portal and offline-first shop floor PWA with sequential stage progression, barcode intake, and live Airtable data synchronizations.',
       tags: ['Next.js 15', 'PWA Manifest', 'Service Worker', 'TypeScript', 'Tailwind v4', 'Airtable API'],
-      image: '/images/thumb_photo-1584125073721-71adc0702886.jpg',
-      link: '#',
+      image: '/images/projects/sole-surgeon.png',
+      link: 'https://sole-surgeon-pwa.vercel.app/',
       github: '#',
       status: 'Production PWA',
     },
@@ -1696,14 +1696,27 @@ export default function PortfolioPage() {
                       ))}
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => setSelectedProject(project)}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-white hover:text-[#FF5A5F] transition-colors cursor-pointer shrink-0"
-                    >
-                      <span>View Details</span>
-                      <ExternalLink className="w-3.5 h-3.5 text-[#FF5A5F]" />
-                    </button>
+                    <div className="flex items-center gap-3 shrink-0">
+                      {project.link && project.link !== '#' && (
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#FF5A5F]/15 hover:bg-[#FF5A5F]/25 text-[#FF5A5F] border border-[#FF5A5F]/30 text-xs font-bold transition-all"
+                        >
+                          <span>Live Site</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => setSelectedProject(project)}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-white hover:text-[#FF5A5F] transition-colors cursor-pointer shrink-0"
+                      >
+                        <span>View Details</span>
+                        <ExternalLink className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
