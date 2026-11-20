@@ -873,25 +873,9 @@ html.light .drawer-logo-badge,
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08) !important;
 }
 
-/* 2. Hero Portrait Container & Bottom Blend */
+/* 2. Hero Portrait Container */
 .hero-portrait-container {
   position: relative;
-  overflow: hidden;
-}
-.hero-portrait-container::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 60px;
-  background: linear-gradient(to top, #000000 12%, rgba(0, 0, 0, 0.7) 45%, transparent 100%);
-  pointer-events: none;
-  z-index: 25;
-}
-html.light .hero-portrait-container::after,
-.light-theme .hero-portrait-container::after {
-  background: linear-gradient(to top, #f8fafc 20%, rgba(248, 250, 252, 0.8) 60%, transparent 100%) !important;
 }
 
 /* 3. Achievements & Awards Card in Light Mode */
