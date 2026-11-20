@@ -96,7 +96,7 @@ export default function GeometricShapes() {
   return (
     <div
       ref={containerRef}
-      className="relative h-20 sm:h-24 w-48 sm:w-52 mb-2 sm:mb-3 select-none cursor-pointer group contain-layout scale-90 origin-left sm:scale-100"
+      className="relative h-20 md:h-20 lg:h-24 w-48 lg:w-52 mb-0 md:mb-2 lg:mb-3 select-none cursor-pointer group contain-layout"
       title="Dynamic Animated Floating Shapes"
     >
       {/* 1. Large Cyan Glowing Ring */}

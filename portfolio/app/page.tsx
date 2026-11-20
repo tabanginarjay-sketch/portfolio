@@ -750,7 +750,7 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 1. TOP HEADER NAVIGATION (Matching the Reference Screenshot)             */}
       {/* ========================================================================= */}
-      <header className="hero-anim-down relative z-50 w-full max-w-7xl mx-auto pt-[max(1rem,env(safe-area-inset-top))] pb-4 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] sm:px-8 lg:px-12 sm:py-5 lg:py-7 flex items-center justify-between">
+      <header className="hero-anim-down relative z-50 w-full max-w-7xl mx-auto pt-[max(0.75rem,env(safe-area-inset-top))] pb-2.5 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] sm:px-8 lg:px-12 sm:py-4 lg:py-6 flex items-center justify-between">
         {/* Brand Logo & Email Link */}
         <div className="flex items-center gap-4 sm:gap-6">
           <a
@@ -869,33 +869,33 @@ export default function PortfolioPage() {
       )}
 
       {/* ========================================================================= */}
-      {/* 2. HERO SECTION (High-Fidelity Match to Reference Image)                  */}
+      {/* 2. HERO SECTION (Compact Mobile + 3-Col Editorial Tablet / Laptop / PC)   */}
       {/* ========================================================================= */}
       <section
         id="hero"
-        className="relative w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 pt-1 sm:pt-3 lg:pt-4 pb-12 sm:pb-16 lg:pb-20 lg:min-h-[82dvh] xl:min-h-[85dvh] flex flex-col justify-between overflow-hidden"
+        className="relative w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 pt-1 sm:pt-2 lg:pt-4 pb-8 sm:pb-12 lg:pb-18 md:min-h-[600px] lg:min-h-[82dvh] xl:min-h-[85dvh] flex flex-col justify-between overflow-hidden"
       >
         {/* Subtle, non-intrusive ethereal smoke transition effect behind content */}
         <SmokeAtmosphere />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6 md:gap-8 lg:gap-6 xl:gap-10 items-center relative z-20">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-2.5 sm:gap-4 md:gap-5 lg:gap-6 xl:gap-10 items-center relative z-20">
           {/* ----------------- LEFT COLUMN: HEADING & CTA ----------------- */}
-          <div className="md:col-span-1 lg:col-span-4 space-y-4 sm:space-y-5 lg:space-y-6 text-left order-2 lg:order-1 pt-0 relative z-30">
+          <div className="md:col-span-4 space-y-3 sm:space-y-4 lg:space-y-6 text-left order-2 md:order-1 pt-0 relative z-30">
             <div className="space-y-1">
               <h1
                 style={{ '--delay': '80ms' } as React.CSSProperties}
-                className="hero-anim-up font-serif text-[38px] sm:text-5xl lg:text-[52px] xl:text-7xl font-bold tracking-tight text-white leading-[1.08] lg:leading-[1.1]"
+                className="hero-anim-up font-serif text-[34px] sm:text-5xl md:text-[38px] lg:text-[52px] xl:text-7xl font-bold tracking-tight text-white leading-[1.06] lg:leading-[1.1]"
               >
                 Hi, <br />
                 I&apos;m <span className="text-[#FF5A5F]">Ar-jay</span>
               </h1>
               <div
                 style={{ '--delay': '170ms' } as React.CSSProperties}
-                className="hero-anim-up pt-1.5 lg:pt-2 space-y-0.5 lg:space-y-1"
+                className="hero-anim-up pt-1 lg:pt-2 space-y-0.5 lg:space-y-1"
               >
-                <p className="text-white text-base sm:text-lg xl:text-xl font-semibold tracking-wide">
+                <p className="text-white text-sm sm:text-lg md:text-sm lg:text-lg xl:text-xl font-semibold tracking-wide">
                   Developer &amp; UI/UX Designer
                 </p>
-                <p className="text-zinc-400 text-xs sm:text-sm xl:text-base font-medium">
+                <p className="text-zinc-400 text-[11px] sm:text-sm md:text-xs lg:text-sm xl:text-base font-medium">
                   Certified Customer Service &bull; Photo/Video Editor
                 </p>
               </div>
@@ -904,12 +904,12 @@ export default function PortfolioPage() {
             {/* Hire Me CTA Button matching the reference pill */}
             <div
               style={{ '--delay': '250ms' } as React.CSSProperties}
-              className="hero-anim-up pt-1 lg:pt-2"
+              className="hero-anim-up pt-0.5 lg:pt-2"
             >
               <button
                 type="button"
                 onClick={() => setIsChatModalOpen(true)}
-                className="group inline-flex items-center gap-3 px-6 py-2.5 sm:px-7 sm:py-3 rounded-full bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white font-bold text-sm sm:text-base shadow-lg shadow-rose-900/30 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                className="group inline-flex items-center gap-2.5 sm:gap-3 px-5 py-2 sm:px-7 sm:py-3 rounded-full bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white font-bold text-xs sm:text-sm lg:text-base shadow-lg shadow-rose-900/30 hover:scale-105 active:scale-95 transition-all cursor-pointer"
               >
                 <span>Hire Me</span>
                 <span className="p-1 rounded-full bg-white/20 group-hover:translate-x-1 transition-transform">
@@ -921,9 +921,9 @@ export default function PortfolioPage() {
             {/* Left Social Links */}
             <div
               style={{ '--delay': '330ms' } as React.CSSProperties}
-              className="hero-anim-up pt-3 sm:pt-4 lg:pt-7 flex flex-col space-y-3 lg:space-y-4"
+              className="hero-anim-up pt-1.5 sm:pt-3 lg:pt-7 flex flex-col space-y-2.5 lg:space-y-4"
             >
-              <div className="flex items-center gap-5 text-zinc-400">
+              <div className="flex items-center gap-4 sm:gap-5 text-zinc-400">
                 <a
                   href="https://www.facebook.com/share/1CstVHcQAw/?mibextid=wwXIfr"
                   target="_blank"
@@ -964,7 +964,7 @@ export default function PortfolioPage() {
                 href="https://www.linkedin.com/in/jay-t-a6bb1a217"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 text-xs text-zinc-400 hover:text-white transition-colors"
+                className="group inline-flex items-center gap-2 text-[11px] lg:text-xs text-zinc-400 hover:text-white transition-colors"
               >
                 <span className="w-4 h-4 rounded-full bg-[#0A66C2] flex items-center justify-center text-[9px] font-bold text-white group-hover:scale-110 transition-transform shrink-0">
                   in
@@ -975,19 +975,19 @@ export default function PortfolioPage() {
           </div>
 
           {/* ----------------- CENTER COLUMN: PORTRAIT IMAGE ----------------- */}
-          <div className="md:col-span-2 lg:col-span-4 flex items-center justify-center order-1 lg:order-2 relative">
+          <div className="md:col-span-4 flex items-center justify-center order-1 md:order-2 relative">
             {/* Zero-cost radial studio backlight halo (pure gradients, zero heavy CSS blur filters!) */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -inset-8 lg:-inset-10 flex items-center justify-center"
+              className="pointer-events-none absolute -inset-6 lg:-inset-10 flex items-center justify-center"
             >
-              <div className="w-[260px] h-[320px] sm:w-[320px] sm:h-[400px] lg:w-[360px] lg:h-[440px] xl:w-[440px] xl:h-[520px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,244,234,0.08)_0%,rgba(255,90,95,0.04)_36%,rgba(34,211,238,0.025)_56%,transparent_72%)] -translate-y-4 lg:-translate-y-8" />
+              <div className="w-[210px] h-[250px] sm:w-[260px] sm:h-[310px] md:w-[270px] md:h-[340px] lg:w-[360px] lg:h-[440px] xl:w-[440px] xl:h-[520px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,244,234,0.08)_0%,rgba(255,90,95,0.04)_36%,rgba(34,211,238,0.025)_56%,transparent_72%)] -translate-y-2 md:-translate-y-6 lg:-translate-y-8" />
             </div>
 
-            {/* True transparent portrait PNG — balanced across Android, iOS, Tablet, Laptop & Desktop */}
+            {/* True transparent portrait PNG — tight & balanced on mobile, centered editorial on md+ */}
             <div
               style={{ '--delay': '110ms' } as React.CSSProperties}
-              className="hero-anim-portrait relative w-[215px] sm:w-[270px] md:w-[310px] lg:w-[320px] xl:w-[420px] aspect-[482/744] max-h-[335px] sm:max-h-[420px] md:max-h-[470px] lg:max-h-[520px] xl:max-h-[630px] -mt-1 -mb-14 sm:-mb-16 md:-mb-8 lg:mt-0 lg:mb-0 select-none"
+              className="hero-anim-portrait relative w-[168px] sm:w-[205px] md:w-[235px] lg:w-[320px] xl:w-[415px] aspect-[482/744] max-h-[260px] sm:max-h-[315px] md:max-h-[365px] lg:max-h-[505px] xl:max-h-[630px] mt-1 -mb-14 sm:-mb-16 md:my-0 select-none"
             >
               <Image
                 src="/images/arjay-portrait-hero.png?v=6"
@@ -1001,27 +1001,29 @@ export default function PortfolioPage() {
           </div>
 
           {/* ----------------- RIGHT COLUMN: EXPERTISE & GEOMETRIC ACCENT ----------------- */}
-          <div className="md:col-span-1 lg:col-span-4 space-y-5 lg:space-y-6 text-left order-3 relative mt-6 md:mt-0">
-            {/* Dynamic floating geometric shapes with independent multi-directional drift & mouse parallax */}
-            <GeometricShapes />
+          <div className="md:col-span-4 space-y-3 sm:space-y-4 lg:space-y-6 text-left order-3 relative mt-3 pt-3.5 border-t border-zinc-900/70 md:border-t-0 md:pt-0 md:mt-0">
+            {/* Dynamic floating geometric shapes — tucked cleanly top-right on mobile to save vertical space */}
+            <div className="pointer-events-none md:pointer-events-auto absolute -top-2 right-0 scale-[0.6] origin-top-right opacity-85 md:static md:scale-[0.78] md:origin-left lg:scale-95 xl:scale-100 md:opacity-100">
+              <GeometricShapes />
+            </div>
 
             <div
               style={{ '--delay': '210ms' } as React.CSSProperties}
-              className="hero-anim-right space-y-3"
+              className="hero-anim-right space-y-1.5 sm:space-y-2.5 lg:space-y-3"
             >
-              <span className="text-[#FF5A5F] text-xs font-bold uppercase tracking-wider block">
+              <span className="text-[#FF5A5F] text-[11px] sm:text-xs font-bold uppercase tracking-wider block">
                 Expert on
               </span>
 
-              <h2 className="text-xl sm:text-2xl font-bold text-white leading-snug">
-                Based in Philippines <br />
-                developer and <br />
-                UI/UX designer, <br />
-                certified customer service, <br />
+              <h2 className="text-[15px] sm:text-lg md:text-base lg:text-xl xl:text-2xl font-bold text-white leading-snug pr-20 md:pr-0">
+                Based in Philippines <br className="hidden md:block" />
+                developer and <br className="hidden md:block" />
+                UI/UX designer, <br className="hidden md:block" />
+                certified customer service, <br className="hidden md:block" />
                 Photo/Video editor.
               </h2>
 
-              <p className="text-zinc-400 text-sm leading-relaxed max-w-sm pt-1">
+              <p className="text-zinc-400 text-xs sm:text-sm md:text-xs lg:text-sm leading-relaxed max-w-sm pt-0.5 lg:pt-1">
                 Versatile creator building modern web applications, designing user-centered interfaces,
                 delivering certified client support, and producing compelling photo &amp; video media.
               </p>
@@ -1030,14 +1032,14 @@ export default function PortfolioPage() {
             {/* Download CV Link & Quick Preview */}
             <div
               style={{ '--delay': '320ms' } as React.CSSProperties}
-              className="hero-anim-up pt-2 flex items-center gap-5"
+              className="hero-anim-up pt-1 lg:pt-2 flex flex-wrap items-center gap-x-4 gap-y-2 lg:gap-5"
             >
               <a
                 href="/Ar-jay_Tabangin_CV.pdf"
                 download="Ar-jay_Tabangin_CV.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-[#FF5A5F] hover:text-rose-400 text-sm font-bold border-b border-[#FF5A5F] pb-0.5 transition-colors group cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-[#FF5A5F] hover:text-rose-400 text-xs lg:text-sm font-bold border-b border-[#FF5A5F] pb-0.5 transition-colors group cursor-pointer whitespace-nowrap"
               >
                 <span>Download CV</span>
                 <Download className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
@@ -1059,7 +1061,7 @@ export default function PortfolioPage() {
                     image: '/certificates/arjay_cv_preview.jpg',
                   })
                 }
-                className="text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer flex items-center gap-1"
+                className="text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer inline-flex items-center gap-1 whitespace-nowrap"
               >
                 <Eye className="w-3 h-3 text-zinc-500" />
                 <span>Quick Preview</span>
@@ -1071,7 +1073,7 @@ export default function PortfolioPage() {
         {/* Bottom Floating "Let's Chat" Pill (Above SmokeAtmosphere z-10 fade) */}
         <div
           style={{ '--delay': '400ms' } as React.CSSProperties}
-          className="hero-anim-up relative z-30 w-full flex justify-end pt-8 sm:pt-4"
+          className="hero-anim-up relative z-30 w-full flex justify-end pt-4 sm:pt-4"
         >
           <button
             type="button"
@@ -1091,8 +1093,8 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 3. BACKGROUND & TRACK RECORD (EXPERIENCE, EDUCATION & ACHIEVEMENTS)       */}
       {/* ========================================================================= */}
-      <section id="experience" className="relative z-20 py-16 sm:py-20 lg:py-24 border-t border-zinc-900 bg-[#050505]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-10 sm:space-y-14">
+      <section id="experience" className="relative z-20 py-12 sm:py-16 lg:py-24 border-t border-zinc-900 bg-[#050505]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-8 sm:space-y-12 lg:space-y-14">
           {/* Section Header */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <div data-reveal="up" className="space-y-2">
@@ -1281,9 +1283,9 @@ export default function PortfolioPage() {
         id="certificates"
         ref={certSectionRef}
         onContextMenu={(e) => e.preventDefault()}
-        className="cert-protected relative z-20 py-16 sm:py-20 lg:py-24 border-t border-zinc-900 bg-black"
+        className="cert-protected relative z-20 py-12 sm:py-16 lg:py-24 border-t border-zinc-900 bg-black"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-7 sm:space-y-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-6 sm:space-y-9 lg:space-y-10">
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 sm:gap-6">
             <div data-reveal="up" className="space-y-2">
@@ -1533,8 +1535,8 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 5. FEATURED WEBSITES & PROJECTS SECTION ("yung ibang nagawa naming website")*/}
       {/* ========================================================================= */}
-      <section id="projects" className="relative z-20 py-16 sm:py-20 lg:py-24 border-t border-zinc-900 bg-[#050505]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-10 sm:space-y-12">
+      <section id="projects" className="relative z-20 py-12 sm:py-16 lg:py-24 border-t border-zinc-900 bg-[#050505]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-8 sm:space-y-11 lg:space-y-12">
           {/* Section Header */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <div data-reveal="up" className="space-y-2">
@@ -1661,14 +1663,14 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 6. PHOTO EDITING & BEFORE/AFTER RETOUCHING SAMPLES                        */}
       {/* ========================================================================= */}
-      <section id="edits" className="relative z-20 py-16 sm:py-20 lg:py-24 border-t border-zinc-900 bg-black overflow-hidden">
+      <section id="edits" className="relative z-20 py-12 sm:py-16 lg:py-24 border-t border-zinc-900 bg-black overflow-hidden">
         {/* Subtle studio radial ambient (zero blur filter cost) */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute top-12 left-1/2 -translate-x-1/2 w-[820px] h-[420px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,90,95,0.06)_0%,transparent_70%)]"
         />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-10 sm:space-y-12">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-8 sm:space-y-11 lg:space-y-12">
           {/* Section Header */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div data-reveal="up" className="space-y-2">
@@ -1746,8 +1748,8 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 5. SKILLS & TECHNICAL ARSENAL                                             */}
       {/* ========================================================================= */}
-      <section id="skills" className="relative z-20 py-16 sm:py-20 lg:py-24 border-t border-zinc-900 bg-[#050505]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-10 sm:space-y-12">
+      <section id="skills" className="relative z-20 py-12 sm:py-16 lg:py-24 border-t border-zinc-900 bg-[#050505]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-8 sm:space-y-11 lg:space-y-12">
           <div data-reveal="up" className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F]">
               Core Capabilities
