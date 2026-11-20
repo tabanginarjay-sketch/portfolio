@@ -184,9 +184,10 @@ export default function SmokeAtmosphere() {
 
       // Gently soften smoke right behind Ar-jay's head/face so details stay crisp,
       // while allowing silky ribbons to drift seamlessly behind shoulders & lower mist (ZERO hard box!)
+      const isMobile = width < 1024;
       const clearX = width * 0.5;
-      const clearY = height * 0.34;
-      const clearRadius = Math.min(width * 0.30, 340);
+      const clearY = isMobile ? Math.min(height * 0.16, 175) : height * 0.34;
+      const clearRadius = isMobile ? Math.min(width * 0.48, 200) : Math.min(width * 0.30, 340);
 
       ctx.globalCompositeOperation = 'destination-out';
       const clearGrad = ctx.createRadialGradient(

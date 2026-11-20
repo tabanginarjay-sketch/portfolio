@@ -153,7 +153,7 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 1. TOP HEADER NAVIGATION (Matching the Reference Screenshot)             */}
       {/* ========================================================================= */}
-      <header className="relative z-50 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 py-7 flex items-center justify-between">
+      <header className="relative z-50 w-full max-w-7xl mx-auto px-5 sm:px-10 lg:px-12 py-4 sm:py-5 lg:py-7 flex items-center justify-between">
         {/* Brand Logo & Email Link */}
         <div className="flex items-center gap-6 sm:gap-10">
           <a href="#" className="group flex items-center gap-1.5 text-xl sm:text-2xl font-bold tracking-tight text-white">
@@ -244,34 +244,34 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       <section
         id="hero"
-        className="relative w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-20 lg:min-h-[85vh] flex flex-col justify-between overflow-hidden"
+        className="relative w-full max-w-7xl mx-auto px-5 sm:px-10 lg:px-12 pt-0 sm:pt-2 lg:pt-4 pb-16 lg:pb-20 lg:min-h-[85vh] flex flex-col justify-between overflow-hidden"
       >
         {/* Subtle, non-intrusive ethereal smoke transition effect behind content */}
         <SmokeAtmosphere />
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-5 lg:gap-10 items-center relative z-20">
           {/* ----------------- LEFT COLUMN: HEADING & CTA ----------------- */}
-          <div className="lg:col-span-4 space-y-6 text-left order-2 lg:order-1 pt-6 lg:pt-0">
+          <div className="lg:col-span-4 space-y-4 sm:space-y-5 lg:space-y-6 text-left order-2 lg:order-1 pt-0 relative z-30">
             <div className="space-y-1">
-              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1]">
+              <h1 className="font-serif text-[42px] sm:text-5xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08] lg:leading-[1.1]">
                 Hi, <br />
                 I&apos;m <span className="text-[#FF5A5F]">Ar-jay</span>
               </h1>
-              <div className="pt-2 space-y-1">
-                <p className="text-white text-lg sm:text-xl font-semibold tracking-wide">
+              <div className="pt-1.5 lg:pt-2 space-y-0.5 lg:space-y-1">
+                <p className="text-white text-base sm:text-xl font-semibold tracking-wide">
                   Developer &amp; UI/UX Designer
                 </p>
-                <p className="text-zinc-400 text-sm sm:text-base font-medium">
+                <p className="text-zinc-400 text-xs sm:text-base font-medium">
                   Certified Customer Service &bull; Photo/Video Editor
                 </p>
               </div>
             </div>
 
             {/* Hire Me CTA Button matching the reference pill */}
-            <div className="pt-2">
+            <div className="pt-1 lg:pt-2">
               <button
                 type="button"
                 onClick={() => setIsChatModalOpen(true)}
-                className="group inline-flex items-center gap-3 px-7 py-3 rounded-full bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white font-bold text-sm sm:text-base shadow-lg shadow-rose-900/30 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                className="group inline-flex items-center gap-3 px-6 py-2.5 sm:px-7 sm:py-3 rounded-full bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white font-bold text-sm sm:text-base shadow-lg shadow-rose-900/30 hover:scale-105 active:scale-95 transition-all cursor-pointer"
               >
                 <span>Hire Me</span>
                 <span className="p-1 rounded-full bg-white/20 group-hover:translate-x-1 transition-transform">
@@ -281,7 +281,7 @@ export default function PortfolioPage() {
             </div>
 
             {/* Left Social Links */}
-            <div className="pt-8 flex flex-col space-y-4">
+            <div className="pt-3 sm:pt-5 lg:pt-8 flex flex-col space-y-3 lg:space-y-4">
               <div className="flex items-center gap-5 text-zinc-400">
                 <a
                   href="https://www.facebook.com/share/1CstVHcQAw/?mibextid=wwXIfr"
@@ -336,17 +336,17 @@ export default function PortfolioPage() {
             {/* Soft, layered studio backlight halo (purely transparent radial — ZERO hard box!) */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -inset-12 flex items-center justify-center"
+              className="pointer-events-none absolute -inset-8 lg:-inset-12 flex items-center justify-center"
             >
               {/* Neutral warm studio rim behind head & shoulders for crisp separation */}
-              <div className="w-[360px] h-[440px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,244,234,0.085)_0%,rgba(255,244,234,0.025)_42%,transparent_72%)] blur-2xl -translate-y-8" />
+              <div className="w-[240px] h-[280px] sm:w-[300px] sm:h-[360px] lg:w-[360px] lg:h-[440px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,244,234,0.085)_0%,rgba(255,244,234,0.025)_42%,transparent_72%)] blur-2xl -translate-y-6 lg:-translate-y-8" />
               {/* Whisper-soft left coral & right cyan rim reflection matching hero accents */}
-              <div className="absolute w-64 h-64 rounded-full bg-[#FF5A5F]/[0.07] blur-[90px] -translate-x-20 -translate-y-6" />
-              <div className="absolute w-64 h-64 rounded-full bg-cyan-400/[0.06] blur-[90px] translate-x-20 -translate-y-16" />
+              <div className="absolute w-44 h-44 lg:w-64 lg:h-64 rounded-full bg-[#FF5A5F]/[0.07] blur-[70px] lg:blur-[90px] -translate-x-12 lg:-translate-x-20 -translate-y-4 lg:-translate-y-6" />
+              <div className="absolute w-44 h-44 lg:w-64 lg:h-64 rounded-full bg-cyan-400/[0.06] blur-[70px] lg:blur-[90px] translate-x-12 lg:translate-x-20 -translate-y-10 lg:-translate-y-16" />
             </div>
 
-            {/* True transparent portrait PNG — seamlessly floats above smoke with zero rectangular cutoff */}
-            <div className="relative w-72 sm:w-88 md:w-[390px] lg:w-[430px] aspect-[482/744] max-h-[640px] select-none">
+            {/* True transparent portrait PNG — compact & balanced on iOS/Android, editorial scale on desktop */}
+            <div className="relative w-[228px] sm:w-[275px] md:w-[330px] lg:w-[430px] aspect-[482/744] max-h-[355px] sm:max-h-[430px] lg:max-h-[640px] -mt-1 -mb-16 sm:-mb-20 lg:mt-0 lg:mb-0 select-none">
               <Image
                 src="/images/arjay-portrait-hero.png?v=6"
                 alt="Ar-jay Tabangin - Developer & UI/UX Designer"
@@ -359,7 +359,7 @@ export default function PortfolioPage() {
           </div>
 
           {/* ----------------- RIGHT COLUMN: EXPERTISE & GEOMETRIC ACCENT ----------------- */}
-          <div className="lg:col-span-4 space-y-6 text-left order-3 relative">
+          <div className="lg:col-span-4 space-y-6 text-left order-3 relative mt-8 lg:mt-0">
             {/* Dynamic floating geometric shapes with independent multi-directional drift & mouse parallax */}
             <GeometricShapes />
 
