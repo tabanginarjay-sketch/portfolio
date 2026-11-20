@@ -1085,15 +1085,35 @@ export default function PortfolioPage() {
           </div>
         </div>
 
-        {/* Bottom Floating "Let's Chat" Pill (Above SmokeAtmosphere z-10 fade) */}
+        {/* Bottom Quick-Jump Action Bar: View My Work + View My Certificates + Let's Chat */}
         <div
-          style={{ '--delay': '400ms' } as React.CSSProperties}
-          className="hero-anim-up relative z-30 w-full flex justify-end pt-4 sm:pt-4"
+          style={{ '--delay': '380ms' } as React.CSSProperties}
+          className="hero-anim-up relative z-30 w-full flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 pt-4 sm:pt-5"
         >
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 sm:gap-3">
+            <a
+              href="#projects"
+              className="group inline-flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-zinc-950/90 hover:bg-zinc-900 border border-zinc-800 hover:border-[#FF5A5F]/70 text-[10.5px] min-[390px]:text-[11px] sm:text-xs font-bold text-white transition-all shadow-lg active:scale-95 whitespace-nowrap"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-[#FF5A5F] shrink-0" />
+              <span>View My Work</span>
+              <ArrowRight className="w-3 h-3 text-zinc-400 group-hover:text-[#FF5A5F] group-hover:translate-x-0.5 transition-all shrink-0" />
+            </a>
+
+            <a
+              href="#certificates"
+              className="group inline-flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-zinc-950/90 hover:bg-zinc-900 border border-zinc-800 hover:border-[#FF5A5F]/70 text-[10.5px] min-[390px]:text-[11px] sm:text-xs font-bold text-white transition-all shadow-lg active:scale-95 whitespace-nowrap"
+            >
+              <Award className="w-3.5 h-3.5 text-[#FF5A5F] shrink-0" />
+              <span>View My Certificates</span>
+              <ArrowRight className="w-3 h-3 text-zinc-400 group-hover:text-[#FF5A5F] group-hover:translate-x-0.5 transition-all shrink-0" />
+            </a>
+          </div>
+
           <button
             type="button"
             onClick={() => setIsChatModalOpen(true)}
-            className="group flex items-center gap-2.5 px-4 py-2 rounded-full bg-zinc-950/90 hover:bg-zinc-900 border border-zinc-800 text-xs font-bold text-white transition-all shadow-lg hover:border-[#FF5A5F]/60 active:scale-95 cursor-pointer"
+            className="group self-end sm:self-auto flex items-center gap-2.5 px-4 py-2 sm:py-2.5 rounded-full bg-zinc-950/90 hover:bg-zinc-900 border border-zinc-800 text-xs font-bold text-white transition-all shadow-lg hover:border-[#FF5A5F]/60 active:scale-95 cursor-pointer shrink-0"
           >
             <span>Let&apos;s Chat</span>
             <span className="relative flex h-2 w-2">
