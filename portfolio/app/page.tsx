@@ -877,13 +877,13 @@ export default function PortfolioPage() {
       >
         {/* Subtle, non-intrusive ethereal smoke transition effect behind content */}
         <SmokeAtmosphere />
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-2.5 sm:gap-4 md:gap-5 lg:gap-6 xl:gap-10 items-center relative z-20">
+        <div className="grid grid-cols-12 gap-x-2 gap-y-3 sm:gap-x-4 sm:gap-y-4 md:gap-5 lg:gap-6 xl:gap-10 items-center relative z-20">
           {/* ----------------- LEFT COLUMN: HEADING & CTA ----------------- */}
-          <div className="md:col-span-4 space-y-3 sm:space-y-4 lg:space-y-6 text-left order-2 md:order-1 pt-0 relative z-30">
+          <div className="col-span-7 md:col-span-4 space-y-2.5 sm:space-y-4 lg:space-y-6 text-left order-1 pt-2 md:pt-0 relative z-30">
             <div className="space-y-1">
               <h1
                 style={{ '--delay': '80ms' } as React.CSSProperties}
-                className="hero-anim-up font-serif text-[34px] sm:text-5xl md:text-[38px] lg:text-[52px] xl:text-7xl font-bold tracking-tight text-white leading-[1.06] lg:leading-[1.1]"
+                className="hero-anim-up font-serif text-[30px] min-[390px]:text-[35px] sm:text-5xl md:text-[38px] lg:text-[52px] xl:text-7xl font-bold tracking-tight text-white leading-[1.06] lg:leading-[1.1]"
               >
                 Hi, <br />
                 I&apos;m <span className="text-[#FF5A5F]">Ar-jay</span>
@@ -892,10 +892,10 @@ export default function PortfolioPage() {
                 style={{ '--delay': '170ms' } as React.CSSProperties}
                 className="hero-anim-up pt-1 lg:pt-2 space-y-0.5 lg:space-y-1"
               >
-                <p className="text-white text-sm sm:text-lg md:text-sm lg:text-lg xl:text-xl font-semibold tracking-wide">
+                <p className="text-white text-[13px] min-[390px]:text-sm sm:text-lg md:text-sm lg:text-lg xl:text-xl font-semibold tracking-wide leading-snug">
                   Developer &amp; UI/UX Designer
                 </p>
-                <p className="text-zinc-400 text-[11px] sm:text-sm md:text-xs lg:text-sm xl:text-base font-medium">
+                <p className="text-zinc-400 text-[10.5px] min-[390px]:text-[11px] sm:text-sm md:text-xs lg:text-sm xl:text-base font-medium leading-snug">
                   Certified Customer Service &bull; Photo/Video Editor
                 </p>
               </div>
@@ -904,16 +904,16 @@ export default function PortfolioPage() {
             {/* Hire Me CTA Button matching the reference pill */}
             <div
               style={{ '--delay': '250ms' } as React.CSSProperties}
-              className="hero-anim-up pt-0.5 lg:pt-2"
+              className="hero-anim-up pt-1 lg:pt-2"
             >
               <button
                 type="button"
                 onClick={() => setIsChatModalOpen(true)}
-                className="group inline-flex items-center gap-2.5 sm:gap-3 px-5 py-2 sm:px-7 sm:py-3 rounded-full bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white font-bold text-xs sm:text-sm lg:text-base shadow-lg shadow-rose-900/30 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                className="group inline-flex items-center gap-2 sm:gap-3 px-4 py-2 sm:px-7 sm:py-3 rounded-full bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white font-bold text-xs sm:text-sm lg:text-base shadow-lg shadow-rose-900/30 hover:scale-105 active:scale-95 transition-all cursor-pointer"
               >
                 <span>Hire Me</span>
-                <span className="p-1 rounded-full bg-white/20 group-hover:translate-x-1 transition-transform">
-                  <ArrowRight className="w-3.5 h-3.5 text-white" />
+                <span className="p-0.5 sm:p-1 rounded-full bg-white/20 group-hover:translate-x-1 transition-transform">
+                  <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
                 </span>
               </button>
             </div>
@@ -921,7 +921,7 @@ export default function PortfolioPage() {
             {/* Left Social Links */}
             <div
               style={{ '--delay': '330ms' } as React.CSSProperties}
-              className="hero-anim-up pt-1.5 sm:pt-3 lg:pt-7 flex flex-col space-y-2.5 lg:space-y-4"
+              className="hero-anim-up pt-2 sm:pt-3 lg:pt-7 flex flex-col space-y-2 lg:space-y-4"
             >
               <div className="flex items-center gap-4 sm:gap-5 text-zinc-400">
                 <a
@@ -964,30 +964,30 @@ export default function PortfolioPage() {
                 href="https://www.linkedin.com/in/jay-t-a6bb1a217"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 text-[11px] lg:text-xs text-zinc-400 hover:text-white transition-colors"
+                className="group inline-flex items-center gap-1.5 sm:gap-2 text-[9.5px] min-[390px]:text-[10.5px] sm:text-xs text-zinc-400 hover:text-white transition-colors"
               >
-                <span className="w-4 h-4 rounded-full bg-[#0A66C2] flex items-center justify-center text-[9px] font-bold text-white group-hover:scale-110 transition-transform shrink-0">
+                <span className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#0A66C2] flex items-center justify-center text-[8px] sm:text-[9px] font-bold text-white group-hover:scale-110 transition-transform shrink-0">
                   in
                 </span>
-                <span className="break-all sm:break-normal">www.linkedin.com/in/jay-t-a6bb1a217</span>
+                <span className="whitespace-nowrap">www.linkedin.com/in/jay-t-a6bb1a217</span>
               </a>
             </div>
           </div>
 
-          {/* ----------------- CENTER COLUMN: PORTRAIT IMAGE ----------------- */}
-          <div className="md:col-span-4 flex items-center justify-center order-1 md:order-2 relative">
+          {/* ----------------- CENTER / MOBILE-RIGHT COLUMN: PORTRAIT IMAGE ----------------- */}
+          <div className="col-span-5 md:col-span-4 flex items-end justify-end md:items-center md:justify-center order-2 relative self-end md:self-center">
             {/* Zero-cost radial studio backlight halo (pure gradients, zero heavy CSS blur filters!) */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -inset-6 lg:-inset-10 flex items-center justify-center"
+              className="pointer-events-none absolute -inset-4 lg:-inset-10 flex items-center justify-center"
             >
-              <div className="w-[210px] h-[250px] sm:w-[260px] sm:h-[310px] md:w-[270px] md:h-[340px] lg:w-[360px] lg:h-[440px] xl:w-[440px] xl:h-[520px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,244,234,0.08)_0%,rgba(255,90,95,0.04)_36%,rgba(34,211,238,0.025)_56%,transparent_72%)] -translate-y-2 md:-translate-y-6 lg:-translate-y-8" />
+              <div className="w-[175px] h-[220px] sm:w-[250px] sm:h-[310px] md:w-[270px] md:h-[340px] lg:w-[360px] lg:h-[440px] xl:w-[440px] xl:h-[520px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,244,234,0.08)_0%,rgba(255,90,95,0.04)_36%,rgba(34,211,238,0.025)_56%,transparent_72%)] -translate-y-2 md:-translate-y-6 lg:-translate-y-8" />
             </div>
 
-            {/* True transparent portrait PNG — tight & balanced on mobile, centered editorial on md+ */}
+            {/* True transparent portrait PNG — right-aligned beside Heading on mobile, centered on md+ */}
             <div
               style={{ '--delay': '110ms' } as React.CSSProperties}
-              className="hero-anim-portrait relative w-[168px] sm:w-[205px] md:w-[235px] lg:w-[320px] xl:w-[415px] aspect-[482/744] max-h-[260px] sm:max-h-[315px] md:max-h-[365px] lg:max-h-[505px] xl:max-h-[630px] mt-1 -mb-14 sm:-mb-16 md:my-0 select-none"
+              className="hero-anim-portrait relative w-[152px] min-[390px]:w-[168px] sm:w-[230px] md:w-[235px] lg:w-[320px] xl:w-[415px] aspect-[482/744] max-h-[245px] min-[390px]:max-h-[270px] sm:max-h-[360px] md:max-h-[365px] lg:max-h-[505px] xl:max-h-[630px] -mr-2 sm:mr-0 -mb-6 sm:-mb-8 md:my-0 select-none shrink-0"
             >
               <Image
                 src="/images/arjay-portrait-hero.png?v=6"
@@ -1000,8 +1000,8 @@ export default function PortfolioPage() {
             </div>
           </div>
 
-          {/* ----------------- RIGHT COLUMN: EXPERTISE & GEOMETRIC ACCENT ----------------- */}
-          <div className="md:col-span-4 space-y-3 sm:space-y-4 lg:space-y-6 text-left order-3 relative mt-3 pt-3.5 border-t border-zinc-900/70 md:border-t-0 md:pt-0 md:mt-0">
+          {/* ----------------- RIGHT / MOBILE-BOTTOM COLUMN: EXPERTISE & GEOMETRIC ACCENT ----------------- */}
+          <div className="col-span-12 md:col-span-4 space-y-3 sm:space-y-4 lg:space-y-6 text-left order-3 relative mt-2 pt-4 border-t border-zinc-900/70 md:border-t-0 md:pt-0 md:mt-0">
             {/* Dynamic floating geometric shapes — tucked cleanly top-right on mobile to save vertical space */}
             <div className="pointer-events-none md:pointer-events-auto absolute -top-2 right-0 scale-[0.6] origin-top-right opacity-85 md:static md:scale-[0.78] md:origin-left lg:scale-95 xl:scale-100 md:opacity-100">
               <GeometricShapes />
