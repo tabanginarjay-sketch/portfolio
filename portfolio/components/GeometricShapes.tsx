@@ -97,8 +97,8 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
         ref={containerRef}
         className={`relative flex items-center justify-center select-none group ${className}`}
       >
-        {/* Parallax-responsive ambient lighting container */}
-        <div ref={parallaxRef} className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        {/* Parallax-responsive ambient lighting container (Always behind Ar-jay's portrait) */}
+        <div ref={parallaxRef} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
           {/* 1. Dynamic Synced Studio Lighting Aura behind Ar-jay (Color-shifting radial aura) */}
           <div
             aria-hidden="true"
@@ -163,8 +163,8 @@ export default function GeometricShapes({ children, className = '' }: GeometricS
           </div>
         </div>
 
-        {/* 7. Ar-jay's Cutout Portrait (Rendered at z-10, between front and back orbit layers!) */}
-        <div className="relative z-10 flex items-center justify-center">
+        {/* 7. Ar-jay's Cutout Portrait (Rendered at z-20, always cleanly in front of the lighting halo!) */}
+        <div className="relative z-20 flex items-center justify-center">
           {children}
         </div>
       </div>
