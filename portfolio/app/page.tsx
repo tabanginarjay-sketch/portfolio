@@ -23,6 +23,10 @@ import {
   Headphones,
   Loader2,
   AlertCircle,
+  Briefcase,
+  GraduationCap,
+  Trophy,
+  Calendar,
 } from 'lucide-react';
 import SmokeAtmosphere from '../components/SmokeAtmosphere';
 import GeometricShapes from '../components/GeometricShapes';
@@ -216,6 +220,93 @@ export default function PortfolioPage() {
     },
   ];
 
+  const workExperience = [
+    {
+      id: 'exp-1',
+      role: 'Freelance Graphic Designer',
+      subtitle: 'Photo / Video Editor',
+      company: 'Self-Employed / Freelance',
+      period: '2021 – 2026',
+      current: true,
+      description:
+        'Provided freelance photo and video editing services while assisting clients with their digital content and social media needs. Managed content scheduling and posting, monitored social media analytics, and utilized Microsoft Office and Google Workspace for administrative tasks, file organization, and client communication.',
+      highlights: ['Photo & Video Editing', 'Social Media Analytics', 'Content Scheduling', 'Google Workspace'],
+    },
+    {
+      id: 'exp-2',
+      role: 'Customer Service Representative',
+      subtitle: 'Customer Advisor II',
+      company: 'Teleperformance',
+      period: '2020 – 2021',
+      current: false,
+      description:
+        'Provided professional customer service and support by assisting corporate clients with their inquiries, concerns, and account-related needs. Maintained positive client relationships through clear communication, timely assistance, and effective problem-solving while handling multiple tasks efficiently.',
+      highlights: ['Corporate Client Support', 'Account Resolution', 'Problem-Solving', 'Multitasking'],
+    },
+    {
+      id: 'exp-3',
+      role: 'Customer Service Representative',
+      subtitle: 'Customer Care / Technical Support',
+      company: 'Concentrix',
+      period: '2019 – 2020',
+      current: false,
+      description:
+        'Provided customer service and support by handling customer inquiries, concerns, and account-related issues. Managed multiple tasks while maintaining professional communication and ensuring that customer concerns were addressed accurately and efficiently, including e-commerce-related operations.',
+      highlights: ['Technical Support', 'E-Commerce Operations', 'Customer Care', 'CRM Systems'],
+    },
+  ];
+
+  const educationHistory = [
+    {
+      id: 'edu-1',
+      school: 'Bestlink College of the Philippines',
+      program: 'Bachelor of Science in Information Technology (BSIT)',
+      period: '2026 – Present',
+      status: 'Current',
+      details: 'Quezon City • Focused on full-stack web systems, UI/UX engineering, and IT solutions.',
+    },
+    {
+      id: 'edu-2',
+      school: 'University of Northern Philippines',
+      program: 'Bachelor of Science in Architecture',
+      period: 'Last Attended 2021',
+      status: 'College',
+      details: 'Developed strong fundamentals in visual composition, drafting, and spatial design thinking.',
+    },
+    {
+      id: 'edu-3',
+      school: 'Belen National High School',
+      program: 'General Academic Strand (GAS)',
+      period: 'Completed in 2017',
+      status: 'Secondary',
+      details: 'Senior High School academic foundation across communication, technology, and humanities.',
+    },
+  ];
+
+  const achievements = [
+    {
+      id: 'ach-1',
+      title: 'Top Performers Award',
+      year: 'Excellence Recognition',
+      description:
+        'Recognized for consistently exceeding performance benchmarks, strong client satisfaction, and dependable delivery.',
+    },
+    {
+      id: 'ach-2',
+      title: 'Best Graphic Designer',
+      year: '2022',
+      description:
+        'Awarded for delivering standout visual design craftsmanship, creative direction, and high-quality media outputs.',
+    },
+    {
+      id: 'ach-3',
+      title: 'Client & Creative Commendations',
+      year: 'Ongoing',
+      description:
+        'Consistently received positive feedback and recognition from managers and clients for high-quality creative outputs and timely execution.',
+    },
+  ];
+
   const filteredProjects =
     activeTab === 'ALL' ? projects : projects.filter((p) => p.category === activeTab);
 
@@ -282,6 +373,13 @@ export default function PortfolioPage() {
               className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
             >
               Featured Websites
+            </a>
+            <a
+              href="#experience"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
+            >
+              Experience &amp; Education
             </a>
             <a
               href="#certificates"
@@ -628,9 +726,188 @@ export default function PortfolioPage() {
       </section>
 
       {/* ========================================================================= */}
+      {/* 3.5 EXPERIENCE, EDUCATION & ACHIEVEMENTS SECTION                          */}
+      {/* ========================================================================= */}
+      <section id="experience" className="relative z-20 py-24 border-t border-zinc-900 bg-black">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-14">
+          {/* Section Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+            <div className="space-y-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
+                <Briefcase className="w-3.5 h-3.5" />
+                Background &amp; Track Record
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+                Experience, Education &amp; Achievements
+              </h2>
+              <p className="text-sm text-zinc-400 max-w-2xl">
+                A proven track record blending freelance visual media production, corporate customer
+                support at Teleperformance &amp; Concentrix, and formal academic training in IT and Architecture.
+              </p>
+            </div>
+
+            <a
+              href="/Ar-jay_Tabangin_CV.pdf"
+              download="Ar-jay_Tabangin_CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 hover:border-[#FF5A5F]/50 text-xs font-bold text-white transition-all self-start sm:self-auto shrink-0"
+            >
+              <Download className="w-3.5 h-3.5 text-[#FF5A5F]" />
+              <span>Download Full CV</span>
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+            {/* LEFT COLUMN: WORK EXPERIENCE TIMELINE */}
+            <div className="lg:col-span-7 space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-rose-500/10 text-[#FF5A5F] flex items-center justify-center border border-rose-500/20">
+                  <Briefcase className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">Work Experience</h3>
+                  <p className="text-xs text-zinc-400">Creative Design, Media Editing &amp; Corporate Client Support</p>
+                </div>
+              </div>
+
+              <div className="relative pl-6 sm:pl-8 space-y-6 before:content-[''] before:absolute before:left-[7px] before:top-3 before:bottom-3 before:w-px before:bg-gradient-to-b before:from-[#FF5A5F] before:via-zinc-800 before:to-transparent">
+                {workExperience.map((exp) => (
+                  <div
+                    key={exp.id}
+                    className="relative group p-6 rounded-3xl bg-zinc-950/85 hover:bg-zinc-900/80 border border-zinc-850 hover:border-[#FF5A5F]/40 transition-all shadow-lg space-y-3.5"
+                  >
+                    {/* Timeline Node Dot */}
+                    <span
+                      className={`absolute -left-[25px] sm:-left-[33px] top-7 w-3.5 h-3.5 rounded-full border-2 border-black ${
+                        exp.current
+                          ? 'bg-[#FF5A5F] shadow-[0_0_12px_rgba(255,90,95,0.8)]'
+                          : 'bg-zinc-600 group-hover:bg-[#FF5A5F] transition-colors'
+                      }`}
+                    />
+
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <div className="space-y-0.5">
+                        <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5A5F]">
+                          {exp.company}
+                        </span>
+                        <h4 className="text-lg font-bold text-white leading-snug">
+                          {exp.role}
+                        </h4>
+                        <p className="text-xs font-medium text-zinc-300">{exp.subtitle}</p>
+                      </div>
+
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-[11px] font-mono text-zinc-300 shrink-0">
+                        <Calendar className="w-3 h-3 text-[#FF5A5F]" />
+                        {exp.period}
+                      </span>
+                    </div>
+
+                    <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                      {exp.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {exp.highlights.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2.5 py-0.5 rounded-lg bg-zinc-900/90 text-[11px] font-medium text-zinc-300 border border-zinc-800"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: EDUCATION + ACHIEVEMENTS */}
+            <div className="lg:col-span-5 space-y-10">
+              {/* EDUCATION */}
+              <div className="space-y-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
+                    <GraduationCap className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Education</h3>
+                    <p className="text-xs text-zinc-400">Academic Background &amp; Schools Attended</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {educationHistory.map((edu) => (
+                    <div
+                      key={edu.id}
+                      className="p-5 rounded-3xl bg-zinc-950/85 hover:bg-zinc-900/80 border border-zinc-850 hover:border-cyan-500/35 transition-all space-y-2"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span
+                          className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
+                            edu.status === 'Current'
+                              ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                              : 'bg-zinc-900 text-zinc-400 border-zinc-800'
+                          }`}
+                        >
+                          {edu.status}
+                        </span>
+                        <span className="text-[11px] font-mono text-zinc-400">{edu.period}</span>
+                      </div>
+
+                      <h4 className="text-base font-bold text-white leading-snug">{edu.school}</h4>
+                      <p className="text-xs font-semibold text-cyan-300/90">{edu.program}</p>
+                      <p className="text-xs text-zinc-400 leading-relaxed">{edu.details}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ACHIEVEMENTS & RECOGNITION */}
+              <div className="space-y-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
+                    <Trophy className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Achievements &amp; Awards</h3>
+                    <p className="text-xs text-zinc-400">Recognition &amp; Creative Honors</p>
+                  </div>
+                </div>
+
+                <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-zinc-950 via-zinc-950 to-amber-950/15 border border-amber-500/20 space-y-4 shadow-xl">
+                  {achievements.map((ach, idx) => (
+                    <div
+                      key={ach.id}
+                      className={`flex items-start gap-3.5 ${
+                        idx !== 0 ? 'pt-4 border-t border-zinc-900' : ''
+                      }`}
+                    >
+                      <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
+                        <Award className="w-4 h-4" />
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h4 className="text-sm font-bold text-white">{ach.title}</h4>
+                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-300 border border-amber-500/20">
+                            {ach.year}
+                          </span>
+                        </div>
+                        <p className="text-xs text-zinc-400 leading-relaxed">{ach.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
       {/* 4. CERTIFICATES & CREDENTIALS SECTION                                     */}
       {/* ========================================================================= */}
-      <section id="certificates" className="relative z-20 py-24 border-t border-zinc-900 bg-black">
+      <section id="certificates" className="relative z-20 py-24 border-t border-zinc-900 bg-[#050505]">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
           {/* Section Header */}
           <div className="space-y-2">
@@ -723,7 +1000,7 @@ export default function PortfolioPage() {
       {/* ========================================================================= */}
       {/* 5. SKILLS & TECHNICAL ARSENAL                                             */}
       {/* ========================================================================= */}
-      <section id="skills" className="relative z-20 py-24 border-t border-zinc-900 bg-[#050505]">
+      <section id="skills" className="relative z-20 py-24 border-t border-zinc-900 bg-black">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F]">
