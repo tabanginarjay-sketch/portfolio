@@ -285,7 +285,7 @@ export default function PortfolioPage() {
             <div className="pt-8 flex flex-col space-y-4">
               <div className="flex items-center gap-5 text-zinc-400">
                 <a
-                  href="https://facebook.com"
+                  href="https://www.facebook.com/share/1CstVHcQAw/?mibextid=wwXIfr"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors text-sm font-bold font-serif"
@@ -294,18 +294,18 @@ export default function PortfolioPage() {
                   f
                 </a>
                 <a
-                  href="https://twitter.com"
+                  href="https://t.me/Bupbup1234"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-white transition-colors text-xs font-bold"
-                  aria-label="Twitter"
+                  className="hover:text-white transition-colors"
+                  aria-label="Telegram"
                 >
-                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l-.313 4.693c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.435z" />
                   </svg>
                 </a>
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/jay.fowp?jplx=YjY0dzk2dzMycG9r&utm_source=qr"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
@@ -317,17 +317,17 @@ export default function PortfolioPage() {
                 </a>
               </div>
 
-              {/* Dribbble Link with Pink Basketball Badge */}
+              {/* LinkedIn Link with Blue 'in' Badge */}
               <a
-                href="https://dribbble.com"
+                href="https://www.linkedin.com/in/jay-t-a6bb1a217"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-xs text-zinc-400 hover:text-white transition-colors"
+                className="group inline-flex items-center gap-2 text-xs text-zinc-400 hover:text-white transition-colors"
               >
-                <span className="w-4 h-4 rounded-full bg-[#EA4C89] flex items-center justify-center text-[10px] text-white">
-                  🏀
+                <span className="w-4 h-4 rounded-full bg-[#0A66C2] flex items-center justify-center text-[9px] font-bold text-white group-hover:scale-110 transition-transform">
+                  in
                 </span>
-                <span>www.dribbble.com/arjay</span>
+                <span>www.linkedin.com/in/jay-t-a6bb1a217</span>
               </a>
             </div>
           </div>
@@ -770,7 +770,53 @@ export default function PortfolioPage() {
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-wrap items-center justify-center sm:justify-end gap-4">
+                      {/* Footer Social Links */}
+                      <div className="flex items-center gap-3 pr-2 text-zinc-400">
+                        <a
+                          href="https://www.facebook.com/share/1CstVHcQAw/?mibextid=wwXIfr"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-white transition-colors text-xs font-bold font-serif"
+                          aria-label="Facebook"
+                        >
+                          f
+                        </a>
+                        <a
+                          href="https://t.me/Bupbup1234"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-white transition-colors"
+                          aria-label="Telegram"
+                        >
+                          <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                            <path d="m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l-.313 4.693c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.435z" />
+                          </svg>
+                        </a>
+                        <a
+                          href="https://www.instagram.com/jay.fowp?jplx=YjY0dzk2dzMycG9r&utm_source=qr"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-white transition-colors"
+                          aria-label="Instagram"
+                        >
+                          <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                          </svg>
+                        </a>
+                        <a
+                          href="https://www.linkedin.com/in/jay-t-a6bb1a217"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-white transition-colors flex items-center justify-center"
+                          aria-label="LinkedIn"
+                        >
+                          <span className="w-3.5 h-3.5 rounded bg-[#0A66C2] flex items-center justify-center text-[8px] font-bold text-white">
+                            in
+                          </span>
+                        </a>
+                      </div>
+
                       <button
                         onClick={() => setIsChatModalOpen(true)}
                         className="px-5 py-2.5 rounded-full bg-[#FF5A5F] hover:bg-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
