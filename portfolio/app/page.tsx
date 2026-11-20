@@ -21,6 +21,8 @@ import {
   Eye,
   Video,
   Headphones,
+  Loader2,
+  AlertCircle,
 } from 'lucide-react';
 import SmokeAtmosphere from '../components/SmokeAtmosphere';
 import GeometricShapes from '../components/GeometricShapes';
@@ -31,6 +33,75 @@ export default function PortfolioPage() {
   const [activeTab, setActiveTab] = useState<'ALL' | 'WEB' | 'PWA' | 'UIUX'>('ALL');
   const [selectedCertificate, setSelectedCertificate] = useState<any | null>(null);
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
+
+  // Contact / Let's Chat form state
+  const [contactName, setContactName] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactMessage, setContactMessage] = useState('');
+  const [contactStatus, setContactStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [contactError, setContactError] = useState('');
+
+  const closeChatModal = () => {
+    setIsChatModalOpen(false);
+    if (contactStatus === 'sent' || contactStatus === 'error') {
+      setContactStatus('idle');
+      setContactError('');
+    }
+  };
+
+  const buildMailtoHref = () => {
+    const subject = encodeURIComponent(
+      `Portfolio Inquiry from ${contactName.trim() || 'Website Visitor'}`
+    );
+    const body = encodeURIComponent(
+      `Name: ${contactName.trim()}\nEmail: ${contactEmail.trim()}\n\nMessage:\n${contactMessage.trim()}`
+    );
+    return `mailto:tabanginarjay@gmail.com?subject=${subject}&body=${body}`;
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!contactName.trim() || !contactEmail.trim() || !contactMessage.trim()) return;
+
+    setContactStatus('sending');
+    setContactError('');
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/tabanginarjay@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: contactName.trim(),
+          email: contactEmail.trim(),
+          message: contactMessage.trim(),
+          _subject: `New Portfolio Message from ${contactName.trim()}`,
+          _replyto: contactEmail.trim(),
+          _template: 'table',
+          _captcha: 'false',
+        }),
+      });
+
+      const data = await response.json().catch(() => null);
+      if (response.ok && (data?.success === 'true' || data?.success === true)) {
+        setContactStatus('sent');
+        setContactName('');
+        setContactEmail('');
+        setContactMessage('');
+      } else {
+        throw new Error(data?.message || 'Unable to deliver message right now.');
+      }
+    } catch (err) {
+      setContactStatus('error');
+      setContactError(
+        err instanceof Error
+          ? err.message
+          : 'Could not send directly right now. Use the quick email button below.'
+      );
+    }
+  };
 
   // Projects data (Featuring Ar-jay's actual deployed platforms & applications)
   const projects = [
@@ -420,11 +491,12 @@ export default function PortfolioPage() {
           </div>
         </div>
 
-        {/* Bottom Floating "Let's Chat" Pill (Matching Reference) */}
-        <div className="w-full flex justify-end pt-10 sm:pt-4">
+        {/* Bottom Floating "Let's Chat" Pill (Above SmokeAtmosphere z-10 fade) */}
+        <div className="relative z-30 w-full flex justify-end pt-8 sm:pt-4">
           <button
+            type="button"
             onClick={() => setIsChatModalOpen(true)}
-            className="group flex items-center gap-2.5 px-4 py-2 rounded-full bg-zinc-950/80 hover:bg-zinc-900 border border-zinc-800 text-xs font-bold text-white transition-all shadow-lg hover:border-[#FF5A5F]/50 cursor-pointer"
+            className="group flex items-center gap-2.5 px-4 py-2 rounded-full bg-zinc-950/90 hover:bg-zinc-900 border border-zinc-800 text-xs font-bold text-white transition-all shadow-lg hover:border-[#FF5A5F]/60 active:scale-95 cursor-pointer"
           >
             <span>Let&apos;s Chat</span>
             <span className="relative flex h-2 w-2">
@@ -859,12 +931,15 @@ export default function PortfolioPage() {
                 {/* 7. INTERACTIVE "LET'S CHAT / HIRE ME" MODAL                               */}
                 {/* ========================================================================= */}
                 {isChatModalOpen && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
+                  <div
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in"
+                    onClick={closeChatModal}
+                  >
                     <div
-                      className="relative w-full max-w-lg rounded-3xl bg-zinc-950 border border-zinc-800 p-6 sm:p-8 shadow-2xl space-y-6"
+                      className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl bg-zinc-950 border border-zinc-800 p-6 sm:p-8 shadow-2xl space-y-6"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <div className="flex items-start justify-between">
+                      <div className="flex items-start justify-between gap-4">
                         <div className="space-y-1">
                           <span className="text-[11px] font-bold uppercase tracking-wider text-[#FF5A5F] flex items-center gap-1.5">
                             <Sparkles className="w-3.5 h-3.5" />
@@ -872,73 +947,147 @@ export default function PortfolioPage() {
                           </span>
                           <h3 className="text-2xl font-bold text-white">Let&apos;s Build Together</h3>
                           <p className="text-xs text-zinc-400">
-                            Ready to collaborate on your brand, website, or custom application?
+                            Send a direct message straight to Ar-jay&apos;s inbox (tabanginarjay@gmail.com).
                           </p>
                         </div>
                         <button
-                          onClick={() => setIsChatModalOpen(false)}
-                          className="p-2 rounded-xl bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"
+                          type="button"
+                          onClick={closeChatModal}
+                          aria-label="Close modal"
+                          className="p-2 rounded-xl bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800 cursor-pointer transition-colors"
                         >
                           <X className="w-4 h-4" />
                         </button>
                       </div>
 
-                      <form
-                        onSubmit={(e) => {
-                          e.preventDefault();
-                          alert('Thank you! Your message has been prepared. You can also reach out directly via email.');
-                          setIsChatModalOpen(false);
-                        }}
-                        className="space-y-4 text-xs"
-                      >
-                        <div className="space-y-1 text-left">
-                          <label className="font-bold text-zinc-300">Your Name</label>
-                          <input
-                            type="text"
-                            required
-                            placeholder="e.g. John Doe"
-                            className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors"
-                          />
+                      {contactStatus === 'sent' ? (
+                        <div className="py-6 text-center space-y-4">
+                          <div className="w-14 h-14 mx-auto rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                            <CheckCircle2 className="w-8 h-8" />
+                          </div>
+                          <div className="space-y-1.5">
+                            <h4 className="text-xl font-bold text-white">Message Sent!</h4>
+                            <p className="text-xs text-zinc-400 max-w-sm mx-auto leading-relaxed">
+                              Thank you for reaching out. Your inquiry has been sent to{' '}
+                              <span className="text-zinc-200 font-medium">tabanginarjay@gmail.com</span>.
+                              Ar-jay will get back to you shortly.
+                            </p>
+                          </div>
+                          <div className="pt-2 flex items-center justify-center gap-3">
+                            <button
+                              type="button"
+                              onClick={() => setContactStatus('idle')}
+                              className="px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 text-xs font-bold transition-colors cursor-pointer"
+                            >
+                              Send Another
+                            </button>
+                            <button
+                              type="button"
+                              onClick={closeChatModal}
+                              className="px-6 py-2 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+                            >
+                              Done
+                            </button>
+                          </div>
                         </div>
+                      ) : (
+                        <form onSubmit={handleContactSubmit} className="space-y-4 text-xs">
+                          <div className="space-y-1 text-left">
+                            <label htmlFor="contact-name" className="font-bold text-zinc-300">
+                              Your Name
+                            </label>
+                            <input
+                              id="contact-name"
+                              name="name"
+                              type="text"
+                              required
+                              value={contactName}
+                              onChange={(e) => setContactName(e.target.value)}
+                              disabled={contactStatus === 'sending'}
+                              placeholder="e.g. John Doe"
+                              className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors disabled:opacity-60"
+                            />
+                          </div>
 
-                        <div className="space-y-1 text-left">
-                          <label className="font-bold text-zinc-300">Your Email Address</label>
-                          <input
-                            type="email"
-                            required
-                            placeholder="e.g. john@company.com"
-                            className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors"
-                          />
-                        </div>
+                          <div className="space-y-1 text-left">
+                            <label htmlFor="contact-email" className="font-bold text-zinc-300">
+                              Your Email Address
+                            </label>
+                            <input
+                              id="contact-email"
+                              name="email"
+                              type="email"
+                              required
+                              value={contactEmail}
+                              onChange={(e) => setContactEmail(e.target.value)}
+                              disabled={contactStatus === 'sending'}
+                              placeholder="e.g. john@company.com"
+                              className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors disabled:opacity-60"
+                            />
+                          </div>
 
-                        <div className="space-y-1 text-left">
-                          <label className="font-bold text-zinc-300">Project Overview / Scope</label>
-                          <textarea
-                            rows={4}
-                            required
-                            placeholder="Tell me about the website, mobile app, or design you would like to build..."
-                            className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors resize-none"
-                          />
-                        </div>
+                          <div className="space-y-1 text-left">
+                            <label htmlFor="contact-message" className="font-bold text-zinc-300">
+                              Project Overview / Message
+                            </label>
+                            <textarea
+                              id="contact-message"
+                              name="message"
+                              rows={4}
+                              required
+                              value={contactMessage}
+                              onChange={(e) => setContactMessage(e.target.value)}
+                              disabled={contactStatus === 'sending'}
+                              placeholder="Tell me about the website, mobile app, or design you would like to build..."
+                              className="w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF5A5F] transition-colors resize-none disabled:opacity-60"
+                            />
+                          </div>
 
-                        <div className="pt-2 flex items-center justify-between gap-3">
-                          <a
-                            href="mailto:tabanginarjay@gmail.com"
-                            className="text-xs text-zinc-400 hover:text-white flex items-center gap-1.5"
-                          >
-                            <Mail className="w-3.5 h-3.5 text-[#FF5A5F]" />
-                            <span>tabanginarjay@gmail.com</span>
-                          </a>
+                          {contactStatus === 'error' && (
+                            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-200 space-y-2 text-left">
+                              <div className="flex items-start gap-2">
+                                <AlertCircle className="w-4 h-4 text-[#FF5A5F] shrink-0 mt-0.5" />
+                                <p className="text-[11px] leading-relaxed">{contactError}</p>
+                              </div>
+                              <a
+                                href={buildMailtoHref()}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-white text-[11px] font-bold transition-colors"
+                              >
+                                <Mail className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                                <span>Open Pre-filled Email App Instead</span>
+                              </a>
+                            </div>
+                          )}
 
-                          <button
-                            type="submit"
-                            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white font-bold transition-all shadow-md active:scale-95 flex items-center gap-1.5 cursor-pointer"
-                          >
-                            <span>Send Message</span>
-                            <Send className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </form>
+                          <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
+                            <a
+                              href={buildMailtoHref()}
+                              className="text-xs text-zinc-400 hover:text-white flex items-center gap-1.5 transition-colors"
+                            >
+                              <Mail className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                              <span>tabanginarjay@gmail.com</span>
+                            </a>
+
+                            <button
+                              type="submit"
+                              disabled={contactStatus === 'sending'}
+                              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] hover:brightness-110 text-white font-bold transition-all shadow-md active:scale-95 flex items-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                            >
+                              {contactStatus === 'sending' ? (
+                                <>
+                                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                  <span>Sending...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <span>Send Message</span>
+                                  <Send className="w-3.5 h-3.5" />
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </form>
+                      )}
                     </div>
                   </div>
                 )}
