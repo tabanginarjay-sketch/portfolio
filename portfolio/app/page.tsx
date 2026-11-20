@@ -310,7 +310,7 @@ export default function PortfolioPage() {
     },
   ];
 
-  const editCategories = ['All', 'Sneaker Cleaning', 'Sneaker Restoration', 'Shoe Repair', 'Leather Care'];
+  const editCategories = ['All', 'Sneaker Cleaning', 'Sneaker Restoration', 'Leather Care'];
 
   const editSamples = [
     {
@@ -336,17 +336,6 @@ export default function PortfolioPage() {
       techniques: ['Texture Revival', 'Tone Matching', 'Edge Cleanup'],
     },
     {
-      id: 'edit-3',
-      title: 'Precision Outsole Delamination Rebonding',
-      subject: "Court Heritage High-Top 'Triple White'",
-      category: 'Shoe Repair',
-      beforeImage: '/images/edits/repair-before.jpg',
-      afterImage: '/images/edits/repair-after.jpg',
-      editNotes:
-        'Severe outsole separation along the forefoot and toe box with yellowed adhesive residue and scuffed leather seamlessly reconstructed and brightened.',
-      techniques: ['Structural Retouch', 'De-Yellowing', 'Surface Polish'],
-    },
-    {
       id: 'edit-4',
       title: 'Artisan Hand-Buffed Wax Polish & Scuff Buffing',
       subject: 'Handcrafted Calfskin Leather Oxford Cap-Toes',
@@ -356,17 +345,6 @@ export default function PortfolioPage() {
       editNotes:
         'Dry, parched calfskin leather with abrasive toe-cap scratches transformed with rich tonal conditioning, pigment blending, and specular mirror shine.',
       techniques: ['Leather Retouch', 'Scuff Removal', 'Specular Gloss'],
-    },
-    {
-      id: 'edit-5',
-      title: 'Inner Heel Collar & Structural Stitching Re-lining',
-      subject: "Retro Court High-Top 'White & Grey'",
-      category: 'Shoe Repair',
-      beforeImage: '/images/edits/heel-repair-before.jpg',
-      afterImage: '/images/edits/heel-repair-after.jpg',
-      editNotes:
-        'Shredded inner heel collar fabric and exposed yellowed foam reconstructed with clean charcoal microfiber lining and crisp double-stitching detail.',
-      techniques: ['Fabric Reconstruction', 'Detail Cloning', 'Lighting Match'],
     },
     {
       id: 'edit-6',
@@ -474,20 +452,6 @@ export default function PortfolioPage() {
               Home
             </a>
             <a
-              href="#projects"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
-            >
-              Featured Websites
-            </a>
-            <a
-              href="#edits"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
-            >
-              Photo Edit Samples
-            </a>
-            <a
               href="#experience"
               onClick={() => setIsMenuOpen(false)}
               className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
@@ -500,6 +464,20 @@ export default function PortfolioPage() {
               className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
             >
               Certificates
+            </a>
+            <a
+              href="#projects"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
+            >
+              Featured Websites
+            </a>
+            <a
+              href="#edits"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-zinc-400 hover:text-[#FF5A5F] transition-colors"
+            >
+              Photo Edit Samples
             </a>
             <a
               href="#skills"
@@ -720,206 +698,7 @@ export default function PortfolioPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. FEATURED WEBSITES & PROJECTS SECTION ("yung ibang nagawa naming website")*/}
-      {/* ========================================================================= */}
-      <section id="projects" className="relative z-20 py-24 border-t border-zinc-900 bg-[#050505]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
-          {/* Section Header */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-            <div className="space-y-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
-                <Sparkles className="w-3.5 h-3.5" />
-                Featured Portfolio
-              </span>
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-                Websites & Applications We&apos;ve Built
-              </h2>
-              <p className="text-sm text-zinc-400 max-w-xl">
-                Real-world web apps, modern e-commerce storefronts, and specialized Progressive Web
-                Apps crafted with Next.js, TypeScript, and live cloud databases.
-              </p>
-            </div>
-
-            {/* Category Filter Tabs */}
-            <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-zinc-900/90 border border-zinc-800 self-start sm:self-auto overflow-x-auto">
-              {(['ALL', 'WEB', 'PWA', 'UIUX'] as const).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === tab
-                    ? 'bg-[#FF5A5F] text-white shadow-xs'
-                    : 'text-zinc-400 hover:text-white'
-                    }`}
-                >
-                  {tab === 'ALL'
-                    ? 'All Projects'
-                    : tab === 'WEB'
-                      ? 'Websites'
-                      : tab === 'PWA'
-                        ? 'PWA Apps'
-                        : 'UI/UX'}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-            {filteredProjects.map((project) => (
-              <div
-                key={project.id}
-                className="group relative rounded-3xl bg-zinc-950/70 border border-zinc-850 hover:border-[#FF5A5F]/60 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-rose-950/20 flex flex-col"
-              >
-                {/* Project Screenshot / Thumbnail */}
-                <div className="relative aspect-video w-full overflow-hidden bg-zinc-900">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/30 to-transparent" />
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-black/80 backdrop-blur-md text-emerald-400 border border-emerald-500/30">
-                      {project.status}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Project Info */}
-                <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="text-xs font-mono font-bold text-[#FF5A5F]">
-                        {project.type}
-                      </span>
-                    </div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-[#FF5A5F] transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                      {project.description}
-                    </p>
-                  </div>
-
-                  {/* Tech Stack Tags & Actions */}
-                  <div className="pt-3 border-t border-zinc-900 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2.5 py-0.5 rounded-lg bg-zinc-900 text-[11px] font-medium text-zinc-300 border border-zinc-800"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => setSelectedProject(project)}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-white hover:text-[#FF5A5F] transition-colors cursor-pointer shrink-0"
-                    >
-                      <span>View Details</span>
-                      <ExternalLink className="w-3.5 h-3.5 text-[#FF5A5F]" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Featured Projects Note */}
-          <div className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center">
-            <p className="text-xs text-zinc-400">
-              💡 <strong>Featured Work:</strong> Featuring Ar-jay&apos;s real platforms and systems, including the live <strong>EduScholar Scholarship System</strong> on Railway, <strong>Kusina Ordering App</strong>, <strong>Campus Navigator</strong>, and <strong>Sole Surgeon Atelier</strong>.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 3.2 PHOTO EDITING & BEFORE/AFTER RETOUCHING SAMPLES                       */}
-      {/* ========================================================================= */}
-      <section id="edits" className="relative z-20 py-24 border-t border-zinc-900 bg-black overflow-hidden">
-        {/* Subtle studio radial ambient */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-24 left-1/2 -translate-x-1/2 w-[720px] h-[340px] rounded-full bg-[#FF5A5F]/[0.04] blur-[140px]"
-        />
-
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
-          {/* Section Header */}
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <div className="space-y-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
-                <SlidersHorizontal className="w-3.5 h-3.5" />
-                Photo Editing &amp; Retouching Showcase
-              </span>
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-                Before &amp; After Edit Samples
-              </h2>
-              <p className="text-sm text-zinc-400 max-w-xl">
-                Interactive product retouching &amp; restoration comparisons from the{' '}
-                <strong className="text-zinc-200">Sole Surgeon Atelier</strong> archive. Watch the smooth
-                auto-sweep transition, drag the divider, or toggle <strong className="text-zinc-200">Before / After</strong>{' '}
-                to inspect every pixel.
-              </p>
-            </div>
-
-            {/* Category Filter Pills */}
-            <div className="flex flex-wrap lg:flex-nowrap items-center gap-1 p-1.5 rounded-2xl bg-zinc-900/90 border border-zinc-800 self-start lg:self-auto lg:shrink-0">
-              {editCategories.map((cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setActiveEditCategory(cat)}
-                  className={`px-3 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
-                    activeEditCategory === cat
-                      ? 'bg-[#FF5A5F] text-white shadow-xs'
-                      : 'text-zinc-400 hover:text-white'
-                  }`}
-                >
-                  {cat === 'All' ? `All (${editSamples.length})` : cat}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* All 7 Interactive Before & After Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-            {filteredEdits.map((sample, idx) => {
-              const isOddLastCard =
-                filteredEdits.length % 2 === 1 && idx === filteredEdits.length - 1;
-              return (
-                <div
-                  key={sample.id}
-                  className={
-                    isOddLastCard
-                      ? 'md:col-span-2 md:max-w-[calc(50%-0.875rem)] md:mx-auto md:w-full'
-                      : ''
-                  }
-                >
-                  <BeforeAfterEditCard
-                    title={sample.title}
-                    subject={sample.subject}
-                    category={sample.category}
-                    beforeImage={sample.beforeImage}
-                    afterImage={sample.afterImage}
-                    editNotes={sample.editNotes}
-                    techniques={sample.techniques}
-                    delayOffsetMs={(idx % 4) * 450}
-                    priority={idx < 2}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 3.5 EXPERIENCE, EDUCATION & ACHIEVEMENTS SECTION                          */}
+      {/* 3. BACKGROUND & TRACK RECORD (EXPERIENCE, EDUCATION & ACHIEVEMENTS)       */}
       {/* ========================================================================= */}
       <section id="experience" className="relative z-20 py-24 border-t border-zinc-900 bg-[#050505]">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-14">
@@ -1186,6 +965,205 @@ export default function PortfolioPage() {
             <p className="text-xs text-zinc-400">
               📜 <strong>Verified Credentials:</strong> All credentials above are officially completed and verified by Cisco Networking Academy, DICT Region VIII, AI Dev PH, and Jobs180. Click any card to preview the official certificate or download the CV.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 5. FEATURED WEBSITES & PROJECTS SECTION ("yung ibang nagawa naming website")*/}
+      {/* ========================================================================= */}
+      <section id="projects" className="relative z-20 py-24 border-t border-zinc-900 bg-[#050505]">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
+          {/* Section Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+            <div className="space-y-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
+                <Sparkles className="w-3.5 h-3.5" />
+                Featured Portfolio
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+                Websites & Applications We&apos;ve Built
+              </h2>
+              <p className="text-sm text-zinc-400 max-w-xl">
+                Real-world web apps, modern e-commerce storefronts, and specialized Progressive Web
+                Apps crafted with Next.js, TypeScript, and live cloud databases.
+              </p>
+            </div>
+
+            {/* Category Filter Tabs */}
+            <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-zinc-900/90 border border-zinc-800 self-start sm:self-auto overflow-x-auto">
+              {(['ALL', 'WEB', 'PWA', 'UIUX'] as const).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === tab
+                    ? 'bg-[#FF5A5F] text-white shadow-xs'
+                    : 'text-zinc-400 hover:text-white'
+                    }`}
+                >
+                  {tab === 'ALL'
+                    ? 'All Projects'
+                    : tab === 'WEB'
+                      ? 'Websites'
+                      : tab === 'PWA'
+                        ? 'PWA Apps'
+                        : 'UI/UX'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Projects Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+            {filteredProjects.map((project) => (
+              <div
+                key={project.id}
+                className="group relative rounded-3xl bg-zinc-950/70 border border-zinc-850 hover:border-[#FF5A5F]/60 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-rose-950/20 flex flex-col"
+              >
+                {/* Project Screenshot / Thumbnail */}
+                <div className="relative aspect-video w-full overflow-hidden bg-zinc-900">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/30 to-transparent" />
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-black/80 backdrop-blur-md text-emerald-400 border border-emerald-500/30">
+                      {project.status}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Project Info */}
+                <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-xs font-mono font-bold text-[#FF5A5F]">
+                        {project.type}
+                      </span>
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-[#FF5A5F] transition-colors">
+                      {project.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                      {project.description}
+                    </p>
+                  </div>
+
+                  {/* Tech Stack Tags & Actions */}
+                  <div className="pt-3 border-t border-zinc-900 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2.5 py-0.5 rounded-lg bg-zinc-900 text-[11px] font-medium text-zinc-300 border border-zinc-800"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setSelectedProject(project)}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-white hover:text-[#FF5A5F] transition-colors cursor-pointer shrink-0"
+                    >
+                      <span>View Details</span>
+                      <ExternalLink className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Featured Projects Note */}
+          <div className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center">
+            <p className="text-xs text-zinc-400">
+              💡 <strong>Featured Work:</strong> Featuring Ar-jay&apos;s real platforms and systems, including the live <strong>EduScholar Scholarship System</strong> on Railway, <strong>Kusina Ordering App</strong>, <strong>Campus Navigator</strong>, and <strong>Sole Surgeon Atelier</strong>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 6. PHOTO EDITING & BEFORE/AFTER RETOUCHING SAMPLES                        */}
+      {/* ========================================================================= */}
+      <section id="edits" className="relative z-20 py-24 border-t border-zinc-900 bg-black overflow-hidden">
+        {/* Subtle studio radial ambient */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-24 left-1/2 -translate-x-1/2 w-[720px] h-[340px] rounded-full bg-[#FF5A5F]/[0.04] blur-[140px]"
+        />
+
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
+          {/* Section Header */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div className="space-y-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F] flex items-center gap-2">
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+                Photo Editing &amp; Retouching Showcase
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+                Before &amp; After Edit Samples
+              </h2>
+              <p className="text-sm text-zinc-400 max-w-xl">
+                Interactive product retouching &amp; restoration comparisons from the{' '}
+                <strong className="text-zinc-200">Sole Surgeon Atelier</strong> archive. Watch the smooth
+                auto-sweep transition, drag the divider, or toggle <strong className="text-zinc-200">Before / After</strong>{' '}
+                to inspect every pixel.
+              </p>
+            </div>
+
+            {/* Category Filter Pills */}
+            <div className="flex flex-wrap lg:flex-nowrap items-center gap-1 p-1.5 rounded-2xl bg-zinc-900/90 border border-zinc-800 self-start lg:self-auto lg:shrink-0">
+              {editCategories.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setActiveEditCategory(cat)}
+                  className={`px-3 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
+                    activeEditCategory === cat
+                      ? 'bg-[#FF5A5F] text-white shadow-xs'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  {cat === 'All' ? `All (${editSamples.length})` : cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Interactive Before & After Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+            {filteredEdits.map((sample, idx) => {
+              const isOddLastCard =
+                filteredEdits.length % 2 === 1 && idx === filteredEdits.length - 1;
+              return (
+                <div
+                  key={sample.id}
+                  className={
+                    isOddLastCard
+                      ? 'md:col-span-2 md:max-w-[calc(50%-0.875rem)] md:mx-auto md:w-full'
+                      : ''
+                  }
+                >
+                  <BeforeAfterEditCard
+                    title={sample.title}
+                    subject={sample.subject}
+                    category={sample.category}
+                    beforeImage={sample.beforeImage}
+                    afterImage={sample.afterImage}
+                    editNotes={sample.editNotes}
+                    techniques={sample.techniques}
+                    delayOffsetMs={(idx % 4) * 450}
+                    priority={idx < 2}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
