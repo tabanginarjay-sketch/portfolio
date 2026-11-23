@@ -236,6 +236,19 @@ export default function PortfolioPage() {
       github: '#',
       status: 'Production PWA',
     },
+    {
+      id: 'proj-5',
+      title: "Jhe's Cafe' - Specialty Roastery & Order Lounge",
+      category: 'WEB',
+      type: 'Luxury Coffee Roastery E-Commerce & Barista Dispatch',
+      description:
+        'A Starbucks Reserve-inspired luxury coffee shop ordering platform featuring an interactive barista customizer, type-specific formulation rules, live Airtable sync, and high-performance ordering.',
+      tags: ['Next.js', 'FastAPI', 'Airtable Sync', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+      image: '/images/projects/jhes-cafe.png',
+      link: 'https://jhescafe.vercel.app/',
+      github: 'https://github.com/tabanginarjay-sketch/jhes-cafe',
+      status: 'Live on Vercel',
+    },
   ];
 
   // Official Certificates & Accreditations (All 7 verified certifications — View-Only & Hold-to-Reveal Protected)
@@ -1842,7 +1855,7 @@ export default function PortfolioPage() {
             className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center"
           >
             <p className="text-xs text-zinc-400">
-              💡 <strong>Featured Work:</strong> Featuring Ar-jay&apos;s real platforms and systems, including the live <strong>EduScholar Scholarship System</strong> on Railway, <strong>Kusina Ordering App</strong>, <strong>Campus Navigator</strong>, and <strong>Sole Surgeon Atelier</strong>.
+              💡 <strong>Featured Work:</strong> Featuring Ar-jay&apos;s real platforms and systems, including the live <strong>EduScholar Scholarship System</strong> on Railway, <strong>Jhe&apos;s Cafe&apos; Roastery &amp; Ordering Platform</strong>, <strong>Kusina Ordering App</strong>, <strong>Campus Navigator</strong>, and <strong>Sole Surgeon Atelier</strong>.
             </p>
           </div>
         </div>
