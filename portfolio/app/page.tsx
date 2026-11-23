@@ -1095,10 +1095,10 @@ export default function PortfolioPage() {
                 className="hero-anim-up pt-1 lg:pt-2 space-y-1"
               >
                 <p className="text-white text-[13px] min-[390px]:text-sm sm:text-lg md:text-sm lg:text-lg xl:text-xl font-bold tracking-wide leading-snug">
-                  Aspiring Full-Stack Developer &amp; UI/UX Designer
+                  Full-Stack Web Engineering &amp; User-Centered Design
                 </p>
                 <p className="text-zinc-400 text-[10.5px] min-[390px]:text-[11px] sm:text-sm md:text-xs lg:text-sm xl:text-base font-medium leading-snug">
-                  BSIT Student &bull; Certified Customer Service &bull; Multimedia Editor
+                  Freelance Photo &amp; Video Editor &bull; Customer Service Professional
                 </p>
               </div>
             </div>
@@ -1218,19 +1218,20 @@ export default function PortfolioPage() {
 
               <div>
                 <span className="text-[#FF5A5F] text-[11px] sm:text-xs font-bold uppercase tracking-wider block">
-                  Engineering Profile
+                  Profile &amp; Vision
                 </span>
 
                 <h2 className="text-[15px] sm:text-lg md:text-base lg:text-xl xl:text-2xl font-bold text-white leading-snug pr-20 md:pr-0">
                   Full-Stack Web Engineering <br className="hidden md:block" />
                   &amp; User-Centered Design <br className="hidden md:block" />
-                  with Proven Corporate Support <br className="hidden md:block" />
-                  and Media Craft.
+                  <span className="text-zinc-400 font-medium text-xs sm:text-sm md:text-xs lg:text-sm block pt-1">
+                    Freelance Photo &amp; Video Editor &bull; Customer Service Professional
+                  </span>
                 </h2>
               </div>
 
-              <p className="text-zinc-400 text-xs sm:text-sm md:text-xs lg:text-sm leading-relaxed max-w-sm pt-0.5 lg:pt-1">
-                Motivated 3rd-year BSIT developer building real-world, cloud-deployed web applications with Next.js, TypeScript, and FastAPI. Delivering high attention to detail through UI/UX design, customer excellence, and multimedia post-production.
+              <p className="text-zinc-300 text-xs sm:text-sm md:text-xs lg:text-sm leading-relaxed max-w-sm pt-0.5 lg:pt-1">
+                Building functional digital experiences through technology, creative storytelling, and proven corporate customer support experience.
               </p>
             </div>
 
