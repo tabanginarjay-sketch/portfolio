@@ -44,7 +44,7 @@ export default function PortfolioPage() {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'ALL' | 'WEB' | 'PWA' | 'UIUX'>('ALL');
+  const [activeTab, setActiveTab] = useState<'ALL' | 'WEB' | 'PWA'>('ALL');
   const [activeEditCategory, setActiveEditCategory] = useState<string>('All');
   const [selectedCertificate, setSelectedCertificate] = useState<any | null>(null);
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
@@ -204,24 +204,24 @@ export default function PortfolioPage() {
       type: 'Restaurant Food Ordering & Menu App',
       description:
         'A streamlined restaurant digital menu, dynamic item builder, real-time checkout cart, and customer dispatch system developed for Anna Quintos Lagmay.',
-      tags: ['React', 'TypeScript', 'Tailwind CSS', 'REST API', 'Cart Management', 'Mobile UI'],
+      tags: ['Laravel', 'Vite', 'Tailwind CSS', 'Stripe Checkout', 'REST API', 'Mobile UI'],
       image: '/images/thumb_photo-1542120178-984cbcccff94.jpg',
-      link: '#',
+      link: 'https://kusina-ordering-app.onrender.com/',
       github: '#',
-      status: 'Client Delivered',
+      status: 'Live on Render',
     },
     {
       id: 'proj-3',
-      title: 'Campus Navigator',
-      category: 'UIUX',
-      type: 'Interactive University Wayfinding & Navigation',
+      title: "Jhe's Cafe' - Specialty Roastery & Ordering Platform",
+      category: 'WEB',
+      type: 'Luxury Coffee Roastery E-Commerce & Barista Dispatch',
       description:
-        'An interactive campus directory and floor-by-floor wayfinding design system enabling students, faculty, and campus visitors at Bestlink College of the Philippines to navigate university facilities effortlessly.',
-      tags: ['UI/UX Design', 'Figma', 'Interactive Maps', 'Wayfinding', 'Tailwind CSS'],
-      image: '/images/thumb_photo-1521097472625-419f0a4bbb6d.jpg',
-      link: '#',
-      github: '#',
-      status: 'Campus Implemented',
+        'A Starbucks Reserve-inspired luxury coffee shop ordering platform featuring an interactive barista customizer, type-specific formulation rules, live Airtable sync, and high-performance ordering.',
+      tags: ['Next.js 16', 'FastAPI', 'Airtable Sync', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+      image: '/images/projects/jhes-cafe.png',
+      link: 'https://jhescafe.vercel.app/',
+      github: 'https://github.com/tabanginarjay-sketch/jhes-cafe',
+      status: 'Live on Vercel',
     },
     {
       id: 'proj-4',
@@ -235,19 +235,6 @@ export default function PortfolioPage() {
       link: 'https://sole-surgeon-pwa.vercel.app/',
       github: '#',
       status: 'Production PWA',
-    },
-    {
-      id: 'proj-5',
-      title: "Jhe's Cafe' - Specialty Roastery & Order Lounge",
-      category: 'WEB',
-      type: 'Luxury Coffee Roastery E-Commerce & Barista Dispatch',
-      description:
-        'A Starbucks Reserve-inspired luxury coffee shop ordering platform featuring an interactive barista customizer, type-specific formulation rules, live Airtable sync, and high-performance ordering.',
-      tags: ['Next.js', 'FastAPI', 'Airtable Sync', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-      image: '/images/projects/jhes-cafe.png',
-      link: 'https://jhescafe.vercel.app/',
-      github: 'https://github.com/tabanginarjay-sketch/jhes-cafe',
-      status: 'Live on Vercel',
     },
   ];
 
@@ -1747,7 +1734,7 @@ export default function PortfolioPage() {
               style={{ '--reveal-delay': '100ms' } as React.CSSProperties}
               className="flex items-center gap-1.5 p-1 rounded-2xl bg-zinc-900/90 border border-zinc-800 self-start sm:self-auto max-w-full overflow-x-auto no-scrollbar"
             >
-              {(['ALL', 'WEB', 'PWA', 'UIUX'] as const).map((tab) => (
+              {(['ALL', 'WEB', 'PWA'] as const).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -1760,9 +1747,7 @@ export default function PortfolioPage() {
                     ? 'All Projects'
                     : tab === 'WEB'
                       ? 'Websites'
-                      : tab === 'PWA'
-                        ? 'PWA Apps'
-                        : 'UI/UX'}
+                      : 'PWA Apps'}
                 </button>
               ))}
             </div>
@@ -1855,7 +1840,7 @@ export default function PortfolioPage() {
             className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center"
           >
             <p className="text-xs text-zinc-400">
-              💡 <strong>Featured Work:</strong> Featuring Ar-jay&apos;s real platforms and systems, including the live <strong>EduScholar Scholarship System</strong> on Railway, <strong>Jhe&apos;s Cafe&apos; Roastery &amp; Ordering Platform</strong>, <strong>Kusina Ordering App</strong>, <strong>Campus Navigator</strong>, and <strong>Sole Surgeon Atelier</strong>.
+              💡 <strong>Featured Work:</strong> Featuring Ar-jay&apos;s real platforms and systems, including the live <strong>EduScholar Scholarship System</strong> on Railway, <strong>Jhe&apos;s Cafe&apos; Roastery &amp; Ordering Platform</strong> on Vercel, <strong>Kusina Ordering App</strong> on Render, and <strong>Sole Surgeon Atelier</strong> PWA.
             </p>
           </div>
         </div>
