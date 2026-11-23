@@ -205,7 +205,7 @@ export default function PortfolioPage() {
       description:
         'A streamlined restaurant digital menu, dynamic item builder, real-time checkout cart, and customer dispatch system developed for Anna Quintos Lagmay.',
       tags: ['Laravel', 'Vite', 'Tailwind CSS', 'Stripe Checkout', 'REST API', 'Mobile UI'],
-      image: '/images/thumb_photo-1542120178-984cbcccff94.jpg',
+      image: '/images/projects/kusina.png',
       link: 'https://kusina-ordering-app.onrender.com/',
       github: '#',
       status: 'Live on Render',
