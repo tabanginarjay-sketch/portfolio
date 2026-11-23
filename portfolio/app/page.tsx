@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   ArrowRight,
   ChevronLeft,
@@ -186,54 +187,86 @@ export default function PortfolioPage() {
   const projects = [
     {
       id: 'proj-1',
+      slug: 'eduscholar',
       title: 'EduScholar - Scholarship System',
       category: 'WEB',
       type: 'Full-Stack Student Scholarship Management Platform',
+      role: 'Lead Full-Stack Developer & Database Architect',
       description:
         'A comprehensive cloud scholarship application, document verification, grant tracking, and automated qualification evaluation portal deployed live on Railway for Bestlink College of the Philippines.',
+      highlights: [
+        'Automated GPA & income qualification evaluation algorithm',
+        'PostgreSQL normalized schema with reviewer audit trail',
+        'Multi-document upload & verification workflows',
+      ],
       tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Railway Deployment', 'Auth'],
       image: '/images/projects/eduscholar.png',
       link: 'https://eduscholar.up.railway.app',
       github: '#',
+      caseStudyUrl: '/projects/eduscholar',
       status: 'Live on Railway',
     },
     {
       id: 'proj-2',
+      slug: 'kusina',
       title: 'Kusina Ordering App',
       category: 'WEB',
       type: 'Restaurant Food Ordering & Menu App',
+      role: 'Full-Stack Web Developer',
       description:
         'A streamlined restaurant digital menu, dynamic item builder, real-time checkout cart, and customer dispatch system developed for Anna Quintos Lagmay.',
-      tags: ['Laravel', 'Vite', 'Tailwind CSS', 'Stripe Checkout', 'REST API', 'Mobile UI'],
+      highlights: [
+        'Interactive food menu with instant category switching',
+        'Dynamic cart calculation with Stripe Checkout integration',
+        'Real-time customer order tracking & dispatch session status',
+      ],
+      tags: ['Laravel', 'Vite', 'Tailwind CSS', 'Stripe Checkout', 'REST API', 'Render Cloud'],
       image: '/images/projects/kusina.png',
       link: 'https://kusina-ordering-app.onrender.com/',
       github: '#',
+      caseStudyUrl: '/projects/kusina',
       status: 'Live on Render',
     },
     {
       id: 'proj-3',
+      slug: 'jhes-cafe',
       title: "Jhe's Cafe' - Specialty Roastery & Ordering Platform",
       category: 'WEB',
       type: 'Luxury Coffee Roastery E-Commerce & Barista Dispatch',
+      role: 'Lead Full-Stack Developer & UI/UX Designer',
       description:
         'A Starbucks Reserve-inspired luxury coffee shop ordering platform featuring an interactive barista customizer, type-specific formulation rules, live Airtable sync, and high-performance ordering.',
+      highlights: [
+        'Interactive Barista customizer with live ticket formula calculations',
+        'Curved fly-to-cart animation path & sliding order drawer',
+        'FastAPI price validation discarding client-tampered prices',
+      ],
       tags: ['Next.js 16', 'FastAPI', 'Airtable Sync', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
       image: '/images/projects/jhes-cafe.png',
       link: 'https://jhescafe.vercel.app/',
       github: 'https://github.com/tabanginarjay-sketch/jhes-cafe',
+      caseStudyUrl: '/projects/jhes-cafe',
       status: 'Live on Vercel',
     },
     {
       id: 'proj-4',
+      slug: 'sole-surgeon',
       title: 'Sole Surgeon Atelier & Worker PWA',
       category: 'PWA',
       type: 'E-Commerce Atelier & Worker Progressive Web App',
+      role: 'PWA Architect & Full-Stack Developer',
       description:
         'A precision footwear restoration atelier e-commerce booking portal and offline-first shop floor PWA with sequential stage progression, barcode intake, and live Airtable data synchronizations.',
+      highlights: [
+        'Hardware-accelerated touch Before/After comparison slider',
+        'Offline-first Service Worker cache for shop floor technicians',
+        'Multi-stage restoration tracking & Airtable synchronization',
+      ],
       tags: ['Next.js 15', 'PWA Manifest', 'Service Worker', 'TypeScript', 'Tailwind v4', 'Airtable API'],
       image: '/images/projects/sole-surgeon.png',
       link: 'https://sole-surgeon-pwa.vercel.app/',
       github: '#',
+      caseStudyUrl: '/projects/sole-surgeon',
       status: 'Production PWA',
     },
   ];
@@ -647,36 +680,36 @@ export default function PortfolioPage() {
   const workExperience = [
     {
       id: 'exp-1',
-      role: 'Freelance Graphic Designer',
-      subtitle: 'Photo / Video Editor',
+      role: 'Freelance Web Developer & Creative Editor',
+      subtitle: 'Full-Stack Development, UI/UX & Media Post-Production',
       company: 'Self-Employed / Freelance',
-      period: '2021 – 2026',
+      period: '2021 – Present',
       current: true,
       description:
-        'Provided freelance photo and video editing services while assisting clients with their digital content and social media needs. Managed content scheduling and posting, monitored social media analytics, and utilized Microsoft Office and Google Workspace for administrative tasks, file organization, and client communication.',
-      highlights: ['Photo & Video Editing', 'Social Media Analytics', 'Content Scheduling', 'Google Workspace'],
+        'Engineered responsive web applications and e-commerce platforms for clients using Next.js, React, TypeScript, and Tailwind CSS. Built custom digital storefronts and PWA tools, delivered bespoke UI/UX wireframes in Figma, and provided professional multimedia photo/video editing with disciplined client communication.',
+      highlights: ['Full-Stack Web Dev', 'Next.js & TypeScript', 'UI/UX Prototyping', 'Photo & Video Editing', 'Client Communication'],
     },
     {
       id: 'exp-2',
       role: 'Customer Service Representative',
-      subtitle: 'Customer Advisor II',
+      subtitle: 'Customer Advisor II / Corporate Support',
       company: 'Teleperformance',
       period: '2020 – 2021',
       current: false,
       description:
-        'Provided professional customer service and support by assisting corporate clients with their inquiries, concerns, and account-related needs. Maintained positive client relationships through clear communication, timely assistance, and effective problem-solving while handling multiple tasks efficiently.',
-      highlights: ['Corporate Client Support', 'Account Resolution', 'Problem-Solving', 'Multitasking'],
+        'Provided professional customer service and technical guidance by assisting corporate clients with inquiries, account management, and issue escalation. Maintained high satisfaction scores through clear technical communication, timely issue resolution, and dependable multi-tasking.',
+      highlights: ['Corporate Client Support', 'Account Resolution', 'Technical Troubleshooting', 'Cross-Team Escalation'],
     },
     {
       id: 'exp-3',
       role: 'Customer Service Representative',
-      subtitle: 'Customer Care / Technical Support',
+      subtitle: 'Customer Care & E-Commerce Technical Support',
       company: 'Concentrix',
       period: '2019 – 2020',
       current: false,
       description:
-        'Provided customer service and support by handling customer inquiries, concerns, and account-related issues. Managed multiple tasks while maintaining professional communication and ensuring that customer concerns were addressed accurately and efficiently, including e-commerce-related operations.',
-      highlights: ['Technical Support', 'E-Commerce Operations', 'Customer Care', 'CRM Systems'],
+        'Delivered customer service and front-line technical support for high-volume consumer accounts. Managed CRM tickets, handled transaction inquiries, resolved e-commerce account issues, and adhered strictly to data privacy and service quality standards.',
+      highlights: ['Technical Support', 'E-Commerce Operations', 'CRM Ticket Management', 'Quality Compliance'],
     },
   ];
 
@@ -1059,31 +1092,39 @@ export default function PortfolioPage() {
               </h1>
               <div
                 style={{ '--delay': '170ms' } as React.CSSProperties}
-                className="hero-anim-up pt-1 lg:pt-2 space-y-0.5 lg:space-y-1"
+                className="hero-anim-up pt-1 lg:pt-2 space-y-1"
               >
-                <p className="text-white text-[13px] min-[390px]:text-sm sm:text-lg md:text-sm lg:text-lg xl:text-xl font-semibold tracking-wide leading-snug">
-                  Developer &amp; UI/UX Designer
+                <p className="text-white text-[13px] min-[390px]:text-sm sm:text-lg md:text-sm lg:text-lg xl:text-xl font-bold tracking-wide leading-snug">
+                  Aspiring Full-Stack Developer &amp; UI/UX Designer
                 </p>
                 <p className="text-zinc-400 text-[10.5px] min-[390px]:text-[11px] sm:text-sm md:text-xs lg:text-sm xl:text-base font-medium leading-snug">
-                  Certified Customer Service &bull; Photo/Video Editor
+                  BSIT Student &bull; Certified Customer Service &bull; Multimedia Editor
                 </p>
               </div>
             </div>
 
-            {/* Hire Me CTA Button matching the reference pill */}
+            {/* Clear Primary CTAs for Recruiters: View Projects, Contact Me, Download CV */}
             <div
               style={{ '--delay': '250ms' } as React.CSSProperties}
-              className="hero-anim-up pt-1 lg:pt-2"
+              className="hero-anim-up pt-2 flex flex-wrap items-center gap-2.5 sm:gap-3"
             >
+              <a
+                href="#projects"
+                className="group inline-flex items-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3 rounded-full bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white font-bold text-xs sm:text-sm shadow-lg shadow-rose-900/30 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              >
+                <span>View Projects</span>
+                <span className="p-0.5 rounded-full bg-white/20 group-hover:translate-x-0.5 transition-transform">
+                  <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
+                </span>
+              </a>
+
               <button
                 type="button"
                 onClick={() => setIsChatModalOpen(true)}
-                className="group inline-flex items-center gap-2 sm:gap-3 px-4 py-2 sm:px-7 sm:py-3 rounded-full bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white font-bold text-xs sm:text-sm lg:text-base shadow-lg shadow-rose-900/30 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 rounded-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 hover:border-zinc-500 text-white font-semibold text-xs sm:text-sm transition-all cursor-pointer shadow-md"
               >
-                <span>Hire Me</span>
-                <span className="p-0.5 sm:p-1 rounded-full bg-white/20 group-hover:translate-x-1 transition-transform">
-                  <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
-                </span>
+                <Mail className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                <span>Contact Me</span>
               </button>
             </div>
 
@@ -1170,28 +1211,26 @@ export default function PortfolioPage() {
               style={{ '--delay': '210ms' } as React.CSSProperties}
               className="hero-anim-right space-y-2 sm:space-y-2.5 lg:space-y-3"
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/80 border border-zinc-800 text-[10px] sm:text-xs text-zinc-400 font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Open for Opportunities</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/40 border border-emerald-500/30 text-[10px] sm:text-xs text-emerald-300 font-semibold shadow-xs">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Available for IT Internship &amp; Junior Dev Roles</span>
               </div>
 
               <div>
                 <span className="text-[#FF5A5F] text-[11px] sm:text-xs font-bold uppercase tracking-wider block">
-                  Expert on
+                  Engineering Profile
                 </span>
 
                 <h2 className="text-[15px] sm:text-lg md:text-base lg:text-xl xl:text-2xl font-bold text-white leading-snug pr-20 md:pr-0">
-                  Based in Philippines <br className="hidden md:block" />
-                  developer and <br className="hidden md:block" />
-                  UI/UX designer, <br className="hidden md:block" />
-                  certified customer service, <br className="hidden md:block" />
-                  Photo/Video editor.
+                  Full-Stack Web Engineering <br className="hidden md:block" />
+                  &amp; User-Centered Design <br className="hidden md:block" />
+                  with Proven Corporate Support <br className="hidden md:block" />
+                  and Media Craft.
                 </h2>
               </div>
 
               <p className="text-zinc-400 text-xs sm:text-sm md:text-xs lg:text-sm leading-relaxed max-w-sm pt-0.5 lg:pt-1">
-                Versatile creator building modern web applications, designing user-centered interfaces,
-                delivering certified client support, and producing compelling photo &amp; video media.
+                Motivated 3rd-year BSIT developer building real-world, cloud-deployed web applications with Next.js, TypeScript, and FastAPI. Delivering high attention to detail through UI/UX design, customer excellence, and multimedia post-production.
               </p>
             </div>
 
@@ -1780,22 +1819,37 @@ export default function PortfolioPage() {
 
                 {/* Project Info */}
                 <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between gap-3">
+                  <div className="space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="text-xs font-mono font-bold text-[#FF5A5F]">
                         {project.type}
                       </span>
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-zinc-900 text-zinc-300 border border-zinc-800">
+                        {project.role}
+                      </span>
                     </div>
+
                     <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-[#FF5A5F] transition-colors">
                       {project.title}
                     </h3>
+
                     <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
                       {project.description}
                     </p>
+
+                    {/* Key Capabilities Bullet List for Hiring Managers */}
+                    <ul className="space-y-1.5 pt-1 border-t border-zinc-900/80">
+                      {project.highlights?.map((h: string, i: number) => (
+                        <li key={i} className="flex items-start gap-2 text-xs text-zinc-300">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#FF5A5F] shrink-0 mt-0.5" />
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
 
                   {/* Tech Stack Tags & Actions */}
-                  <div className="pt-3 border-t border-zinc-900 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="pt-3 border-t border-zinc-900 flex flex-col space-y-3">
                     <div className="flex flex-wrap items-center gap-1.5">
                       {project.tags.map((tag) => (
                         <span
@@ -1807,26 +1861,35 @@ export default function PortfolioPage() {
                       ))}
                     </div>
 
-                    <div className="flex items-center gap-3 shrink-0">
-                      {project.link && project.link !== '#' && (
-                        <a
-                          href={project.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#FF5A5F]/15 hover:bg-[#FF5A5F]/25 text-[#FF5A5F] border border-[#FF5A5F]/30 text-xs font-bold transition-all"
-                        >
-                          <span>Live Site</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => setSelectedProject(project)}
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-white hover:text-[#FF5A5F] transition-colors cursor-pointer shrink-0"
+                    <div className="flex flex-wrap items-center justify-between gap-2.5 pt-1">
+                      <Link
+                        href={project.caseStudyUrl}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#FF5A5F] to-[#FA5252] text-white text-xs font-bold transition-all shadow-md shadow-rose-950/30 hover:scale-105 active:scale-95"
                       >
-                        <span>View Details</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-[#FF5A5F]" />
-                      </button>
+                        <span>Case Study</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </Link>
+
+                      <div className="flex items-center gap-2">
+                        {project.link && project.link !== '#' && (
+                          <a
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-800 text-xs font-bold transition-all"
+                          >
+                            <span>Live Demo</span>
+                            <ExternalLink className="w-3 h-3 text-[#FF5A5F]" />
+                          </a>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => setSelectedProject(project)}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-medium text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                        >
+                          <span>Quick Preview</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1938,19 +2001,18 @@ export default function PortfolioPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 space-y-8 sm:space-y-11 lg:space-y-12">
           <div data-reveal="up" className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-xs font-bold uppercase tracking-widest text-[#FF5A5F]">
-              Core Capabilities
+              Technical Proficiencies
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-white">
-              Skills & Engineering Stack
+              Skills &amp; Engineering Stack
             </h2>
             <p className="text-sm text-zinc-400">
-              The modern tools and technologies I use to architect lightning-fast, pixel-perfect
-              applications, manage media editing, and provide client service excellence.
+              Technologies and developer tools used to engineer responsive full-stack applications, manage databases, and design intuitive user interfaces.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-6">
-            {/* Frontend & Web Development */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            {/* 1. Frontend Development */}
             <div
               data-reveal="up"
               style={{ '--reveal-delay': '0ms' } as React.CSSProperties}
@@ -1959,45 +2021,118 @@ export default function PortfolioPage() {
               <div className="w-12 h-12 rounded-2xl bg-rose-500/10 text-[#FF5A5F] flex items-center justify-center border border-rose-500/20">
                 <Code2 className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">Web & App Development</h3>
+              <h3 className="text-lg font-bold text-white">Frontend Development</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Responsive layouts, Next.js App Router, client-side state, modern web architectures, and mobile PWA optimization.
+                Building accessible, high-performance web applications using modern component-driven architectures and strict TypeScript typing.
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
-                {['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'REST APIs', 'Git'].map(
-                  (s) => (
-                    <span
-                      key={s}
-                      className="px-2.5 py-1 rounded-xl bg-zinc-900 text-xs font-medium text-zinc-200 border border-zinc-800"
-                    >
-                      {s}
-                    </span>
-                  )
-                )}
+                {[
+                  'React',
+                  'Next.js 15/16',
+                  'TypeScript',
+                  'JavaScript (ES6+)',
+                  'Tailwind CSS',
+                  'HTML5 / Semantic Web',
+                  'CSS3 / Flexbox / Grid',
+                  'Progressive Web Apps (PWA)',
+                ].map((s) => (
+                  <span
+                    key={s}
+                    className="px-2.5 py-1 rounded-xl bg-zinc-900 text-xs font-medium text-zinc-200 border border-zinc-800"
+                  >
+                    {s}
+                  </span>
+                ))}
               </div>
             </div>
 
-            {/* UI/UX Design */}
+            {/* 2. Backend Development */}
             <div
               data-reveal="up"
-              style={{ '--reveal-delay': '90ms' } as React.CSSProperties}
+              style={{ '--reveal-delay': '80ms' } as React.CSSProperties}
+              className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 hover:-translate-y-1.5 transition-[transform,border-color] duration-300"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
+                <Terminal className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-white">Backend Development</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Designing secure RESTful endpoints, request validation, business logic recalculation, and serverless API integration.
+              </p>
+              <div className="flex flex-wrap gap-2 pt-2">
+                {[
+                  'FastAPI (Python)',
+                  'Python 3',
+                  'REST APIs',
+                  'Next.js Server Handlers',
+                  'Node.js',
+                  'Laravel Basics',
+                  'Pydantic Validation',
+                ].map((s) => (
+                  <span
+                    key={s}
+                    className="px-2.5 py-1 rounded-xl bg-zinc-900 text-xs font-medium text-zinc-200 border border-zinc-800"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* 3. Database Management */}
+            <div
+              data-reveal="up"
+              style={{ '--reveal-delay': '160ms' } as React.CSSProperties}
+              className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 hover:-translate-y-1.5 transition-[transform,border-color] duration-300"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+                <Database className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-white">Database Management</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Structuring relational schemas, automated data queries, state persistence, and cloud synchronization.
+              </p>
+              <div className="flex flex-wrap gap-2 pt-2">
+                {[
+                  'PostgreSQL',
+                  'Airtable Relational API',
+                  'SQL Queries',
+                  'Schema Normalization',
+                  'LocalStorage State Cache',
+                  'Data Migrations',
+                ].map((s) => (
+                  <span
+                    key={s}
+                    className="px-2.5 py-1 rounded-xl bg-zinc-900 text-xs font-medium text-zinc-200 border border-zinc-800"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* 4. UI/UX Design */}
+            <div
+              data-reveal="up"
+              style={{ '--reveal-delay': '240ms' } as React.CSSProperties}
               className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 hover:-translate-y-1.5 transition-[transform,border-color] duration-300"
             >
               <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
                 <Palette className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">UI/UX & Product Design</h3>
+              <h3 className="text-lg font-bold text-white">UI/UX Design</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                User research, high-fidelity wireframing, dark atelier aesthetics, typography hierarchy, and interactive prototypes.
+                Crafting user flows, wireframes, and scalable design systems with dark/light theme consistency and accessibility.
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
                 {[
                   'Figma',
+                  'Wireframing & Mockups',
                   'Design Systems',
-                  'Wireframing',
-                  'Dark Theme UI',
-                  'Prototyping',
-                  'UX Research',
+                  'Dark & Light Mode UI',
+                  'Interactive Prototyping',
+                  'Accessibility (a11y)',
+                  'Responsive Mobile Flows',
                 ].map((s) => (
                   <span
                     key={s}
@@ -2009,59 +2144,30 @@ export default function PortfolioPage() {
               </div>
             </div>
 
-            {/* Photo & Video Editing */}
+            {/* 5. Development Tools */}
             <div
               data-reveal="up"
-              style={{ '--reveal-delay': '180ms' } as React.CSSProperties}
-              className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 hover:-translate-y-1.5 transition-[transform,border-color] duration-300"
+              style={{ '--reveal-delay': '320ms' } as React.CSSProperties}
+              className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 hover:-translate-y-1.5 transition-[transform,border-color] duration-300 md:col-span-2 lg:col-span-2"
             >
               <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/20">
-                <Video className="w-6 h-6" />
+                <Briefcase className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">Photo & Video Editing</h3>
+              <h3 className="text-lg font-bold text-white">Development Tools &amp; Cloud Deployment</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Professional multimedia post-production, color grading, cinematic video editing, thumbnail design, and creative media assets.
+                Version control, modern build tooling, continuous deployment, and testing workflows across production environments.
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
                 {[
-                  'Photoshop',
-                  'Premiere Pro',
-                  'After Effects',
-                  'CapCut',
-                  'Color Grading',
-                  'Media Assets',
-                ].map((s) => (
-                  <span
-                    key={s}
-                    className="px-2.5 py-1 rounded-xl bg-zinc-900 text-xs font-medium text-zinc-200 border border-zinc-800"
-                  >
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Certified Customer Service */}
-            <div
-              data-reveal="up"
-              style={{ '--reveal-delay': '270ms' } as React.CSSProperties}
-              className="p-6 rounded-3xl bg-zinc-950/80 border border-zinc-850 space-y-4 hover:border-zinc-700 hover:-translate-y-1.5 transition-[transform,border-color] duration-300"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
-                <Headphones className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold text-white">Certified Customer Service</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Empathetic client communication, CRM ticket management, technical problem resolution, and client success delivery.
-              </p>
-              <div className="flex flex-wrap gap-2 pt-2">
-                {[
-                  'Customer Support',
-                  'CRM & Helpdesk',
-                  'Active Listening',
-                  'Issue Escalation',
-                  'Live Assistance',
-                  'Client Success',
+                  'Git & GitHub',
+                  'Vercel Deployment',
+                  'Railway Cloud',
+                  'Render Hosting',
+                  'Vite',
+                  'Turbopack',
+                  'Postman API Testing',
+                  'VS Code',
+                  'npm / pnpm',
                 ].map((s) => (
                   <span
                     key={s}
@@ -2073,18 +2179,39 @@ export default function PortfolioPage() {
               </div>
             </div>
           </div>
+
+          {/* Supporting Multidisciplinary Capabilities */}
+          <div
+            data-reveal="up"
+            className="p-5 sm:p-6 rounded-3xl bg-zinc-950/60 border border-dashed border-zinc-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+          >
+            <div className="space-y-1">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5A5F]">
+                Supporting Cross-Functional Capabilities
+              </span>
+              <p className="text-xs text-zinc-300">
+                Certified Customer Service (Concentrix Healthcare Account &amp; Teleperformance) &bull; Multimedia Post-Production (Photoshop, Premiere Pro, CapCut, Color Grading).
+              </p>
+            </div>
+            <a
+              href="#edits"
+              className="px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-semibold text-zinc-200 border border-zinc-800 hover:border-zinc-700 transition-colors whitespace-nowrap"
+            >
+              View Media Showcase ↓
+            </a>
+          </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. CALL TO ACTION & FOOTER                                                */}
+      {/* 6. CALL TO ACTION & FOOTER (CONTACT SECTION)                              */}
       {/* ========================================================================= */}
-      <footer className="relative z-20 pt-14 sm:pt-16 pb-[max(3.5rem,calc(2.5rem+env(safe-area-inset-bottom)))] border-t border-zinc-900 bg-black">
+      <footer id="contact" className="relative z-20 pt-14 sm:pt-16 pb-[max(3.5rem,calc(2.5rem+env(safe-area-inset-bottom)))] border-t border-zinc-900 bg-black">
         <div
           data-reveal="up"
           className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left"
         >
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <div className="flex items-center justify-center sm:justify-start gap-2.5 text-lg font-bold text-white">
               <span className="footer-logo-badge w-8 h-8 rounded-lg bg-zinc-950 border border-white/15 flex items-center justify-center p-1">
                 <Image
@@ -2099,8 +2226,14 @@ export default function PortfolioPage() {
               <span>Ar-jay Tabangin</span>
               <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F]" />
             </div>
-            <p className="text-xs text-zinc-500">
-              &copy; 2026 Ar-jay Tabangin &bull; Developer, UI/UX Designer, Certified Customer Service &amp; Media Editor. All rights reserved.
+            <p className="text-xs text-zinc-400">
+              Aspiring Full-Stack Developer &amp; UI/UX Designer &bull; Taguig / Metro Manila, Philippines.
+            </p>
+            <p className="text-xs text-emerald-400 font-medium">
+              🟢 Available for IT Internship &amp; Junior Web Developer Roles (On-site / Hybrid / Remote).
+            </p>
+            <p className="text-[11px] text-zinc-500 pt-1">
+              &copy; 2026 Ar-jay Tabangin &bull; Direct: <a href="mailto:tabanginarjay@gmail.com" className="text-zinc-300 hover:text-white underline">tabanginarjay@gmail.com</a>
             </p>
           </div>
 
