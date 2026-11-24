@@ -195,6 +195,89 @@ export const PROJECTS_DATA: ProjectCaseStudy[] = [
     ],
   },
   {
+    id: 'proj-kusina',
+    slug: 'kusina',
+    title: 'Kusina Ordering App',
+    subtitle: 'Restaurant Food Ordering, Dynamic Cart & Dispatch Platform',
+    category: 'WEB',
+    type: 'Restaurant Food Ordering & Menu App',
+    role: 'Full-Stack Web Developer',
+    period: '2026',
+    status: 'Live on Render',
+    link: 'https://kusina-ordering-app.onrender.com/',
+    github: 'https://github.com/tabanginarjay-sketch',
+    image: '/images/projects/kusina.png',
+    overview:
+      'Kusina Ordering App is a live restaurant ordering and menu platform developed for Anna Quintos Lagmay. It delivers a fast digital menu, dynamic item builder, real-time checkout cart, and customer dispatch system.',
+    problemStatement:
+      'Independent restaurants struggle with high third-party delivery commissions and complex proprietary POS systems, needing a lightweight, branded online ordering solution.',
+    solutionSummary:
+      'Developed a modern restaurant storefront powered by Laravel and Vite with rapid dish customization, instant cart subtotaling, secure payment integration, and customer order status tracking.',
+    tags: ['Laravel', 'Vite', 'Tailwind CSS', 'Stripe Checkout', 'REST API', 'Render Cloud'],
+    features: [
+      {
+        title: 'Interactive Restaurant Menu',
+        description:
+          'Visual food menu with instant category switching, dish availability indicators, and ingredient customization.',
+      },
+      {
+        title: 'Dynamic Real-Time Cart',
+        description:
+          'Live checkout bag that calculates portion sizes, addon extras, and delivery subtotals on the fly.',
+      },
+      {
+        title: 'Secure Checkout Gateway',
+        description:
+          'Integrated Stripe payment processing supporting card payments, mobile wallets, and order dispatch confirmations.',
+      },
+      {
+        title: 'Order Status & Dispatch Tracking',
+        description:
+          'Generates a unique session order reference allowing customers to monitor preparation and delivery status in real time.',
+      },
+    ],
+    architecture: [
+      {
+        layer: 'Full-Stack Framework',
+        tech: 'Laravel & PHP',
+        purpose: 'MVC backend routing, CSRF protection, session management, and Stripe API controller.',
+      },
+      {
+        layer: 'Frontend Bundler',
+        tech: 'Vite & Tailwind CSS',
+        purpose: 'Sub-second Hot Module Replacement (HMR) and optimized CSS/JS bundles for mobile diners.',
+      },
+      {
+        layer: 'Cloud Hosting',
+        tech: 'Render Cloud Platform',
+        purpose: 'Live web service hosting with SSL certificates and continuous deployment.',
+      },
+    ],
+    technicalDecisions: [
+      {
+        decision: 'Vite with Tailwind CSS',
+        rationale:
+          'Minimizes asset download size on mobile cellular connections, ensuring customers can browse menus with zero lag.',
+      },
+      {
+        decision: 'Server-Side Session Handling',
+        rationale:
+          'Guarantees order items and checkout amounts cannot be tampered with prior to Stripe payment generation.',
+      },
+    ],
+    challengesAndSolutions: [
+      {
+        challenge: 'Seamless Mobile Dine-In and Takeout UX',
+        solution:
+          'Designed a sticky bottom cart bar and thumb-friendly order controls tailored for smartphone viewports.',
+      },
+    ],
+    keyLearnings: [
+      'Integrating Stripe Checkout webhooks with server-side order lifecycle handling.',
+      'Deploying full-stack web applications on Render cloud hosting.',
+    ],
+  },
+  {
     id: 'proj-sole-surgeon',
     slug: 'sole-surgeon',
     title: 'Sole Surgeon Atelier & Worker PWA',
@@ -363,89 +446,6 @@ export const PROJECTS_DATA: ProjectCaseStudy[] = [
     keyLearnings: [
       'Designing relational schemas for institutional compliance and academic grants.',
       'Deploying containerized web services on Railway cloud infrastructure.',
-    ],
-  },
-  {
-    id: 'proj-kusina',
-    slug: 'kusina',
-    title: 'Kusina Ordering App',
-    subtitle: 'Restaurant Food Ordering, Dynamic Cart & Dispatch Platform',
-    category: 'WEB',
-    type: 'Restaurant Food Ordering & Menu App',
-    role: 'Full-Stack Web Developer',
-    period: '2026',
-    status: 'Live on Render',
-    link: 'https://kusina-ordering-app.onrender.com/',
-    github: 'https://github.com/tabanginarjay-sketch',
-    image: '/images/projects/kusina.png',
-    overview:
-      'Kusina Ordering App is a live restaurant ordering and menu platform developed for Anna Quintos Lagmay. It delivers a fast digital menu, dynamic item builder, real-time checkout cart, and customer dispatch system.',
-    problemStatement:
-      'Independent restaurants struggle with high third-party delivery commissions and complex proprietary POS systems, needing a lightweight, branded online ordering solution.',
-    solutionSummary:
-      'Developed a modern restaurant storefront powered by Laravel and Vite with rapid dish customization, instant cart subtotaling, secure payment integration, and customer order status tracking.',
-    tags: ['Laravel', 'Vite', 'Tailwind CSS', 'Stripe Checkout', 'REST API', 'Render Cloud'],
-    features: [
-      {
-        title: 'Interactive Restaurant Menu',
-        description:
-          'Visual food menu with instant category switching, dish availability indicators, and ingredient customization.',
-      },
-      {
-        title: 'Dynamic Real-Time Cart',
-        description:
-          'Live checkout bag that calculates portion sizes, addon extras, and delivery subtotals on the fly.',
-      },
-      {
-        title: 'Secure Checkout Gateway',
-        description:
-          'Integrated Stripe payment processing supporting card payments, mobile wallets, and order dispatch confirmations.',
-      },
-      {
-        title: 'Order Status & Dispatch Tracking',
-        description:
-          'Generates a unique session order reference allowing customers to monitor preparation and delivery status in real time.',
-      },
-    ],
-    architecture: [
-      {
-        layer: 'Full-Stack Framework',
-        tech: 'Laravel & PHP',
-        purpose: 'MVC backend routing, CSRF protection, session management, and Stripe API controller.',
-      },
-      {
-        layer: 'Frontend Bundler',
-        tech: 'Vite & Tailwind CSS',
-        purpose: 'Sub-second Hot Module Replacement (HMR) and optimized CSS/JS bundles for mobile diners.',
-      },
-      {
-        layer: 'Cloud Hosting',
-        tech: 'Render Cloud Platform',
-        purpose: 'Live web service hosting with SSL certificates and continuous deployment.',
-      },
-    ],
-    technicalDecisions: [
-      {
-        decision: 'Vite with Tailwind CSS',
-        rationale:
-          'Minimizes asset download size on mobile cellular connections, ensuring customers can browse menus with zero lag.',
-      },
-      {
-        decision: 'Server-Side Session Handling',
-        rationale:
-          'Guarantees order items and checkout amounts cannot be tampered with prior to Stripe payment generation.',
-      },
-    ],
-    challengesAndSolutions: [
-      {
-        challenge: 'Seamless Mobile Dine-In and Takeout UX',
-        solution:
-          'Designed a sticky bottom cart bar and thumb-friendly order controls tailored for smartphone viewports.',
-      },
-    ],
-    keyLearnings: [
-      'Integrating Stripe Checkout webhooks with server-side order lifecycle handling.',
-      'Deploying full-stack web applications on Render cloud hosting.',
     ],
   },
 ];

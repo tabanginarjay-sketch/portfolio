@@ -186,48 +186,6 @@ export default function PortfolioPage() {
   // Projects data (Featuring Ar-jay's actual deployed platforms & applications)
   const projects = [
     {
-      id: 'proj-1',
-      slug: 'eduscholar',
-      title: 'EduScholar - Scholarship System',
-      category: 'WEB',
-      type: 'Full-Stack Student Scholarship Management Platform',
-      role: 'Lead Full-Stack Developer & Database Architect',
-      description:
-        'A comprehensive cloud scholarship application, document verification, grant tracking, and automated qualification evaluation portal deployed live on Railway for Bestlink College of the Philippines.',
-      highlights: [
-        'Automated GPA & income qualification evaluation algorithm',
-        'PostgreSQL normalized schema with reviewer audit trail',
-        'Multi-document upload & verification workflows',
-      ],
-      tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Railway Deployment', 'Auth'],
-      image: '/images/projects/eduscholar.png',
-      link: 'https://eduscholar.up.railway.app',
-      github: '#',
-      caseStudyUrl: '/projects/eduscholar',
-      status: 'Live on Railway',
-    },
-    {
-      id: 'proj-2',
-      slug: 'kusina',
-      title: 'Kusina Ordering App',
-      category: 'WEB',
-      type: 'Restaurant Food Ordering & Menu App',
-      role: 'Full-Stack Web Developer',
-      description:
-        'A streamlined restaurant digital menu, dynamic item builder, real-time checkout cart, and customer dispatch system developed for Anna Quintos Lagmay.',
-      highlights: [
-        'Interactive food menu with instant category switching',
-        'Dynamic cart calculation with Stripe Checkout integration',
-        'Real-time customer order tracking & dispatch session status',
-      ],
-      tags: ['Laravel', 'Vite', 'Tailwind CSS', 'Stripe Checkout', 'REST API', 'Render Cloud'],
-      image: '/images/projects/kusina.png',
-      link: 'https://kusina-ordering-app.onrender.com/',
-      github: '#',
-      caseStudyUrl: '/projects/kusina',
-      status: 'Live on Render',
-    },
-    {
       id: 'proj-3',
       slug: 'jhes-cafe',
       title: "Jhe's Cafe' - Full-Stack Cafe, Delivery & Driver Portal",
@@ -262,6 +220,27 @@ export default function PortfolioPage() {
       status: 'Live on Vercel',
     },
     {
+      id: 'proj-2',
+      slug: 'kusina',
+      title: 'Kusina Ordering App',
+      category: 'WEB',
+      type: 'Restaurant Food Ordering & Menu App',
+      role: 'Full-Stack Web Developer',
+      description:
+        'A streamlined restaurant digital menu, dynamic item builder, real-time checkout cart, and customer dispatch system developed for Anna Quintos Lagmay.',
+      highlights: [
+        'Interactive food menu with instant category switching',
+        'Dynamic cart calculation with Stripe Checkout integration',
+        'Real-time customer order tracking & dispatch session status',
+      ],
+      tags: ['Laravel', 'Vite', 'Tailwind CSS', 'Stripe Checkout', 'REST API', 'Render Cloud'],
+      image: '/images/projects/kusina.png',
+      link: 'https://kusina-ordering-app.onrender.com/',
+      github: '#',
+      caseStudyUrl: '/projects/kusina',
+      status: 'Live on Render',
+    },
+    {
       id: 'proj-4',
       slug: 'sole-surgeon',
       title: 'Sole Surgeon Atelier & Worker PWA',
@@ -281,6 +260,27 @@ export default function PortfolioPage() {
       github: '#',
       caseStudyUrl: '/projects/sole-surgeon',
       status: 'Production PWA',
+    },
+    {
+      id: 'proj-1',
+      slug: 'eduscholar',
+      title: 'EduScholar - Scholarship System',
+      category: 'WEB',
+      type: 'Full-Stack Student Scholarship Management Platform',
+      role: 'Lead Full-Stack Developer & Database Architect',
+      description:
+        'A comprehensive cloud scholarship application, document verification, grant tracking, and automated qualification evaluation portal deployed live on Railway for Bestlink College of the Philippines.',
+      highlights: [
+        'Automated GPA & income qualification evaluation algorithm',
+        'PostgreSQL normalized schema with reviewer audit trail',
+        'Multi-document upload & verification workflows',
+      ],
+      tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Railway Deployment', 'Auth'],
+      image: '/images/projects/eduscholar.png',
+      link: 'https://eduscholar.up.railway.app',
+      github: '#',
+      caseStudyUrl: '/projects/eduscholar',
+      status: 'Live on Railway',
     },
   ];
 
@@ -1917,7 +1917,7 @@ export default function PortfolioPage() {
             className="p-5 rounded-2xl bg-zinc-950/60 border border-dashed border-zinc-800 text-center"
           >
             <p className="text-xs text-zinc-400">
-              💡 <strong>Featured Work:</strong> Featuring Ar-jay&apos;s real platforms and systems, including the live <strong>EduScholar Scholarship System</strong> on Railway, <strong>Jhe&apos;s Cafe&apos; Roastery &amp; Ordering Platform</strong> on Vercel, <strong>Kusina Ordering App</strong> on Render, and <strong>Sole Surgeon Atelier</strong> PWA.
+              💡 <strong>Featured Work:</strong> Featuring Ar-jay&apos;s real platforms and systems, including <strong>Jhe&apos;s Cafe&apos; Full-Stack Cafe, Delivery &amp; Driver Portal</strong> on Vercel, <strong>Kusina Ordering App</strong> on Render, <strong>Sole Surgeon Atelier</strong> PWA, and the <strong>EduScholar Scholarship System</strong> on Railway.
             </p>
           </div>
         </div>
