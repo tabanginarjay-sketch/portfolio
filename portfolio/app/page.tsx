@@ -230,18 +230,31 @@ export default function PortfolioPage() {
     {
       id: 'proj-3',
       slug: 'jhes-cafe',
-      title: "Jhe's Cafe' - Specialty Roastery & Ordering Platform",
+      title: "Jhe's Cafe' - Full-Stack Cafe, Delivery & Driver Portal",
       category: 'WEB',
-      type: 'Luxury Coffee Roastery E-Commerce & Barista Dispatch',
+      type: 'Full-Stack Roastery E-Commerce, Delivery Dispatch & Driver Portal',
       role: 'Lead Full-Stack Developer & UI/UX Designer',
       description:
-        'A Starbucks Reserve-inspired luxury coffee shop ordering platform featuring an interactive barista customizer, type-specific formulation rules, live Airtable sync, and high-performance ordering.',
+        'A production specialty coffee platform built with Next.js 16, Python 3.12 (FastAPI & Pydantic v2), Google OAuth 2.0, Google Maps, Facebook OAuth, and Airtable—featuring an Interactive Barista Bar, configurable delivery zones, COD & verified payment ledgers, Admin Dispatch, and a role-protected Driver Portal.',
       highlights: [
-        'Interactive Barista customizer with live ticket formula calculations',
-        'Curved fly-to-cart animation path & sliding order drawer',
-        'FastAPI price validation discarding client-tampered prices',
+        'Interactive Barista Bar ("Your Perfect Cup, Your Way") + category-aware pricing & persistent cart',
+        'Complete Delivery System: Dine-in, Takeaway & Delivery with configurable zones, Admin Dispatch (/admin/deliveries) & isolated Driver Portal (/driver)',
+        'Google OAuth 2.0, Facebook OAuth & Email unified auth + Google Maps flagship showcase',
+        'Python 3.12 FastAPI & backend price/fee validation with separated COD remittance & Bean Points loyalty ledger',
       ],
-      tags: ['Next.js 16', 'FastAPI', 'Airtable Sync', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+      tags: [
+        'Next.js 16',
+        'Python 3.12',
+        'FastAPI',
+        'Pydantic v2',
+        'Google OAuth 2.0',
+        'Google Maps',
+        'Facebook OAuth',
+        'TypeScript',
+        'Tailwind CSS v4',
+        'Airtable REST API',
+        'RBAC & COD',
+      ],
       image: '/images/projects/jhes-cafe.png',
       link: 'https://jhescafe.vercel.app/',
       github: 'https://github.com/tabanginarjay-sketch/jhes-cafe',
@@ -686,8 +699,8 @@ export default function PortfolioPage() {
       period: '2021 – Present',
       current: true,
       description:
-        'Engineered responsive web applications and e-commerce platforms for clients using Next.js, React, TypeScript, and Tailwind CSS. Built custom digital storefronts and PWA tools, delivered bespoke UI/UX wireframes in Figma, and provided professional multimedia photo/video editing with disciplined client communication.',
-      highlights: ['Full-Stack Web Dev', 'Next.js & TypeScript', 'UI/UX Prototyping', 'Photo & Video Editing', 'Client Communication'],
+        'Engineered responsive full-stack web applications, delivery & dispatch systems, and e-commerce platforms using Next.js, React, TypeScript, Python (FastAPI), Google OAuth 2.0, Airtable, and Tailwind CSS. Built custom digital storefronts and PWA tools, delivered bespoke UI/UX wireframes in Figma, and provided professional multimedia photo/video editing with disciplined client communication.',
+      highlights: ['Full-Stack Web Dev', 'Next.js & TypeScript', 'Python & FastAPI', 'Google OAuth & APIs', 'UI/UX Prototyping', 'Photo & Video Editing'],
     },
     {
       id: 'exp-2',
@@ -1763,8 +1776,8 @@ export default function PortfolioPage() {
                 Websites & Applications We&apos;ve Built
               </h2>
               <p className="text-sm text-zinc-400 max-w-xl">
-                Real-world web apps, modern e-commerce storefronts, and specialized Progressive Web
-                Apps crafted with Next.js, TypeScript, and live cloud databases.
+                Real-world full-stack web apps, e-commerce &amp; delivery platforms, and Progressive Web
+                Apps crafted with Next.js, Python (FastAPI), TypeScript, OAuth APIs, and live cloud databases.
               </p>
             </div>
 
@@ -2056,19 +2069,25 @@ export default function PortfolioPage() {
               <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
                 <Terminal className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">Backend Development</h3>
+              <h3 className="text-lg font-bold text-white">Backend, Python &amp; API Integrations</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Designing secure RESTful endpoints, request validation, business logic recalculation, and serverless API integration.
+                Designing secure RESTful endpoints, OAuth 2.0 identity flows, role-based access control (RBAC), server-side validation, and webhook verification.
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
                 {[
-                  'FastAPI (Python)',
-                  'Python 3',
-                  'REST APIs',
-                  'Next.js Server Handlers',
+                  'Python 3.12',
+                  'FastAPI',
+                  'Pydantic v2',
+                  'Google OAuth 2.0 / Identity API',
+                  'Google Maps Integration',
+                  'Facebook Graph API OAuth',
+                  'JWT & HttpOnly Sessions',
+                  'Role-Based Access Control (RBAC)',
+                  'REST APIs & Webhooks',
+                  'Next.js Route Handlers',
                   'Node.js',
-                  'Laravel Basics',
-                  'Pydantic Validation',
+                  'Laravel / PHP',
+                  'Argon2 / Scrypt Auth',
                 ].map((s) => (
                   <span
                     key={s}
@@ -2164,8 +2183,10 @@ export default function PortfolioPage() {
                   'Vercel Deployment',
                   'Railway Cloud',
                   'Render Hosting',
+                  'Uvicorn & ASGI',
                   'Vite',
                   'Turbopack',
+                  'End-to-End API Testing',
                   'Postman API Testing',
                   'VS Code',
                   'npm / pnpm',

@@ -65,7 +65,18 @@ export default async function ProjectCaseStudyPage({ params }: PageProps) {
             <span>Back to Portfolio</span>
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            {project.github && project.github !== '#' && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 text-xs font-bold transition-all"
+              >
+                <Code2 className="w-3.5 h-3.5 text-[#FF5A5F]" />
+                <span>Source Code</span>
+              </a>
+            )}
             {project.link && project.link !== '#' && (
               <a
                 href={project.link}
@@ -101,6 +112,18 @@ export default async function ProjectCaseStudyPage({ params }: PageProps) {
           <p className="text-base sm:text-lg text-zinc-300 max-w-3xl leading-relaxed">
             {project.subtitle}
           </p>
+
+          {/* Tech Stack & API Integrations Pills */}
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            {project.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-3 py-1 rounded-xl bg-zinc-950 text-xs font-medium text-zinc-200 border border-zinc-800"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
 
           {/* Metadata Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-zinc-900">

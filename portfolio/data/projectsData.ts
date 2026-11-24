@@ -40,9 +40,9 @@ export const PROJECTS_DATA: ProjectCaseStudy[] = [
     id: 'proj-jhes-cafe',
     slug: 'jhes-cafe',
     title: "Jhe's Cafe'",
-    subtitle: 'Specialty Roastery & Interactive Barista Ordering Platform',
+    subtitle: 'Full-Stack Specialty Roastery, Ordering, Delivery Dispatch & Driver Portal Platform',
     category: 'WEB',
-    type: 'Luxury Coffee Roastery E-Commerce & Barista Dispatch',
+    type: 'Full-Stack Cafe E-Commerce, Delivery Dispatch & Driver Portal',
     role: 'Lead Full-Stack Developer & UI/UX Designer',
     period: '2026',
     status: 'Live on Vercel',
@@ -50,94 +50,148 @@ export const PROJECTS_DATA: ProjectCaseStudy[] = [
     github: 'https://github.com/tabanginarjay-sketch/jhes-cafe',
     image: '/images/projects/jhes-cafe.png',
     overview:
-      "Jhe's Cafe' is a Starbucks Reserve-inspired luxury coffee ordering web application designed for a premier highland roastery in Tagaytay. The platform features an interactive cup formulation engine, strict type-specific product rules, live Airtable inventory synchronization, and server-side price validation.",
+      "Jhe's Cafe' is a full-stack specialty coffee ordering, delivery management, and loyalty platform built with Next.js 16, TypeScript, Python 3.12 (FastAPI & Pydantic v2), Google OAuth 2.0, Google Maps, Facebook OAuth, and Airtable. Beyond its Starbucks Reserve-inspired Interactive Barista Bar, the system runs end-to-end cafe operations: persistent account carts, configurable delivery zones, Cash on Delivery (COD) & verified payment ledgers, an Admin Operations Dashboard, and a role-protected Driver Portal.",
     problemStatement:
-      'Standard e-commerce platforms treat all food and beverage items identically, causing illogical options (such as sugar level sliders on pastries) and client-side price tampering. Jhe\'s Cafe required an artisanal, barista-grade experience where drink formulations adhere to strict barista physics.',
+      'Independent cafes often stitch together disconnected menu sites, manual delivery tracking, unverified payment claims, and fragile login flows—causing client-side price tampering, duplicate customer accounts across Google/Email logins, unvalidated delivery fees, and mixed payment/order states.',
     solutionSummary:
-      'Engineered a data-driven formulation architecture in Next.js 16 and FastAPI with centralized product taxonomy, dynamic price recalculation, and a fluid curved fly-to-cart animation.',
-    tags: ['Next.js 16', 'FastAPI', 'Python 3.12', 'Airtable Sync', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+      'Engineered an end-to-end full-stack architecture pairing Next.js 16 App Router with a Python 3.12 FastAPI + Pydantic v2 backend, live Airtable relational persistence, Google OAuth 2.0 & Facebook OAuth unified identity mapping, configurable delivery zones, separated order/delivery/payment lifecycles, and isolated RBAC portals for Customers, Admins, and Delivery Drivers.',
+    tags: [
+      'Next.js 16',
+      'Python 3.12',
+      'FastAPI',
+      'Pydantic v2',
+      'Google OAuth 2.0',
+      'Google Maps',
+      'Facebook OAuth',
+      'TypeScript',
+      'Tailwind CSS v4',
+      'Airtable REST API',
+      'RBAC & HttpOnly Auth',
+      'COD & Payment Ledger',
+    ],
     features: [
       {
-        title: 'Interactive Barista Customizer',
+        title: 'Interactive Barista Bar ("Your Perfect Cup, Your Way")',
         description:
-          'Customers configure cup size, hot/iced temperature, milk selection (whole, oat, almond), sweetness sliders (0–100%), and extra espresso shots with a live updating cup ticket.',
+          'Side-by-side live coffee studio featuring smooth image crossfades, dynamic pricing, cup size, temperature, milk selection, sweetness level, and strict category rules so pastries never display beverage options.',
       },
       {
-        title: 'Type-Specific Formulation Rules',
+        title: 'Complete Checkout & Configurable Delivery System',
         description:
-          'Strict configuration rules prevent invalid options: cold brews lock to iced only, espresso drinks include roast origin notes, while doughnuts and pastries never show beverage sliders.',
+          'Supports Dine-in (table/seating), Takeaway / Counter Pickup (pickup window), and Delivery with saved addresses, ASAP/scheduled windows, admin-configured serviceable barangays (zero hardcoded rates), minimum-order enforcement, and authoritative backend calculation (Subtotal + Delivery Fee - Discount).',
       },
       {
-        title: 'Physics-Based Fly-to-Cart Experience',
+        title: 'Role-Protected Driver Portal (/driver)',
         description:
-          'Smooth curved motion path animation that floats the selected cup into the header bag icon upon click, accompanied by subtle cart counter bounce and a sliding drawer.',
+          'Isolated driver authentication against Airtable Staff with strict RBAC scoping: drivers see only their assigned deliveries (with customer 6-char handoff codes masked), advance strict state-machine milestones (PICKED_UP -> OUT_FOR_DELIVERY -> DELIVERED / FAILED_DELIVERY), verify handoff codes, and log COD cash collection.',
       },
       {
-        title: 'Server-Side Price Validation',
+        title: 'Admin Dispatch, Delivery Zones & Live Orders Suite (/admin)',
         description:
-          'FastAPI backend recalculates all item prices from raw option deltas before writing orders to Airtable, ensuring client-tampered prices are discarded.',
+          'Dedicated Admin Delivery Management (/admin/deliveries) for configuring serviceable zones, registering riders, assigning deliveries, updating ETAs, handling failed attempts, and confirming COD remittances alongside Live Barista Orders, Inventory auto-deduction, and Financial Reports.',
+      },
+      {
+        title: 'Separated Order, Delivery & Payment Lifecycles (COD + Online)',
+        description:
+          'Supports Cash on Delivery (COD_PENDING -> driver cash collection -> separate authorized admin confirmation -> PAID), GCash, Maya, Credit/Debit Card, and Counter Cash with webhook verification, inline Live Order verification, and full audit trails.',
+      },
+      {
+        title: 'Unified Google OAuth 2.0, Facebook OAuth & Email Auth',
+        description:
+          'Production Google Identity Services (authorization code & ID token verification), Facebook Graph API OAuth, and salted scrypt/Argon2 email/password login unified onto one canonical customer record per email with signed HttpOnly session cookies.',
+      },
+      {
+        title: 'Customer Portal, Loyalty Bean Points & Live Delivery Tracking',
+        description:
+          'Clean customer IA with dedicated /account (Profile, Digital Member Card, immutable Bean Points Ledger), persistent /cart, focused /checkout, and /my-orders featuring a 6-stage delivery timeline, assigned driver contact, persisted in-app notifications, and restricted Customer–Driver–Admin messaging.',
+      },
+      {
+        title: 'Python 3.12 FastAPI Backend & Server-Side Integrity',
+        description:
+          'Asynchronous Python FastAPI & Pydantic v2 modules validate payloads, enforce delivery transition matrices, recalculate catalog prices & fees on the server, and guard against client-side total tampering or duplicate order submissions.',
       },
     ],
     architecture: [
       {
-        layer: 'Frontend Client',
-        tech: 'Next.js 16 (Turbopack) & React',
-        purpose: 'Interactive cup customizer, real-time ticket calculation, and fly-to-cart animations.',
+        layer: 'Frontend & Customer UI',
+        tech: 'Next.js 16 (App Router, Turbopack), React 19 & TypeScript',
+        purpose: 'Interactive Barista Bar, persistent account cart, checkout dining preferences, customer tracking, Admin Suite, and isolated Driver Portal.',
       },
       {
-        layer: 'Styling & Design System',
-        tech: 'Tailwind CSS',
-        purpose: 'Starbucks Reserve aesthetic: Forest green (#173D2B), warm cream (#F5F0E7), and serif typography.',
+        layer: 'Python Backend & Validation',
+        tech: 'Python 3.12, FastAPI, Pydantic v2, Uvicorn & Async HTTPX',
+        purpose: 'Typed API schemas, delivery zone & transition validation, price recalculation, Argon2/PyJWT auth services, and Airtable repository layer.',
       },
       {
-        layer: 'API & Backend',
-        tech: 'FastAPI (Python 3.12) & Uvicorn',
-        purpose: 'Order intake, price delta recalculation, and relational data serialization.',
+        layer: 'Google & Third-Party APIs',
+        tech: 'Google OAuth 2.0 / Identity Services, Google Maps & Facebook Graph API',
+        purpose: 'Live Google & Facebook single sign-on with server-side token exchange, plus interactive Tagaytay flagship Google Maps embed & navigation.',
       },
       {
-        layer: 'Database & CMS',
-        tech: 'Airtable Relational API',
-        purpose: 'Real-time catalog source of truth: products, orders, categories, and inventory tags.',
+        layer: 'Security & RBAC Sessions',
+        tech: 'HMAC-SHA256 HttpOnly Cookies, Scrypt/Argon2 & Role Guards',
+        purpose: 'Separate verified sessions for Customers, Admins/Baristas, and Delivery Drivers with strict ownership checks on orders, deliveries, and payments.',
       },
       {
-        layer: 'Production Hosting',
-        tech: 'Vercel Cloud Platform',
-        purpose: 'Global edge distribution with zero-downtime automated deployment.',
+        layer: 'Database & Headless CMS',
+        tech: 'Airtable Relational REST API',
+        purpose: 'Live persistence for Products, Categories, Inventory, Users, Orders, OrderItems, Staff/Drivers, Payments Ledger, Delivery Zones, Dispatches, Saved Addresses, and Notifications.',
+      },
+      {
+        layer: 'Styling & Cloud Hosting',
+        tech: 'Tailwind CSS v4 & Vercel Production',
+        purpose: 'Warm neighborhood reserve aesthetic (#173D2B forest green, #F5F0E7 oat cream, walnut accents) deployed globally with automated E2E verification.',
       },
     ],
     technicalDecisions: [
       {
-        decision: 'FastAPI for Backend Microservice',
+        decision: 'Python FastAPI + Pydantic v2 Alongside Next.js Route Handlers',
         rationale:
-          'FastAPI offers high-speed asynchronous request handling and strict Pydantic model validation, ideal for recalculating order prices and interfacing with Airtable.',
+          'Combining Python FastAPI/Pydantic v2 backend modules with Next.js serverless API routes provides strict schema validation, server-side catalog price & delivery fee recalculation, and zero-downtime edge deployment on Vercel.',
       },
       {
-        decision: 'Data-Driven Product Customization System',
+        decision: 'Unified Canonical Customer Identity Across Google, Facebook & Email',
         rationale:
-          'Instead of hardcoded forms per product, created a centralized registry that renders only supported options based on product category (coffee, cold brew, cake, doughnut).',
+          'Mapping Google OAuth, Facebook OAuth, and Email/Password logins to a single canonical customer ID per email prevents duplicate accounts and preserves one unified loyalty balance, saved cart, and order history.',
       },
       {
-        decision: 'Airtable as Headless CMS',
+        decision: 'Strict Separation of Order, Delivery & Payment State Machines',
         rationale:
-          'Allows non-technical cafe managers to update prices, origin tags, and roast levels in real time without triggering code redeployments.',
+          'Decoupling order prep status, 6-stage delivery dispatch status, and payment settlement ensures drivers can record COD cash collection upon delivery without ever prematurely marking financial transactions as PAID.',
+      },
+      {
+        decision: 'Zero Hardcoded Delivery Rates (Admin-Configurable Zones)',
+        rationale:
+          'Checkout fetches live active barangays and fees strictly from Airtable-backed Delivery Zones managed in /admin/deliveries, rejecting unsupported addresses and below-minimum carts on the backend.',
       },
     ],
     challengesAndSolutions: [
       {
-        challenge: 'Preventing Invalid Customization Options on Pastries',
+        challenge: 'Preventing Stale Login Prompts & Duplicate Accounts Across OAuth & Email',
         solution:
-          'Enforced a discriminated union type structure in productCustomization.ts that binds customization UI elements strictly to product category tags.',
+          'Consolidated session verification onto one authoritative /api/v1/auth/me HttpOnly cookie endpoint, disabled stale prefetch redirect caching on protected routes, and implemented canonical email identity resolution across Google, Facebook, and Email logins.',
       },
       {
-        challenge: 'Protecting Revenue from Client Price Tampering',
+        challenge: 'Enforcing Strict Driver Isolation & Delivery Lifecycle Integrity',
         solution:
-          'Implemented server-side order price recalculation in orders/repository.py, fetching the base price and adding verified option deltas on the server.',
+          'Issued an isolated jhes_driver_session cookie verified against Airtable Staff (role="driver"), masked customer 6-character handoff codes from driver APIs, enforced backend transition matrices, and blocked cross-driver or payment-settlement access with HTTP 403.',
+      },
+      {
+        challenge: 'Protecting Revenue & Preventing Ledger Contamination',
+        solution:
+          'Recomputed all drink deltas, promo discounts, and delivery zone fees exclusively on the backend, rejected client-tampered totals, and isolated system envelopes (loyalty, saved addresses, delivery dispatch, notifications) from financial payment totals.',
+      },
+      {
+        challenge: 'Preventing Invalid Drink Customizations on Pastries & Food',
+        solution:
+          'Enforced a category-driven customization contract in productCustomization.ts so espresso drinks render milk, temperature, and sweetness controls while pastries hide beverage options.',
       },
     ],
     keyLearnings: [
-      'Architecting resilient state synchronization between client drawers and server endpoints.',
-      'Integrating external headless databases with high-performance Next.js caching.',
-      'Translating premium retail brand guidelines into responsive web micro-interactions.',
+      'Architecting multi-role RBAC systems (Customer, Admin/Cashier, Delivery Driver) with strict backend ownership enforcement.',
+      'Integrating Google OAuth 2.0, Facebook Graph API, and salted password authentication into a unified canonical user identity.',
+      'Designing decoupled state machines for e-commerce fulfillment, delivery dispatch, and Cash on Delivery (COD) financial reconciliation.',
+      'Validating production deployments end-to-end with automated multi-role API and workflow test suites.',
     ],
   },
   {
